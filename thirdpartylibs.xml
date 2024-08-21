@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<libraries>
+    <library>
+        <location>amd/src/decimal.js</location>
+        <name>DecimalJs</name>
+        <version>10.4.3</version>
+        <license>MIT License</license>
+    </library>
+</libraries>
