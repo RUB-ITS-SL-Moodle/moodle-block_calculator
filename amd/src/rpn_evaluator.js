@@ -21,23 +21,32 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(["block_simple_calculator/decimal", "block_simple_calculator/stack"], function(decimaljs, Stack) {
+define(["block_simple_calculator/decimal", "block_simple_calculator/stack"], function (decimaljs, Stack) {
   class RPNEvaluator {
+
     constructor(input) {
       this.output_stack = input;
       this.calculate_stack = new Stack();
     }
 
     eval() {
+
       while (this.output_stack.stack.length > 0) {
+
         var char = this.output_stack.shift();
+
         if (!isNaN(char)) {
+
           this.calculate_stack.push(char);
+
         } else if (char === "neg") {
+
           var left = this.calculate_stack.pop();
           left = "-" + left;
           this.calculate_stack.push(left);
+
         } else if (this.isOperator(char)) {
+
           var right = new decimaljs.Decimal(this.calculate_stack.pop());
           var left = new decimaljs.Decimal(this.calculate_stack.pop());
 
@@ -57,6 +66,7 @@ define(["block_simple_calculator/decimal", "block_simple_calculator/stack"], fun
           }
         }
       }
+
       return this.calculate_stack.pop();
     }
 
@@ -64,5 +74,6 @@ define(["block_simple_calculator/decimal", "block_simple_calculator/stack"], fun
       return char.match(/\+|\-|\*|÷/);
     }
   }
+
   return RPNEvaluator;
 });

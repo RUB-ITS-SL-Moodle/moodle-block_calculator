@@ -21,44 +21,47 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(["block_simple_calculator/stack"], function(Stack) {
+define(['block_simple_calculator/stack'], function (Stack) {
   /**
-    * StringToChars
-    * A Class to convert a String into an Array of the Characters.
-    */
+   * StringToChars
+   * A Class to convert a String into an Array of the Characters.
+   */
   class StringToChars {
     /**
-    * constructor
-    * Convert a String into an Array of the Characters.
-    * @param {string} str
-    */
+     * constructor
+     * Convert a String into an Array of the Characters.
+     * @param {string} str
+     */
     constructor(str) {
+
       // Declare the Chars array.
       var chars = [];
 
       // Loop through all Chars.
       for (var c = 0; c < str.length; c++) {
+
         // Push the chars into the chars Array.
         chars.push(str[c]);
       }
+
       // Return the Chars array.
       return chars;
     }
   }
   /**
-    * ShuntingYardConverter
-    * A Converter based of the Shunting Yard Algorithm to convert a Calculation String into the RPN Format.
-    */
+   * ShuntingYardConverter
+   * A Converter based of the Shunting Yard Algorithm to convert a Calculation String into the RPN Format.
+   */
   class ShuntingYardConverter {
     /**
-    * constructor
-    * Initialize the Operator Stack, Output Stack and the precedence Object.
-    */
+     * constructor
+     * Initialize the Operator Stack, Output Stack and the precedence Object.
+     */
 
     constructor() {
       this.operator_stack = new Stack();
       this.output_stack = new Stack();
-      this.precedence = { neg: 4, "*": 3, "÷": 3, "+": 2, "-": 2 };
+      this.precedence = { neg: 4, '*': 3, '÷': 3, '+': 2, '-': 2 };
     }
 
     isOperator(char) {
@@ -74,11 +77,16 @@ define(["block_simple_calculator/stack"], function(Stack) {
         var char = this.chars[0];
 
         if (!isNaN(char)) {
+
           if (parse_as_float || parse_until_op) {
+
             this.output_stack.push(this.output_stack.pop() + char);
           } else {
+
             this.output_stack.push(parseFloat(char));
+
             if (!parse_until_op) {
+
               parse_until_op = true;
             }
           }
@@ -86,41 +94,43 @@ define(["block_simple_calculator/stack"], function(Stack) {
           parse_as_float = false;
           parse_until_op = false;
 
-          while (
-            (this.operator_stack.peek() !== undefined &&
-              this.operator_stack.peek() !== "(" &&
-              this.precedence[this.operator_stack.peek()] >
-                this.precedence[char]) ||
-            this.precedence[this.operator_stack.peek()] ===
-              this.precedence[char]
-          ) {
+          while ((this.operator_stack.peek() !== undefined && this.operator_stack.peek() !== '(' &&
+            this.precedence[this.operator_stack.peek()] > this.precedence[char]) ||
+            this.precedence[this.operator_stack.peek()] === this.precedence[char]) {
+
             this.output_stack.push(this.operator_stack.pop());
           }
 
           this.operator_stack.push(char);
+
         } else if (isNaN(char) && !char.match(/\.|\(|\)|\+|\-|\*|÷/)) {
-          if (
-            this.operator_stack.peek() !== undefined &&
-            isNaN(this.operator_stack.peek()) &&
-            !this.operator_stack.peek().match(/\.|\(|\)|\+|\-|\*|÷/)
-          ) {
+
+          if (this.operator_stack.peek() !== undefined && isNaN(this.operator_stack.peek()) &&
+            !this.operator_stack.peek().match(/\.|\(|\)|\+|\-|\*|÷/)) {
+
             this.operator_stack.push(this.operator_stack.pop() + char);
           } else {
+
             this.operator_stack.push(char);
           }
-        } else if (char === ".") {
+
+        } else if (char === '.') {
+
           parse_as_float = true;
           this.output_stack.push(this.output_stack.pop() + char);
-        } else if (char === "(") {
+
+        } else if (char === '(') {
+
           this.operator_stack.push(char);
-        } else if (char === ")") {
-          while (
-            this.operator_stack.peek() !== undefined &&
-            this.operator_stack.peek() !== "("
-          ) {
+
+        } else if (char === ')') {
+          while (this.operator_stack.peek() !== undefined && this.operator_stack.peek() !== '(') {
+
             this.output_stack.push(this.operator_stack.pop());
           }
-          if (this.operator_stack.peek() === "(") {
+
+          if (this.operator_stack.peek() === '(') {
+
             this.operator_stack.pop();
           }
         }
@@ -129,7 +139,9 @@ define(["block_simple_calculator/stack"], function(Stack) {
       }
 
       while (this.operator_stack.peek() !== undefined) {
-        if (this.operator_stack.peek() !== "(") {
+
+        if (this.operator_stack.peek() !== '(') {
+
           this.output_stack.push(this.operator_stack.pop());
         }
       }

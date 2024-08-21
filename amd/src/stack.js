@@ -20,7 +20,7 @@
  * @copyright   2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define([], function() {
+define([], function () {
   /**
     * Stack
     * Simple Stack Class.
