@@ -266,7 +266,7 @@ define([
             // If there was a Calculation before set the previous Operand to the current Operand.
             if (memory.currentOperand.includes('-')) {
 
-              memory.previousOperand = `neg(${memory.currentOperand.replace('-', '')});`;
+              memory.previousOperand = `neg(${memory.currentOperand.replace('-', '')})`;
             } else {
 
               memory.previousOperand = memory.currentOperand;
