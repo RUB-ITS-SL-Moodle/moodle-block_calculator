@@ -28,9 +28,9 @@ defined('MOODLE_INTERNAL') || die();
 $string['calculator_popout'] = 'Popout';
 $string['calculator_close'] = 'Close';
 $string['calculator_popout_description'] = 'Instructions:
-                                            Pop out the Calculator by pressing the "Popout/Popin" Button below.
+                                            Pop out the Calculator by pressing the "Popout" Button below.
                                             After pressing the Button, you can drag the Calculator with your Mouse by holding the left Mouse Button while being on the Calculator.
-                                            To drop the Calculator back, you should press the same Button again.';
+                                            To drop the Calculator back, you should press the close Button on the top of the Calculator.';
 $string['pluginname'] = 'Calculator';
 $string['simple_calculator:addinstance'] = 'Add a new Calculator block';
 $string['simple_calculator:myaddinstance'] = 'Add a new Calculator block to dashboard';
