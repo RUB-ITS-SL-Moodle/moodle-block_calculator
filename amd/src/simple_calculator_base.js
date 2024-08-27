@@ -696,7 +696,7 @@ define([
       if (validateParenthesis) {
 
         // Create a new RPNEvaluator and format the Result with the Shunting Yard Algorithm.
-        result = new RPNEvaluator(new ShuntingYardConverter(true).toRPN(result), true).eval();
+        result = new RPNEvaluator(new ShuntingYardConverter().toRPN(result)).eval();
 
         // Check if there is a result.
         if (result !== null) {
