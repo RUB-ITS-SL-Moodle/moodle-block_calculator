@@ -291,12 +291,26 @@ define([
      */
     deleteButton: function () {
       $(SELECTORS.DELETE).on('click', function () {
-
         if (memory.currentOperand !== '') {
           // Remove last Character.
           memory.currentOperand = memory.currentOperand.toString().slice(0, -1);
 
         } else if (memory.operation !== null) {
+
+          // If it is empty and there is a Operation ongoing remove it.
+          // Get nearest Operand.
+          var nearestOperand = base_calculator.getNearestOperation(memory.previousOperand.toString(), true);
+
+          // Remove the current Operator and switch all values.
+          memory.previousOperand = nearestOperand[0];
+          memory.currentOperand = nearestOperand[1];
+          memory.operation = nearestOperand[2];
+          memory.temporayOperand = '';
+
+        } else if (memory.previousOperand.includes('=')) {
+
+          // If there was an Equation remove the last Character.
+          memory.previousOperand = memory.previousOperand.slice(0, -1);
 
           // If it is empty and there is a Operation ongoing remove it.
           // Get nearest Operand.
@@ -385,78 +399,83 @@ define([
     /**
      * getNearestOperation
      * Searches for the next Operation
-     * @param {string} operationString
+     * @param {string} str
      * @param {boolean} removeFromString
      *
      */
-    getNearestOperation: function (operationString, removeFromString = false) {
+    getNearestOperation: function (str, removeFromString = false) {
 
-      // Current endIndex and count of operators in String.
-      var endIndex = false;
-      var countOperations = 0;
+      // Initialize the current Operator Char index;
+      var char_until = 0;
 
-      // Search through the given operationString for operators backwards.
-      for (var x = operationString.length; x >= 0; x--) {
+      // Loop through the given String backwards.
+      for (var c = str.length; c >= 0; c--) {
 
-        // If the Character at the Index of x is not undefined and matches the Regex,
-        // set the endIndex if it is not already set.
-        if (operationString[x] !== undefined && operationString[x].match(OPERATOR_REGEX)) {
+        // If the current Char exists.
+        if (str[c] !== undefined) {
 
-          // Verify if endIndex has not been set.
-          if (endIndex == false) {
-            endIndex = x;
+          // Then check if it matches as Operator.
+          if (str[c].match(OPERATOR_REGEX)) {
+
+            // If it does match as Operator see if it is a Minus.
+            if (str[c] === '-') {
+
+              // It is a Minus Operator so check if a previous Char exists.
+              if (str[c - 1] === undefined) {
+                // If it does not exist set the char_until to -1.
+                char_until = -1;
+                break;
+                // If there is a previous Char validate whether it is an Operator.
+              } else if (str[c - 1].match(OPERATOR_REGEX)) {
+
+                // Set char_until to the previous Char Index.
+                char_until = c - 1;
+                break;
+              }
+
+              continue;
+            } else {
+              // Otherwise set the char_until to the current Index.
+              char_until = c;
+              break;
+            }
           }
-
-          // Count the operations.
-          countOperations++;
         }
       }
 
       // Initialize new operation String.
       var operation = '';
+      var operator = char_until !== -1 && str[char_until].match(OPERATOR_REGEX) ? str[char_until] : null;
+
+      // Index to get all Chars until the found Operator.
+      var chars_index =
+      (str[char_until] !== undefined && str[char_until].match(OPERATOR_REGEX) ? char_until + 1 : char_until);
 
       // Loop through the given operationString within the range of the endIndex and the length of the String
-      for (var i = endIndex ? endIndex + 1 : 0; i <= operationString.length - 1; i++) {
+      for (var c = chars_index; c <= str.length; c++) {
 
-        // Add the Characters to the new operation String.
-        operation += operationString[i];
+        // Verify that there is a Char at the current Index.
+        if (str[c] !== undefined) {
 
+          // Add the Characters to the new operation String.
+          operation += str[c];
+        }
       }
+
+
 
       // If the extracted operation should be removed, simply remove it.
       if (removeFromString) {
 
-        // Get the new Operator based off the endIndex.
-        var newOperator = operationString[endIndex];
+        // Remove not needed Part of the String.
+        var _str = str.slice(0, char_until !== -1 ? char_until : char_until + 1);
 
-        // Initialize the sliced new String.
-        var operationStringSliced = '';
-
-        // Check if there are more than 1 Operators in the operationString or not.
-        // If it's true slice it.
-        if (countOperations !== 0) {
-
-          // Slice the String by the endIndex and length of the operationString.
-          operationStringSliced = operationString.slice(0, (countOperations >= 1 ? endIndex - 1 : endIndex) -
-            (operationString.length - 1));
-        }
-
-        // Should the Sliced String be undefined set it as empty String.
-        if (operationStringSliced === undefined) {
-          operationStringSliced = '';
-        }
-
-        // Set the newOperator equals to null when it is undefined.
-        if (newOperator === undefined) {
-          newOperator = null;
-        }
-
-        // Return the sliced string, the new operationString, the new Operator and the endIndex.
-        return [operationStringSliced, operation, newOperator, endIndex];
+        // Return the sliced string, the new operation String, the new Operator and the endIndex.
+        return [_str, operation, operator, char_until];
       }
 
-      // Return the new operationString, the new Operator, and the endIndex.
-      return [operation, operationString[endIndex], endIndex];
+      // Return the new operation String, the new Operator, and the endIndex.
+      return [operation, operator, char_until];
     },
 
     /**
