@@ -203,12 +203,10 @@ define([
         $(this).on('click', function () {
           var operation = $(this).text();
 
-          // If Operator is equals to +/- and the current Operand is empty and has Numbers in it then negate.
           if (memory.currentOperand !== '' && base_calculator.hasNumbers(memory.currentOperand) &&
             operation === '+/-') {
-
-            // Valdiate if the current Operand has already a negative number
-            if (!memory.currentOperand.includes('neg(')) {
+            // If Operator is equals to +/- and the current Operand is empty and has Numbers in it then negate.
+            if (!memory.currentOperand.includes('-')) {
 
               // Has no negative Number, declare a temporary Operand string.
               var tempOperand = '';
@@ -220,10 +218,10 @@ define([
                 if (!memory.currentOperand[c].match(/\(|\)/)) {
 
                   // It is not a Parenthesis and if it dont have a negative Number already.
-                  if (!tempOperand.includes('neg(')) {
+                  if (!tempOperand.includes('-')) {
 
                     // Add Negative to the temporary Operand.
-                    tempOperand += 'neg(';
+                    tempOperand += '-';
                   }
 
                   // Add the Numbers to the temporary Operand.
@@ -235,21 +233,12 @@ define([
                 }
               }
 
-              // Add a closing Parenthesis for the negate.
-              tempOperand += ')';
-
               // Set the currentOperand to the new created temporary Operand.
               memory.currentOperand = tempOperand;
 
             } else {
-              // It has an Negate so remove the neg(.
-              memory.currentOperand = memory.currentOperand.replace('neg(', '');
-
-              // Remove the last Character ( The closing parenthesis).
-              memory.currentOperand = memory.currentOperand.slice(0, -1);
-
+              memory.currentOperand = memory.currentOperand.replace('-', '');
             }
-
           } else if (memory.currentOperand !== '' && memory.previousOperand !== '' && memory.operation !== null &&
             base_calculator.hasNumbers(memory.currentOperand)) {
 
@@ -264,13 +253,7 @@ define([
             base_calculator.hasNumbers(memory.currentOperand) && memory.previousOperand.includes('=')) {
 
             // If there was a Calculation before set the previous Operand to the current Operand.
-            if (memory.currentOperand.includes('-')) {
-
-              memory.previousOperand = `neg(${memory.currentOperand.replace('-', '')})`;
-            } else {
-
-              memory.previousOperand = memory.currentOperand;
-            }
+            memory.previousOperand = memory.currentOperand;
 
             memory.currentOperand = '';
             memory.operation = operation;
@@ -310,40 +293,9 @@ define([
       $(SELECTORS.DELETE).on('click', function () {
 
         if (memory.currentOperand !== '') {
+          // Remove last Character.
+          memory.currentOperand = memory.currentOperand.toString().slice(0, -1);
 
-          // Remove one character from the current Operand.
-          if (memory.currentOperand.toString()[memory.currentOperand.length - 1] == ')' &&
-            memory.currentOperand.toString().includes('neg(')) {
-
-            var firstParenthesis = null;
-
-            // Loop through all Characters to get the first Parenthesis.
-            for (var c = 0; c < memory.currentOperand.length; c++) {
-
-              if (memory.currentOperand.toString()[c] === ')') {
-                firstParenthesis = c;
-                break;
-              }
-            }
-
-            if (firstParenthesis == memory.currentOperand.length - 1 &&
-              !memory.currentOperand.toString()[firstParenthesis - 1].match('/[0-9]/')) {
-
-              // It has an Negate so remove the neg(.
-              memory.currentOperand = memory.currentOperand.toString().replace('neg(', '');
-
-              // Remove the last Character ( The closing parenthesis).
-              memory.currentOperand = memory.currentOperand.toString().slice(0, -1);
-            } else {
-
-              // Remove last Character.
-              memory.currentOperand = memory.currentOperand.toString().slice(0, -1);
-            }
-          } else {
-
-            // Remove last Character.
-            memory.currentOperand = memory.currentOperand.toString().slice(0, -1);
-          }
         } else if (memory.operation !== null) {
 
           // If it is empty and there is a Operation ongoing remove it.
@@ -486,7 +438,7 @@ define([
 
           // Slice the String by the endIndex and length of the operationString.
           operationStringSliced = operationString.slice(0, (countOperations >= 1 ? endIndex - 1 : endIndex) -
-                                  (operationString.length - 1));
+            (operationString.length - 1));
         }
 
         // Should the Sliced String be undefined set it as empty String.
@@ -676,6 +628,7 @@ define([
 
           // Listen on the Mouseup Event.
           $(document).on('mouseup', e => {
+
             // Prevent Default Behavior.
             e.preventDefault();
 
@@ -693,9 +646,11 @@ define([
             // of the new Position.
             position.X = position.clientX - e.clientX;
             position.Y = position.clientY - e.clientY;
+
             // Set the client X and Y to the newer Position.
             position.clientX = e.clientX;
             position.clientY = e.clientY;
+
             // Get the Offset from the base_calculator.
             position.offset = $(SELECTORS.CALCULATOR).offset();
 
@@ -739,8 +694,10 @@ define([
 
       // If the Parenthesis are correct Calculate.
       if (validateParenthesis) {
-        // Create a new RPNEvaluator and format the Resul with the Shunting Yard Algorithm.
-        result = new RPNEvaluator(new ShuntingYardConverter().toRPN(result)).eval();
+
+        // Create a new RPNEvaluator and format the Result with the Shunting Yard Algorithm.
+        result = new RPNEvaluator(new ShuntingYardConverter(true).toRPN(result), true).eval();
+
         // Check if there is a result.
         if (result !== null) {
           // set the Result to the current Operand.
@@ -758,6 +715,7 @@ define([
           memory.temporayOperand = 'Error';
         }
       }
+      // Update the Display.
       this.update();
     },
 
