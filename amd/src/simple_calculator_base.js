@@ -796,6 +796,17 @@ define([
         memory.currentOperand.toString()
       );
 
+      // If the Parenthesis are correct Calculate.
+      if (!validateParenthesis) {
+
+        // Loop through the leftover Parenthesis and append them to the result String.
+        while (memory.parenthesis.length > 0) {
+
+          memory.previousOperand = memory.previousOperand + ")";
+          memory.parenthesis.shift();
+        }
+      }
+
       // Add the Equals Operator on the Output if there is no.
       if (!memory.previousOperand.toString().includes('=')) {
 
@@ -813,45 +824,36 @@ define([
       memory.temporayOperand = '';
       memory.operation = null;
 
-      // If the Parenthesis are correct Calculate.
-      if (validateParenthesis) {
-        if (!result.match(/÷0(?!\.)|÷-0(?!\.)/)) {
-          // Create a new RPNEvaluator and format the Result with the Shunting Yard Algorithm.
-          result = new RPNEvaluator(new ShuntingYardConverter().toRPN(result)).eval();
+      if (!result.match(/÷0(?!\.)|÷-0(?!\.)/)) {
+        // Create a new RPNEvaluator and format the Result with the Shunting Yard Algorithm.
+        result = new RPNEvaluator(new ShuntingYardConverter().toRPN(result)).eval();
 
-          // Check if there is a result.
-          if (result !== null) {
-            // set the Result to the current Operand.
-            memory.currentOperand = result;
-            memory.temporayOperand = result;
-          } else {
-            // If there is no result.
-            // Reset the Memory.
-            memory.currentOperand = '';
-            memory.temporayOperand = '';
-            memory.operation = null;
-
-            // Set the Text to Error
-            memory.currentOperand = 'Error';
-            memory.temporayOperand = 'Error';
-          }
+        // Check if there is a result.
+        if (result !== null) {
+          // set the Result to the current Operand.
+          memory.currentOperand = result;
+          memory.temporayOperand = result;
         } else {
-          memory.previousOperand = "";
-          this.update();
+          // If there is no result.
+          // Reset the Memory.
+          memory.currentOperand = '';
+          memory.temporayOperand = '';
+          memory.operation = null;
 
-          cstr.get_string('calculator_divide_by_zero', 'block_simple_calculator').done(function (msg) {
-            $(SELECTORS.CURRENTOPERAND).text(msg);
-          });
-
+          // Set the Text to Error
+          memory.currentOperand = 'Error';
+          memory.temporayOperand = 'Error';
         }
       } else {
         memory.previousOperand = "";
         this.update();
 
-        cstr.get_string('calculator_wrong_parenthesis_placement', 'block_simple_calculator').done(function (msg) {
+        cstr.get_string('calculator_divide_by_zero', 'block_simple_calculator').done(function (msg) {
           $(SELECTORS.CURRENTOPERAND).text(msg);
         });
+
       }
+
 
       // Update the Display.
       this.update();

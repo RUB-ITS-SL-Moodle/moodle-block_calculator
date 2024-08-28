@@ -36,4 +36,3 @@ $string['pluginname'] = 'Calculator';
 $string['simple_calculator:addinstance'] = 'Add a new Calculator block';
 $string['simple_calculator:myaddinstance'] = 'Add a new Calculator block to dashboard';
 $string['privacy:metadata'] = 'The Simple Calculator block saves no data.';
-$string['calculator_wrong_parenthesis_placement'] = 'There are not enough Parenthesis.';
