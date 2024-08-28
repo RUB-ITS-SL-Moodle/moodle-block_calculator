@@ -235,10 +235,11 @@ define([
                     memory.currentOperand = "";
                   }
                 }
-              } else if (memory.currentOperand.charAt(0) === '0') {
+              } else if (memory.currentOperand.charAt(0) === '0' &&
+                memory.currentOperand.charAt(1) === "" && number !== '.') {
 
-                  // Replace the Zero through the new Number.
-                  memory.currentOperand = number.toString();
+                // Replace the Zero through the new Number.
+                memory.currentOperand = number.toString();
               } else {
                 // Append the new Number to the currentOperand.
                 memory.currentOperand = memory.currentOperand.toString() + number.toString();
@@ -814,7 +815,7 @@ define([
 
       // If the Parenthesis are correct Calculate.
       if (validateParenthesis) {
-        if (!result.match(/0÷|÷0(?!\.)|-0÷|÷-0(?!\.)/)) {
+        if (!result.match(/÷0(?!\.)|÷-0(?!\.)/)) {
           // Create a new RPNEvaluator and format the Result with the Shunting Yard Algorithm.
           result = new RPNEvaluator(new ShuntingYardConverter().toRPN(result)).eval();
 
