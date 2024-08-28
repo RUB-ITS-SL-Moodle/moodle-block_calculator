@@ -110,6 +110,21 @@ define(['block_simple_calculator/stack'], function (Stack) {
             this.output_stack.push(char);
             parse_until_op = true;
 
+          } else if (char === '+' && !this.output_stack.isEmpty() &&
+            this.output_stack.peek()[this.output_stack.peek().length - 1] === 'e') {
+
+            // Push the Operator to the last Element of the output Stack.
+            this.output_stack.push(this.output_stack.pop() + char);
+            parse_until_op = true;
+
+            // Char is at the start of the Empty String or after a open parenthesis
+            // or after a Operator then it is a big number.
+          } else if (char === '+' && (this.output_stack.isEmpty() || previous_char === '(' || this.isOperator(previous_char))) {
+
+            // Push the negative number to the output-stack and set parse until op as true.
+            this.output_stack.push(char);
+            parse_until_op = true;
+
           } else {
             // Check if the current Char is an "e".
             if (char === 'e') {

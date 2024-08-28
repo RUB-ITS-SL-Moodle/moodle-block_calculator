@@ -35,6 +35,8 @@ const SELECTORS = {
   EQUALS: '.data-block-calculator-equals',
   DELETE: '.data-block-calculator-delete',
   AC: '.data-block-calculator-all-clear',
+  OPENPARENTHESISCOUNT: '#data-block-parenthesis-open-count',
+  CLOSEPARENTHESISCOUNT: '#data-block-parenthesis-close-count',
   POPOUT: '.button-block-calculator-popout',
   POPOUT_TEXT: '#button-block-calculator-popout-text',
   POPOUT_ICON: '#button-block-calculator-popout-icon'
@@ -97,6 +99,7 @@ var draggable = false;
  * The current position of the Calculator during the Dragging.
  */
 var position = { clientX: 0, clientY: 0, X: 0, Y: 0, offset: 0 };
+
 /**
  * Memory
  * The "Brain" for the Calculator, it operates like a Cache during the Calculation.
@@ -105,7 +108,8 @@ var memory = {
   currentOperand: '',
   previousOperand: '',
   temporayOperand: '',
-  operation: null
+  operation: null,
+  parenthesis: [],
 };
 
 /**
@@ -157,7 +161,7 @@ define([
     numbersButton: function () {
       $(SELECTORS.NUMBERS).each(function () {
         $(this).on('click', function () {
-          var number = $(this).text();
+          var number = $(this).data('char');
 
           // Verify if the currentOperand already has a point.
           if (number === '.' && memory.currentOperand.includes('.')) {
@@ -182,8 +186,64 @@ define([
               memory.temporayOperand = '';
             } else {
 
-              // Append the new Number to the currentOperand.
-              memory.currentOperand = memory.currentOperand.toString() + number.toString();
+              if (memory.currentOperand != "" && number === '(' &&
+                !isNaN(memory.currentOperand.charAt(memory.currentOperand.length - 1))) {
+
+                // Check if the previous Operand is Empty.
+                if (memory.previousOperand === "") {
+
+                  // Add a Multiply between the number and the Parenthesis.
+                  memory.previousOperand = memory.currentOperand.toString() + "*" + number.toString();
+                } else {
+                  // Add a Multiply between the number and the Parenthesis and the previous String from before.
+                  memory.previousOperand = memory.previousOperand.toString() + memory.operation.toString() +
+                    memory.currentOperand.toString() + "*" + number.toString();
+                }
+
+                // Set the new Number as the currentOperand.
+                memory.currentOperand = "";
+
+                // Push the parenthesis.
+                memory.parenthesis.push(number);
+
+                // Update the Calculator
+                base_calculator.update();
+
+              } else if (number === '(') {
+                // Push the parenthesis.
+                memory.parenthesis.push(number);
+
+                // Add the current number to the previous Operand.
+                memory.previousOperand = memory.previousOperand.toString() + number.toString();
+
+              } else if (number === ')') {
+                if (memory.parenthesis.length !== 0) {
+                  // Pop one parenthesis.
+                  memory.parenthesis.pop();
+
+                  // Valdiate if the current Operand is Empty.
+                  if (memory.currentOperand == "") {
+
+                    // Add the current number to the previous Operand.
+                    memory.previousOperand = memory.previousOperand.toString() + number.toString();
+                  } else {
+                    //Otherwise add the current operand to the previous with the current number.
+                    memory.previousOperand = memory.previousOperand.toString() + memory.currentOperand.toString() +
+                      number.toString();
+
+                    // Set the current Operand as empty.
+                    memory.currentOperand = "";
+                  }
+                }
+              } else if (memory.currentOperand.charAt(0) === '0') {
+
+                  // Replace the Zero through the new Number.
+                  memory.currentOperand = number.toString();
+              } else {
+                // Append the new Number to the currentOperand.
+                memory.currentOperand = memory.currentOperand.toString() + number.toString();
+              }
+
             }
           }
 
@@ -201,7 +261,7 @@ define([
     operationsButton: function () {
       $(SELECTORS.OPERATIONS).each(function () {
         $(this).on('click', function () {
-          var operation = $(this).text();
+          var operation = $(this).data('char');
 
           if (memory.currentOperand !== '' && base_calculator.hasNumbers(memory.currentOperand) &&
             operation === '+/-') {
@@ -246,6 +306,7 @@ define([
             memory.previousOperand = memory.previousOperand.toString() + memory.operation.toString() +
               memory.currentOperand.toString();
 
+            // Set the temporary Operand to the current and the new Operation.
             memory.temporayOperand = memory.currentOperand;
             memory.operation = operation;
 
@@ -265,6 +326,22 @@ define([
             memory.previousOperand = memory.currentOperand;
             memory.temporayOperand = memory.currentOperand;
             memory.operation = operation;
+
+          } else if (memory.currentOperand === '' &&
+            memory.previousOperand !== '' && memory.operation === null) {
+
+            // Set the new Operation.
+            memory.operation = operation;
+
+          } else if (memory.currentOperand !== '' &&
+            memory.previousOperand !== '' && memory.operation === null) {
+
+            // Add to the previous string the current Operand plus the operation.
+            memory.previousOperand = memory.previousOperand.toString() + memory.currentOperand.toString() + operation;
+            memory.temporayOperand = memory.currentOperand;
+
+            // Set the Operation to null.
+            memory.operation = null;
           }
 
           // Update the base_calculator.
@@ -292,8 +369,31 @@ define([
     deleteButton: function () {
       $(SELECTORS.DELETE).on('click', function () {
         if (memory.currentOperand !== '') {
-          // Remove last Character.
-          memory.currentOperand = memory.currentOperand.toString().slice(0, -1);
+
+          // Validate if the current number is a open Parenthesis.
+          if (memory.currentOperand.charAt(memory.currentOperand.length - 1) === '(') {
+            // Pop one parenthesis.
+            memory.parenthesis.pop();
+            // Check if the current number is a close Parenthesis.
+          } else if (memory.currentOperand.charAt(memory.currentOperand.length - 1) === ')') {
+            // Push the parenthesis.
+            memory.parenthesis.push('(');
+          }
+
+          // If there is a decimal point or a negative minus remove both the number and the char after.
+          if (!isNaN(memory.currentOperand.charAt(memory.currentOperand.length)) &&
+            memory.currentOperand.charAt(memory.currentOperand.length - 2) !== undefined &&
+            (memory.currentOperand.charAt(memory.currentOperand.length - 2) === '.' ||
+              memory.currentOperand.charAt(memory.currentOperand.length - 2) === '-')) {
+
+            // Remove last 2 Character.
+            memory.currentOperand = memory.currentOperand.toString().slice(0, -2);
+
+          } else {
+
+            // Remove last Character.
+            memory.currentOperand = memory.currentOperand.toString().slice(0, -1);
+          }
 
         } else if (memory.operation !== null) {
 
@@ -354,6 +454,7 @@ define([
       memory.previousOperand = '';
       memory.temporayOperand = '';
       memory.operation = null;
+      memory.parenthesis = [];
 
       // Update the base_calculator.
       base_calculator.update();
@@ -449,7 +550,7 @@ define([
 
       // Index to get all Chars until the found Operator.
       var chars_index =
-      (str[char_until] !== undefined && str[char_until].match(OPERATOR_REGEX) ? char_until + 1 : char_until);
+        (str[char_until] !== undefined && str[char_until].match(OPERATOR_REGEX) ? char_until + 1 : char_until);
 
       // Loop through the given operationString within the range of the endIndex and the length of the String
       for (var c = chars_index; c <= str.length; c++) {
@@ -713,27 +814,44 @@ define([
 
       // If the Parenthesis are correct Calculate.
       if (validateParenthesis) {
+        if (!result.match(/0÷|÷0(?!\.)|-0÷|÷-0(?!\.)/)) {
+          // Create a new RPNEvaluator and format the Result with the Shunting Yard Algorithm.
+          result = new RPNEvaluator(new ShuntingYardConverter().toRPN(result)).eval();
 
-        // Create a new RPNEvaluator and format the Result with the Shunting Yard Algorithm.
-        result = new RPNEvaluator(new ShuntingYardConverter().toRPN(result)).eval();
+          // Check if there is a result.
+          if (result !== null) {
+            // set the Result to the current Operand.
+            memory.currentOperand = result;
+            memory.temporayOperand = result;
+          } else {
+            // If there is no result.
+            // Reset the Memory.
+            memory.currentOperand = '';
+            memory.temporayOperand = '';
+            memory.operation = null;
 
-        // Check if there is a result.
-        if (result !== null) {
-          // set the Result to the current Operand.
-          memory.currentOperand = result;
-          memory.temporayOperand = result;
+            // Set the Text to Error
+            memory.currentOperand = 'Error';
+            memory.temporayOperand = 'Error';
+          }
         } else {
-          // If there is no result.
-          // Reset the Memory.
-          memory.currentOperand = '';
-          memory.temporayOperand = '';
-          memory.operation = null;
+          memory.previousOperand = "";
+          this.update();
 
-          // Set the Text to Error
-          memory.currentOperand = 'Error';
-          memory.temporayOperand = 'Error';
+          cstr.get_string('calculator_divide_by_zero', 'block_simple_calculator').done(function (msg) {
+            $(SELECTORS.CURRENTOPERAND).text(msg);
+          });
+
         }
+      } else {
+        memory.previousOperand = "";
+        this.update();
+
+        cstr.get_string('calculator_wrong_parenthesis_placement', 'block_simple_calculator').done(function (msg) {
+          $(SELECTORS.CURRENTOPERAND).text(msg);
+        });
       }
+
       // Update the Display.
       this.update();
     },
@@ -754,6 +872,9 @@ define([
 
       // Set the current Operand text to the currentOperrand Value.
       $(SELECTORS.CURRENTOPERAND).text(currentOperand.valueOf());
+
+      // Set Parenthesis checker Text.
+      $(SELECTORS.OPENPARENTHESISCOUNT).text(memory.parenthesis.length != 0 ? memory.parenthesis.length : "");
 
       // When there is a operation given set the previous Operand Text with the operation after.
       if (operation !== null) {

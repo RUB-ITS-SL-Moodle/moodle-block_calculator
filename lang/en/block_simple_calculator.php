@@ -25,8 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['calculator_popout'] = 'Popout';
 $string['calculator_close'] = 'Close';
+$string['calculator_divide_by_zero'] = 'You cannot divide by Zero.';
+$string['calculator_popout'] = 'Popout';
 $string['calculator_popout_description'] = 'Instructions:
                                             Pop out the Calculator by pressing the "Popout" Button below.
                                             After pressing the Button, you can drag the Calculator with your Mouse by holding the left Mouse Button while being on the Calculator.
@@ -35,4 +36,4 @@ $string['pluginname'] = 'Calculator';
 $string['simple_calculator:addinstance'] = 'Add a new Calculator block';
 $string['simple_calculator:myaddinstance'] = 'Add a new Calculator block to dashboard';
 $string['privacy:metadata'] = 'The Simple Calculator block saves no data.';
-
+$string['calculator_wrong_parenthesis_placement'] = 'There are not enough Parenthesis.';
