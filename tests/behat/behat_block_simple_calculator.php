@@ -50,12 +50,30 @@ class behat_block_simple_calculator extends behat_base {
 
         // Loop through all Characters.
         for($char = 0; $char < strlen($nums); $char++) {
+
             // Press the identic Button.
-            $this->execute('behat_general::i_click_on', ['data-block-'.$nums[$char], 'button']);
+            $this->execute('behat_general::i_click_on', ['data-block-'. $this->translateKey($nums[$char]), 'button']);
         }
 
         // Execute the calculation.
-        $this->execute('behat_general::i_click_on', ['data-block-=', 'button']);
+        $this->execute('behat_general::i_click_on', ['data-block-equals', 'button']);
+    }
+
+    
+    /**
+     * translateKey
+     *
+     * @param  mixed $key
+     * @return void
+     */
+    public function translateKey(string $key) {
+        switch ($key) {
+            case "/": return "divide";
+            case "+": return "plus";
+            case "-": return "minus";
+            case "-/+": return "negtaive";
+            case "*": return "multiply";
+        }
     }
 
 }

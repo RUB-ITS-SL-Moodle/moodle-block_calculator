@@ -190,8 +190,7 @@ define([
                 !isNaN(memory.currentOperand.charAt(memory.currentOperand.length - 1))) {
 
                 // Check if the previous Operand is Empty.
-                if (memory.previousOperand === "") {
-
+                if (memory.previousOperand === "" && memory.operation === null) {
                   // Add a Multiply between the number and the Parenthesis.
                   memory.previousOperand = memory.currentOperand.toString() + "*" + number.toString();
                 } else {
@@ -202,6 +201,33 @@ define([
 
                 // Set the new Number as the currentOperand.
                 memory.currentOperand = "";
+                memory.operation = null;
+
+                // Push the parenthesis.
+                memory.parenthesis.push(number);
+
+                // Update the Calculator
+                base_calculator.update();
+
+              } else if (memory.previousOperand != "" && !isNaN(number) &&
+                memory.operation === null &&
+                memory.previousOperand.charAt(memory.previousOperand.length - 1) === ')') {
+
+                // Set the current Operation to multiply.
+                memory.operation = '*';
+                // Set the new currentOperand to the Number.
+                memory.currentOperand = number.toString();
+
+                // Update the Calculator
+                base_calculator.update();
+
+              } else if (memory.previousOperand != "" && number === '(' &&
+                memory.operation === null &&
+                memory.previousOperand.charAt(memory.previousOperand.length - 1) === ')') {
+                // Set the new currentOperand to the Number.
+                memory.currentOperand = "";
+
+                memory.previousOperand = memory.previousOperand.toString() + "*(";
 
                 // Push the parenthesis.
                 memory.parenthesis.push(number);
@@ -213,9 +239,15 @@ define([
                 // Push the parenthesis.
                 memory.parenthesis.push(number);
 
-                // Add the current number to the previous Operand.
-                memory.previousOperand = memory.previousOperand.toString() + number.toString();
-
+                if (memory.operation !== null) {
+                  // Add the current number to the previous Operand.
+                  memory.previousOperand = memory.previousOperand.toString() + memory.operation.toString() +
+                    number.toString();
+                  memory.operation = null;
+                } else {
+                  // Add the current number to the previous Operand.
+                  memory.previousOperand = memory.previousOperand.toString() + number.toString();
+                }
               } else if (number === ')') {
                 if (memory.parenthesis.length !== 0) {
                   // Pop one parenthesis.
@@ -362,6 +394,20 @@ define([
       });
     },
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * deleteButton
      * Remove one character from operand.
@@ -369,65 +415,83 @@ define([
      */
     deleteButton: function () {
       $(SELECTORS.DELETE).on('click', function () {
-        if (memory.currentOperand !== '') {
+
+
+        if (memory.currentOperand == '') {
+
+
+          if (memory.previousOperand !== '') {
+
+            if (memory.operation !== null) {
+
+              memory.operation = null;
+            }
+
+            // If there was an Equation remove the last Character.
+            memory.previousOperand =
+              memory.previousOperand.includes('=') ? memory.previousOperand.slice(0, -1) : memory.previousOperand;
+
+            // Get nearest Operand.
+            // If it is empty and there is a Operation ongoing remove it.
+            // Get nearest Operand.
+            var nearestOperand = base_calculator.getNearestOperation(memory.previousOperand.toString(), true);
+
+            // Remove the current Operator and switch all values.
+            memory.previousOperand = nearestOperand[0];
+            memory.currentOperand = nearestOperand[1];
+            memory.operation = nearestOperand[2];
+            memory.temporayOperand = '';
+          }
+
+
+        } else {
+
+          var current_last_char = memory.currentOperand.charAt(memory.currentOperand.length - 1);
+          var current_second_last_char = memory.currentOperand.charAt(memory.currentOperand.length - 2);
 
           // Validate if the current number is a open Parenthesis.
-          if (memory.currentOperand.charAt(memory.currentOperand.length - 1) === '(') {
+          if (current_last_char === '(') {
+
             // Pop one parenthesis.
             memory.parenthesis.pop();
+
             // Check if the current number is a close Parenthesis.
-          } else if (memory.currentOperand.charAt(memory.currentOperand.length - 1) === ')') {
+          } else if (current_last_char === ')') {
+
             // Push the parenthesis.
             memory.parenthesis.push('(');
           }
 
-          // If there is a decimal point or a negative minus remove both the number and the char after.
-          if (!isNaN(memory.currentOperand.charAt(memory.currentOperand.length)) &&
-            memory.currentOperand.charAt(memory.currentOperand.length - 2) !== undefined &&
-            (memory.currentOperand.charAt(memory.currentOperand.length - 2) === '.' ||
-              memory.currentOperand.charAt(memory.currentOperand.length - 2) === '-')) {
+          if (!isNaN(current_last_char) && current_second_last_char !== undefined &&
+            (current_second_last_char === '.' || current_second_last_char === '-')) {
 
-            // Remove last 2 Character.
+            // Remove the two last Character.
             memory.currentOperand = memory.currentOperand.toString().slice(0, -2);
 
           } else {
 
             // Remove last Character.
             memory.currentOperand = memory.currentOperand.toString().slice(0, -1);
+
           }
 
-        } else if (memory.operation !== null) {
-
-          // If it is empty and there is a Operation ongoing remove it.
-          // Get nearest Operand.
-          var nearestOperand = base_calculator.getNearestOperation(memory.previousOperand.toString(), true);
-
-          // Remove the current Operator and switch all values.
-          memory.previousOperand = nearestOperand[0];
-          memory.currentOperand = nearestOperand[1];
-          memory.operation = nearestOperand[2];
-          memory.temporayOperand = '';
-
-        } else if (memory.previousOperand.includes('=')) {
-
-          // If there was an Equation remove the last Character.
-          memory.previousOperand = memory.previousOperand.slice(0, -1);
-
-          // If it is empty and there is a Operation ongoing remove it.
-          // Get nearest Operand.
-          var nearestOperand = base_calculator.getNearestOperation(memory.previousOperand.toString(), true);
-
-          // Remove the current Operator and switch all values.
-          memory.previousOperand = nearestOperand[0];
-          memory.currentOperand = nearestOperand[1];
-          memory.operation = nearestOperand[2];
-          memory.temporayOperand = '';
         }
 
         // Update the base_calculator.
         base_calculator.update();
       });
     },
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * clearAllButton
@@ -790,70 +854,73 @@ define([
      * calculations.
      */
     calculate: function () {
-      // Boolean to validate the correct Parenthesis format.
-      var validateParenthesis = this.validateCorrectParenthesis(memory.previousOperand.toString() +
-        (memory.operation === null ? '' : memory.operation.toString()) +
-        memory.currentOperand.toString()
-      );
-
-      // If the Parenthesis are correct Calculate.
-      if (!validateParenthesis) {
-
-        // Loop through the leftover Parenthesis and append them to the result String.
-        while (memory.parenthesis.length > 0) {
-
-          memory.previousOperand = memory.previousOperand + ")";
-          memory.parenthesis.shift();
-        }
-      }
-
       // Add the Equals Operator on the Output if there is no.
       if (!memory.previousOperand.toString().includes('=')) {
+        // Boolean to validate the correct Parenthesis format.
+        var validateParenthesis = this.validateCorrectParenthesis(memory.previousOperand.toString() +
+          (memory.operation === null ? '' : memory.operation.toString()) +
+          memory.currentOperand.toString()
+        );
 
         memory.previousOperand = memory.previousOperand.toString() +
           (memory.operation === null ? '' : memory.operation.toString()) +
-          memory.currentOperand.toString() + '=';
+          memory.currentOperand.toString();
 
-      }
+        // If the Parenthesis are correct Calculate.
+        if (!validateParenthesis) {
 
-      // Set the Result to the Calculation String and remove the Equals Operator.
-      var result = memory.previousOperand.slice(0, memory.previousOperand.length - 1);
-
-      // Reset the Memory.
-      memory.currentOperand = '';
-      memory.temporayOperand = '';
-      memory.operation = null;
-
-      if (!result.match(/÷0(?!\.)|÷-0(?!\.)/)) {
-        // Create a new RPNEvaluator and format the Result with the Shunting Yard Algorithm.
-        result = new RPNEvaluator(new ShuntingYardConverter().toRPN(result)).eval();
-
-        // Check if there is a result.
-        if (result !== null) {
-          // set the Result to the current Operand.
-          memory.currentOperand = result;
-          memory.temporayOperand = result;
-        } else {
-          // If there is no result.
-          // Reset the Memory.
-          memory.currentOperand = '';
-          memory.temporayOperand = '';
-          memory.operation = null;
-
-          // Set the Text to Error
-          memory.currentOperand = 'Error';
-          memory.temporayOperand = 'Error';
+          // Loop through the leftover Parenthesis and append them to the result String.
+          while (memory.parenthesis.length > 0) {
+            memory.previousOperand = memory.previousOperand.toString() + ")";
+            memory.parenthesis.shift();
+          }
         }
-      } else {
-        memory.previousOperand = "";
-        this.update();
 
-        cstr.get_string('calculator_divide_by_zero', 'block_simple_calculator').done(function (msg) {
-          $(SELECTORS.CURRENTOPERAND).text(msg);
-        });
 
+
+        memory.previousOperand = memory.previousOperand.toString() + '=';
+
+        // Set the Result to the Calculation String and remove the Equals Operator.
+        var result = memory.previousOperand.slice(0, memory.previousOperand.length - 1);
+
+        // Reset the Memory.
+        memory.currentOperand = '';
+        memory.temporayOperand = '';
+        memory.operation = null;
+
+        if (this.hasNumbers(memory.previousOperand)) {
+          if (!result.match(/÷0(?!\.)|÷-0(?!\.)/)) {
+            // Create a new RPNEvaluator and format the Result with the Shunting Yard Algorithm.
+            result = new RPNEvaluator(new ShuntingYardConverter().toRPN(result)).eval();
+
+            // Check if there is a result.
+            if (result !== null) {
+              // set the Result to the current Operand.
+              memory.currentOperand = result;
+              memory.temporayOperand = result;
+            } else {
+              // If there is no result.
+              // Reset the Memory.
+              memory.currentOperand = '';
+              memory.temporayOperand = '';
+              memory.operation = null;
+
+              // Set the Text to Error
+              memory.currentOperand = 'Error';
+              memory.temporayOperand = 'Error';
+            }
+          } else {
+            memory.previousOperand = "";
+            this.update();
+
+            cstr.get_string('calculator_divide_by_zero', 'block_simple_calculator').done(function (msg) {
+              $(SELECTORS.CURRENTOPERAND).text(msg);
+            });
+          }
+        } else {
+          memory.currentOperand = '0';
+        }
       }
-
 
       // Update the Display.
       this.update();
