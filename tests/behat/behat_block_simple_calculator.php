@@ -51,8 +51,14 @@ class behat_block_simple_calculator extends behat_base {
         // Loop through all Characters.
         for($char = 0; $char < strlen($nums); $char++) {
 
-            // Press the identic Button.
-            $this->execute('behat_general::i_click_on', ['data-block-'. $this->translateKey($nums[$char]), 'button']);
+            // Press the identic Button.  (preg_match($nums['char'], "\\/|\+|\-|\-/\+|\*\) ? ($this->translateKey($nums[$char]) : $nums[$char])
+            
+            $buttonChar = (preg_match("/\/|\+|\-|n|\*|\.|\(|\)/",$nums[$char]) ? ($this->translateKey($nums[$char])) : $nums[$char]);
+
+            $this->execute(
+                'behat_general::i_click_on', 
+                ["data-block-$buttonChar", "button"]
+            );
         }
 
         // Execute the calculation.
@@ -68,10 +74,13 @@ class behat_block_simple_calculator extends behat_base {
      */
     public function translateKey(string $key) {
         switch ($key) {
+            case ")": return "parenthesis-close";
+            case "(": return "parenthesis-open";
+            case ".": return "decimal";
             case "/": return "divide";
             case "+": return "plus";
             case "-": return "minus";
-            case "-/+": return "negtaive";
+            case "n": return "negative";
             case "*": return "multiply";
         }
     }

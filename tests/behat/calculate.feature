@@ -16,12 +16,7 @@ Feature: Show the results of the calculator
             | user1 | C1     | student |
         And the following "blocks" exist:
             | blockname         | contextlevel | reference | pagetypepattern | defaultregion |
-            | smiple_calculator | Course       | C1        | course-view-*   | side-pre      |
-        # Add Calculator Block to Course1
-        And I log in as "admin"
-        And I am on "Course 1" course homepage with editing mode on
-        And I add the "Calculator" block
-        And I log out
+            | simple_calculator | Course       | C1        | course-view-*   | side-pre      |
 
     Scenario Outline: Put into the Calculator numbers and view the Output
         Given I log in as "user1"
@@ -31,12 +26,17 @@ Feature: Show the results of the calculator
         Then I should see "<results>"
 
         Examples:
-            | calculation      | results |
-            | 10 / 2           | 5       |
-            | 12 + 56.2        | 68.2    |
-            | 12.2456 - 18.136 | -5.8904 |
-            | 36.3 * 2.5       | 90.75   |
-            | -/+24.12 * 4     | -96.48  |
-            | -/+15 + 3        | 12      |
-            | 12 + -/+3        | 9       |
-            | -/+2 - -/+4      | 2       |
+            | calculation                         | results                           |
+            | 10 / 2                              | 5                                 |
+            | 12 + 56.2                           | 68.2                              |
+            | 12.2456 - 18.136                    | -5.8904                           |
+            | 36.3 * 2.5                          | 90.75                             |
+            | 24.12n * 4                          | -96.48                            |
+            | 15n + 3                             | 12                                |
+            | 12 + 3n                             | 9                                 |
+            | 2n - 4n                             | 2                                 |
+            | (14.5n + 7) * (10 / 1.5)            | -50                               |
+            | ((230.89 * 2n) / (21n - 543n)) + 10 | 9.1153639846743295019             |
+            | 1 / 999999999                       | 1.000000001000000001e-9           | 
+            | 25 / 0                              | You cannot divide by Zero.        |
+            | 0 / 25                              | 0                                 |
