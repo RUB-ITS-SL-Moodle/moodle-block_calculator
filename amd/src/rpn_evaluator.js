@@ -39,7 +39,6 @@ define(["block_simple_calculator/decimal", "block_simple_calculator/stack"], fun
       // Initialize a new Calculate-Stack and set the Output-Stack.s
       this.output_stack = input;
       this.calculate_stack = new Stack();
-
     }
 
     /**
@@ -65,7 +64,11 @@ define(["block_simple_calculator/decimal", "block_simple_calculator/stack"], fun
 
           // Get the right and left numbers and convert it into a DecimalJS Number.
           var right = new decimaljs.Decimal(this.calculate_stack.pop());
-          var left = new decimaljs.Decimal(this.calculate_stack.pop());
+          var left = new decimaljs.Decimal(0);
+
+          if (!this.calculate_stack.isEmpty()) {
+            left = new decimaljs.Decimal(this.calculate_stack.pop());
+          }
 
           // Switch through the current Operator
           switch (char) {

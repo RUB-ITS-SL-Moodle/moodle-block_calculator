@@ -169,7 +169,6 @@ define([
             // Just update.
             base_calculator.update();
           } else {
-
             // If the temporaryOperand is not empty set the current Operand to the new Number.
             if (memory.temporayOperand !== '') {
 
@@ -179,8 +178,26 @@ define([
                 memory.previousOperand = '';
               }
 
-              // Set the new current Operand.
-              memory.currentOperand = number.toString();
+              if (number === ')' && memory.parenthesis.length !== 0 && base_calculator.hasNumbers(memory.temporayOperand)) {
+
+                memory.previousOperand = memory.previousOperand.toString() +
+                  memory.operation.toString() + memory.temporayOperand.toString() + number.toString();
+
+                memory.currentOperand = "";
+                memory.operation = null;
+                memory.parenthesis.pop();
+              } else {
+
+                // Set the new current Operand.
+                memory.currentOperand = number.toString();
+              }
+
+              if (number === '(') {
+
+                // Push the parenthesis.
+                memory.parenthesis.push(number);
+
+              }
 
               // Empty the temporary Operand.
               memory.temporayOperand = '';
@@ -224,6 +241,7 @@ define([
               } else if (memory.previousOperand != "" && number === '(' &&
                 memory.operation === null &&
                 memory.previousOperand.charAt(memory.previousOperand.length - 1) === ')') {
+
                 // Set the new currentOperand to the Number.
                 memory.currentOperand = "";
 
@@ -236,6 +254,7 @@ define([
                 base_calculator.update();
 
               } else if (number === '(') {
+
                 // Push the parenthesis.
                 memory.parenthesis.push(number);
 
@@ -249,7 +268,9 @@ define([
                   memory.previousOperand = memory.previousOperand.toString() + number.toString();
                 }
               } else if (number === ')') {
+
                 if (memory.parenthesis.length !== 0) {
+
                   // Pop one parenthesis.
                   memory.parenthesis.pop();
 
@@ -259,12 +280,20 @@ define([
                     // Add the current number to the previous Operand.
                     memory.previousOperand = memory.previousOperand.toString() + number.toString();
                   } else {
-                    //Otherwise add the current operand to the previous with the current number.
-                    memory.previousOperand = memory.previousOperand.toString() + memory.currentOperand.toString() +
-                      number.toString();
+
+                    if (memory.operation !== null) {
+                      //Otherwise add the current operand to the previous with the current number.
+                      memory.previousOperand = memory.previousOperand.toString() +
+                        memory.operation.toString() + memory.currentOperand.toString() + number.toString();
+                    } else {
+                      //Otherwise add the current operand to the previous with the current number.
+                      memory.previousOperand = memory.previousOperand.toString() +
+                      memory.currentOperand.toString() + number.toString();
+                    }
 
                     // Set the current Operand as empty.
                     memory.currentOperand = "";
+                    memory.operation = null;
                   }
                 }
               } else if (memory.currentOperand.charAt(0) === '0' &&
@@ -339,6 +368,12 @@ define([
             memory.previousOperand = memory.previousOperand.toString() + memory.operation.toString() +
               memory.currentOperand.toString();
 
+            if (memory.currentOperand.includes('(')) {
+              memory.currentOperand = memory.currentOperand.slice(1);
+            } else if (memory.currentOperand.includes(')')) {
+              memory.currentOperand = memory.currentOperand.slice(0, -1);
+            }
+
             // Set the temporary Operand to the current and the new Operation.
             memory.temporayOperand = memory.currentOperand;
             memory.operation = operation;
@@ -357,6 +392,12 @@ define([
 
             // If the current Operand is not empty and previous Operand is empty set temporaryOperand.
             memory.previousOperand = memory.currentOperand;
+            if (memory.currentOperand.includes('(')) {
+              memory.currentOperand = memory.currentOperand.slice(1);
+            } else if (memory.currentOperand.includes(')')) {
+              memory.currentOperand = memory.currentOperand.slice(0, -1);
+            }
+
             memory.temporayOperand = memory.currentOperand;
             memory.operation = operation;
 
@@ -369,12 +410,20 @@ define([
           } else if (memory.currentOperand !== '' &&
             memory.previousOperand !== '' && memory.operation === null) {
 
+
             // Add to the previous string the current Operand plus the operation.
-            memory.previousOperand = memory.previousOperand.toString() + memory.currentOperand.toString() + operation;
+            memory.previousOperand = memory.previousOperand.toString() + memory.currentOperand.toString();
+
+            if (memory.currentOperand.includes('(')) {
+              memory.currentOperand = memory.currentOperand.slice(1);
+            } else if (memory.currentOperand.includes(')')) {
+              memory.currentOperand = memory.currentOperand.slice(0, -1);
+            }
+
             memory.temporayOperand = memory.currentOperand;
 
             // Set the Operation to null.
-            memory.operation = null;
+            memory.operation = operation;
           }
 
           // Update the base_calculator.
@@ -393,20 +442,6 @@ define([
         base_calculator.calculate();
       });
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * deleteButton
@@ -481,17 +516,6 @@ define([
         base_calculator.update();
       });
     },
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * clearAllButton
@@ -781,7 +805,7 @@ define([
       });
 
       // Key Inputs
-      $(SELECTORS.CALCULATOR).keydown(e => {
+      $(SELECTORS.CALCULATOR).keyup(e => {
         $(KEY_MAP).each(function (index) {
           if (e.key == KEY_MAP[index]) {
             var key = KEY_MAP[index];
@@ -854,6 +878,7 @@ define([
      * calculations.
      */
     calculate: function () {
+
       // Add the Equals Operator on the Output if there is no.
       if (!memory.previousOperand.toString().includes('=')) {
         // Boolean to validate the correct Parenthesis format.
@@ -869,11 +894,16 @@ define([
         // If the Parenthesis are correct Calculate.
         if (!validateParenthesis) {
 
+          if (memory.previousOperand[memory.previousOperand.length - 1] === '(') {
+            memory.previousOperand = memory.previousOperand + "0";
+          }
+
           // Loop through the leftover Parenthesis and append them to the result String.
           while (memory.parenthesis.length > 0) {
             memory.previousOperand = memory.previousOperand.toString() + ")";
             memory.parenthesis.shift();
           }
+
         }
 
 
@@ -888,17 +918,22 @@ define([
         memory.temporayOperand = '';
         memory.operation = null;
 
-        if (this.hasNumbers(memory.previousOperand)) {
+        if (base_calculator.hasNumbers(memory.previousOperand)) {
           if (!result.match(/÷0(?!\.)|÷-0(?!\.)/)) {
+
             // Create a new RPNEvaluator and format the Result with the Shunting Yard Algorithm.
             result = new RPNEvaluator(new ShuntingYardConverter().toRPN(result)).eval();
 
+            if (result === '-0') { result = '0'; }
+
             // Check if there is a result.
             if (result !== null) {
+
               // set the Result to the current Operand.
               memory.currentOperand = result;
               memory.temporayOperand = result;
             } else {
+
               // If there is no result.
               // Reset the Memory.
               memory.currentOperand = '';
@@ -910,14 +945,17 @@ define([
               memory.temporayOperand = 'Error';
             }
           } else {
+
             memory.previousOperand = "";
             this.update();
 
             cstr.get_string('calculator_divide_by_zero', 'block_simple_calculator').done(function (msg) {
               $(SELECTORS.CURRENTOPERAND).text(msg);
             });
+
           }
         } else {
+
           memory.currentOperand = '0';
         }
       }

@@ -192,7 +192,6 @@ define(['block_simple_calculator/stack'], function (Stack) {
         previous_char = this.chars[0];
         // Remove the first Element of the Chars array.
         this.chars.shift();
-
       }
 
       // While the operator-stack is not empty loop through it.

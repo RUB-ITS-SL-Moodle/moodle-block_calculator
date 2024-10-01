@@ -37,6 +37,30 @@ Feature: Show the results of the calculator
             | 2n - 4n                             | 2                                 |
             | (14.5n + 7) * (10 / 1.5)            | -50                               |
             | ((230.89 * 2n) / (21n - 543n)) + 10 | 9.1153639846743295019             |
-            | 1 / 999999999                       | 1.000000001000000001e-9           | 
+            | 1 / 999999999                       | 1.000000001000000001e-9           |
             | 25 / 0                              | You cannot divide by Zero.        |
             | 0 / 25                              | 0                                 |
+            | (25) * (                            | 0                                 |
+            | (34 + 54 * 75 + 24                  | 4108                              |
+            | 5 + 8 * (                           | 5                                 |
+            | 5 + 8 (                             | 5                                 |
+            | (0 -                                | 0                                 |
+            | 0n - 0                              | 0                                 |
+            | (56 + )                             | 112                               |
+            | (56 + 23)                           | 79                                |
+
+
+    Scenario Outline: Put into the Calculator numbers and after the Calculation calculate furthermore
+        Given I log in as "user1"
+        When I am on "Course 1" course homepage
+        And I should see "Calculator"
+        And I calculate "<firstCalculation>"
+        And I should see "<firstResults>"
+        And I calculate "<secondCalculation>"
+        Then I should see "<secondResults>"
+        
+
+        Examples:
+            | firstCalculation | firstResults | secondCalculation | secondResults |
+            | 10 / 2           | 5            | *(23 + 20n)        | 15           |
+            | 10 / 2           | 5            | *(23 + 20n         | 15           |
