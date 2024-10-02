@@ -167,7 +167,7 @@ define([
     collapseButton: function () {
       $(SELECTORS.COLLAPSE_BUTTON).on('click', function () {
         $(SELECTORS.COLLAPSE_BODY).toggle();
-        
+
         if ($(SELECTORS.COLLAPSE_BODY).css("display") == "block") {
           $(SELECTORS.COLLAPSE_BUTTON).removeClass(CSS.COLLAPSE_ICON_HIDDEN);
           $(SELECTORS.COLLAPSE_BUTTON).addClass(CSS.COLLAPSE_ICON_SHOWN);
@@ -846,6 +846,27 @@ define([
             $(prefix + key).click();
           }
         });
+      });
+
+      $(SELECTORS.CALCULATOR).keydown(e => {
+        var prefix = '#data-block-';
+        var key = '';
+
+        if(e.key == 'Backspace') {
+
+          // Translate the keys
+          key = base_calculator.translateKey(e.key);
+
+          // Press the Key button
+          $(prefix + key).click();
+        } else if (e.key == 'Escape') {
+
+          // Translate the keys
+          key = base_calculator.translateKey(e.key);
+
+          // Press the Key button
+          $(prefix + key).click();
+        }
       });
     },
 
