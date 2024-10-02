@@ -185,157 +185,179 @@ define([
      */
     numbersButton: function () {
       $(SELECTORS.NUMBERS).each(function () {
-        $(this).on('click', function () {
+        $(this).on('click', function (e) {
+          e.target.blur();
           var number = $(this).data('char');
 
-          // Verify if the currentOperand already has a point.
-          if (number === '.' && memory.currentOperand.includes('.')) {
+          if (number === '.' && memory.temporayOperand === '' && memory.currentOperand.includes('.')) {
+            number = '';
+          }
 
-            // Just update.
-            base_calculator.update();
-          } else {
-            // If the temporaryOperand is not empty set the current Operand to the new Number.
-            if (memory.temporayOperand !== '') {
+          // If the temporaryOperand is not empty set the current Operand to the new Number.
+          if (memory.temporayOperand !== '') {
 
-              // If there was a Calculation before reset the previous Operand.
-              if (memory.previousOperand.includes('=')) {
+            // If there was a Calculation before reset the previous Operand.
+            if (memory.previousOperand.includes('=')) {
 
-                memory.previousOperand = '';
-              }
+              memory.previousOperand = '';
+            }
 
-              if (number === ')' && memory.parenthesis.length !== 0 && base_calculator.hasNumbers(memory.temporayOperand)) {
+            if (number === ')' && memory.parenthesis.length !== 0 && base_calculator.hasNumbers(memory.temporayOperand)) {
 
-                memory.previousOperand = memory.previousOperand.toString() +
-                  memory.operation.toString() + memory.temporayOperand.toString() + number.toString();
+              memory.previousOperand = memory.previousOperand.toString() +
+                memory.operation.toString() + memory.temporayOperand.toString() + number.toString();
 
-                memory.currentOperand = "";
-                memory.operation = null;
-                memory.parenthesis.pop();
+              memory.currentOperand = "";
+              memory.operation = null;
+              memory.parenthesis.pop();
+            } else {
+
+              // Verify if the currentOperand already has a point.
+              if (number === '.') {
+                if (!memory.currentOperand.includes('.')) {
+                  memory.currentOperand = memory.currentOperand.toString() + number.toString();
+                } else {
+                  memory.currentOperand = '0' + number.toString();
+                }
               } else {
-
                 // Set the new current Operand.
                 memory.currentOperand = number.toString();
               }
 
-              if (number === '(') {
+            }
 
-                // Push the parenthesis.
-                memory.parenthesis.push(number);
+            if (number === '(') {
 
-              }
+              // Push the parenthesis.
+              memory.parenthesis.push(number);
 
-              // Empty the temporary Operand.
-              memory.temporayOperand = '';
-            } else {
+            }
 
-              if (memory.currentOperand != "" && number === '(' &&
-                !isNaN(memory.currentOperand.charAt(memory.currentOperand.length - 1))) {
+            // Empty the temporary Operand.
+            memory.temporayOperand = '';
+          } else {
+            // Verify if the currentOperand already has a point.
+            if (number === '.' && !memory.currentOperand.includes('.')) {
 
-                // Check if the previous Operand is Empty.
-                if (memory.previousOperand === "" && memory.operation === null) {
-                  // Add a Multiply between the number and the Parenthesis.
-                  memory.previousOperand = memory.currentOperand.toString() + "*" + number.toString();
-                } else {
-                  // Add a Multiply between the number and the Parenthesis and the previous String from before.
-                  memory.previousOperand = memory.previousOperand.toString() + memory.operation.toString() +
-                    memory.currentOperand.toString() + "*" + number.toString();
-                }
+              if (memory.currentOperand === '') {
 
-                // Set the new Number as the currentOperand.
-                memory.currentOperand = "";
-                memory.operation = null;
+                memory.currentOperand = '0' + number.toString();
+              } else if (memory.currentOperand !== '' && memory.currentOperand === '(') {
 
-                // Push the parenthesis.
-                memory.parenthesis.push(number);
+                memory.currentOperand = memory.currentOperand.toString() + '0' + number.toString();
+              } else if (memory.currentOperand !== '' && base_calculator.hasNumbers(memory.currentOperand)) {
 
-                // Update the Calculator
-                base_calculator.update();
-
-              } else if (memory.previousOperand != "" && !isNaN(number) &&
-                memory.operation === null &&
-                memory.previousOperand.charAt(memory.previousOperand.length - 1) === ')') {
-
-                // Set the current Operation to multiply.
-                memory.operation = '*';
-                // Set the new currentOperand to the Number.
-                memory.currentOperand = number.toString();
-
-                // Update the Calculator
-                base_calculator.update();
-
-              } else if (memory.previousOperand != "" && number === '(' &&
-                memory.operation === null &&
-                memory.previousOperand.charAt(memory.previousOperand.length - 1) === ')') {
-
-                // Set the new currentOperand to the Number.
-                memory.currentOperand = "";
-
-                memory.previousOperand = memory.previousOperand.toString() + "*(";
-
-                // Push the parenthesis.
-                memory.parenthesis.push(number);
-
-                // Update the Calculator
-                base_calculator.update();
-
-              } else if (number === '(') {
-
-                // Push the parenthesis.
-                memory.parenthesis.push(number);
-
-                if (memory.operation !== null) {
-                  // Add the current number to the previous Operand.
-                  memory.previousOperand = memory.previousOperand.toString() + memory.operation.toString() +
-                    number.toString();
-                  memory.operation = null;
-                } else {
-                  // Add the current number to the previous Operand.
-                  memory.previousOperand = memory.previousOperand.toString() + number.toString();
-                }
-              } else if (number === ')') {
-
-                if (memory.parenthesis.length !== 0) {
-
-                  // Pop one parenthesis.
-                  memory.parenthesis.pop();
-
-                  // Valdiate if the current Operand is Empty.
-                  if (memory.currentOperand == "") {
-
-                    // Add the current number to the previous Operand.
-                    memory.previousOperand = memory.previousOperand.toString() + number.toString();
-                  } else {
-
-                    if (memory.operation !== null) {
-                      //Otherwise add the current operand to the previous with the current number.
-                      memory.previousOperand = memory.previousOperand.toString() +
-                        memory.operation.toString() + memory.currentOperand.toString() + number.toString();
-                    } else {
-                      //Otherwise add the current operand to the previous with the current number.
-                      memory.previousOperand = memory.previousOperand.toString() +
-                        memory.currentOperand.toString() + number.toString();
-                    }
-
-                    // Set the current Operand as empty.
-                    memory.currentOperand = "";
-                    memory.operation = null;
-                  }
-                }
-              } else if (memory.currentOperand.charAt(0) === '0' &&
-                memory.currentOperand.charAt(1) === "" && number !== '.') {
-
-                // Replace the Zero through the new Number.
-                memory.currentOperand = number.toString();
-              } else {
-                // Append the new Number to the currentOperand.
                 memory.currentOperand = memory.currentOperand.toString() + number.toString();
               }
 
+            } else if (memory.currentOperand != "" && number === '(' &&
+              !isNaN(memory.currentOperand.charAt(memory.currentOperand.length - 1))) {
+
+              // Check if the previous Operand is Empty.
+              if (memory.previousOperand === "" && memory.operation === null) {
+                // Add a Multiply between the number and the Parenthesis.
+                memory.previousOperand = memory.currentOperand.toString() + "*" + number.toString();
+              } else {
+                // Add a Multiply between the number and the Parenthesis and the previous String from before.
+                memory.previousOperand = memory.previousOperand.toString() + memory.operation.toString() +
+                  memory.currentOperand.toString() + "*" + number.toString();
+              }
+
+              // Set the new Number as the currentOperand.
+              memory.currentOperand = "";
+              memory.operation = null;
+
+              // Push the parenthesis.
+              memory.parenthesis.push(number);
+
+              // Update the Calculator
+              base_calculator.update();
+
+            } else if (memory.previousOperand != "" && !isNaN(number) &&
+              memory.operation === null &&
+              memory.previousOperand.charAt(memory.previousOperand.length - 1) === ')') {
+
+              // Set the current Operation to multiply.
+              memory.operation = '*';
+              // Set the new currentOperand to the Number.
+              memory.currentOperand = number.toString();
+
+              // Update the Calculator
+              base_calculator.update();
+
+            } else if (memory.previousOperand != "" && number === '(' &&
+              memory.operation === null &&
+              memory.previousOperand.charAt(memory.previousOperand.length - 1) === ')') {
+
+              // Set the new currentOperand to the Number.
+              memory.currentOperand = "";
+
+              memory.previousOperand = memory.previousOperand.toString() + "*(";
+
+              // Push the parenthesis.
+              memory.parenthesis.push(number);
+
+              // Update the Calculator
+              base_calculator.update();
+
+            } else if (number === '(') {
+
+              // Push the parenthesis.
+              memory.parenthesis.push(number);
+
+              if (memory.operation !== null) {
+                // Add the current number to the previous Operand.
+                memory.previousOperand = memory.previousOperand.toString() + memory.operation.toString() +
+                  number.toString();
+                memory.operation = null;
+              } else {
+                // Add the current number to the previous Operand.
+                memory.previousOperand = memory.previousOperand.toString() + number.toString();
+              }
+            } else if (number === ')') {
+
+              if (memory.parenthesis.length !== 0) {
+
+                // Pop one parenthesis.
+                memory.parenthesis.pop();
+
+                // Valdiate if the current Operand is Empty.
+                if (memory.currentOperand == "") {
+
+                  // Add the current number to the previous Operand.
+                  memory.previousOperand = memory.previousOperand.toString() + number.toString();
+                } else {
+
+                  if (memory.operation !== null) {
+                    //Otherwise add the current operand to the previous with the current number.
+                    memory.previousOperand = memory.previousOperand.toString() +
+                      memory.operation.toString() + memory.currentOperand.toString() + number.toString();
+                  } else {
+                    //Otherwise add the current operand to the previous with the current number.
+                    memory.previousOperand = memory.previousOperand.toString() +
+                      memory.currentOperand.toString() + number.toString();
+                  }
+
+                  // Set the current Operand as empty.
+                  memory.currentOperand = "";
+                  memory.operation = null;
+                }
+              }
+            } else if (memory.currentOperand.charAt(0) === '0' &&
+              memory.currentOperand.charAt(1) === "" && number !== '.') {
+
+              // Replace the Zero through the new Number.
+              memory.currentOperand = number.toString();
+            } else {
+              // Append the new Number to the currentOperand.
+              memory.currentOperand = memory.currentOperand.toString() + number.toString();
             }
+
           }
 
           // Update the Calculator
           base_calculator.update();
+          $(SELECTORS.CALCULATOR).focus();
         });
       });
     },
@@ -347,7 +369,8 @@ define([
      */
     operationsButton: function () {
       $(SELECTORS.OPERATIONS).each(function () {
-        $(this).on('click', function () {
+        $(this).on('click', function (e) {
+          e.target.blur();
           var operation = $(this).data('char');
 
           if (memory.currentOperand !== '' && base_calculator.hasNumbers(memory.currentOperand) &&
@@ -447,12 +470,20 @@ define([
 
             memory.temporayOperand = memory.currentOperand;
 
-            // Set the Operation to null.
+            // Set the Operation.
             memory.operation = operation;
+          }
+
+
+          if (!base_calculator.hasNumbers(memory.currentOperand) &&
+            (memory.currentOperand === '' || memory.previousOperand === '(')) {
+
+            memory.operation = null;
           }
 
           // Update the base_calculator.
           base_calculator.update();
+          $(SELECTORS.CALCULATOR).focus();
         });
       });
     },
@@ -463,8 +494,10 @@ define([
      *
      */
     equalsButton: function () {
-      $(SELECTORS.EQUALS).on('click', function () {
+      $(SELECTORS.EQUALS).on('click', function (e) {
+        e.target.blur();
         base_calculator.calculate();
+        $(SELECTORS.CALCULATOR).focus();
       });
     },
 
@@ -474,8 +507,8 @@ define([
      *
      */
     deleteButton: function () {
-      $(SELECTORS.DELETE).on('click', function () {
-
+      $(SELECTORS.DELETE).on('click', function (e) {
+        e.target.blur();
 
         if (memory.currentOperand == '') {
 
@@ -539,6 +572,7 @@ define([
 
         // Update the base_calculator.
         base_calculator.update();
+        $(SELECTORS.CALCULATOR).focus();
       });
     },
 
@@ -549,10 +583,11 @@ define([
      */
     clearAllButton: function () {
 
-      $(SELECTORS.AC).on('click', function () {
-
+      $(SELECTORS.AC).on('click', function (e) {
+        e.target.blur();
         // Execute the clearAll function at Button press.
         base_calculator.clearAll();
+        $(SELECTORS.CALCULATOR).focus();
       });
     },
 
@@ -833,9 +868,10 @@ define([
       });
 
       // Key Inputs
-      $(SELECTORS.CALCULATOR).keypress(e => {
+      $(SELECTORS.CALCULATOR).keyup(e => {
         $(KEY_MAP).each(function (index) {
           if (e.key == KEY_MAP[index]) {
+
             var key = KEY_MAP[index];
             var prefix = '#data-block-';
 
@@ -846,27 +882,6 @@ define([
             $(prefix + key).click();
           }
         });
-      });
-
-      $(SELECTORS.CALCULATOR).keydown(e => {
-        var prefix = '#data-block-';
-        var key = '';
-
-        if(e.key == 'Backspace') {
-
-          // Translate the keys
-          key = base_calculator.translateKey(e.key);
-
-          // Press the Key button
-          $(prefix + key).click();
-        } else if (e.key == 'Escape') {
-
-          // Translate the keys
-          key = base_calculator.translateKey(e.key);
-
-          // Press the Key button
-          $(prefix + key).click();
-        }
       });
     },
 
