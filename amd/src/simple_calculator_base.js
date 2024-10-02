@@ -475,8 +475,7 @@ define([
           }
 
 
-          if (!base_calculator.hasNumbers(memory.currentOperand) &&
-            (memory.currentOperand === '' || memory.previousOperand === '(')) {
+          if ((memory.currentOperand === '(' || memory.previousOperand === '(')) {
 
             memory.operation = null;
           }
