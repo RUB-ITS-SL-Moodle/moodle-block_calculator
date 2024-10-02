@@ -28,10 +28,21 @@ defined('MOODLE_INTERNAL') || die();
 $string['calculator_close'] = 'Close';
 $string['calculator_divide_by_zero'] = 'You cannot divide by Zero.';
 $string['calculator_popout'] = 'Popout';
-$string['calculator_popout_description'] = 'Instructions:
-                                            Pop out the Calculator by pressing the "Popout" Button below.
-                                            After pressing the Button, you can drag the Calculator with your Mouse by holding the left Mouse Button while being on the Calculator.
-                                            To drop the Calculator back, you should press the close Button on the top of the Calculator.';
+$string['calculator_popout_description'] =
+    "\r".
+    "<b><i>Keyboard Input</i></b>" .
+    "<div style=\"display: inline-block;width: 100%;\"><b>Clear everything</b>:   <div style=\"float: right;\">ESC</div></div>\n" .
+    "<div style=\"display: inline-block;width: 100%;\"><b>Delete one</b>:         <div style=\"float: right;\">Back (<--)</div></div>\n" .
+    "<div style=\"display: inline-block;width: 100%;\"><b>Negative</b>:           <div style=\"float: right;\">N</div></div>\n" .
+    "<div style=\"display: inline-block;width: 100%;\"><b>Numbers</b>:            <div style=\"float: right;\">0-9</div></div>\n" .
+    "<div style=\"display: inline-block;width: 100%;\"><b>Operators</b>:          <div style=\"float: right;\"><b>+</b> | <b>-</b> | <b>/</b> | <b>*</b></div></div>\n" .
+    "<div style=\"display: inline-block;width: 100%;\"><b>Parenthesis</b>:        <div style=\"float: right;\"><b>(</b> or <b>)</b></div></div>\n" .
+    "<div style=\"display: inline-block;width: 100%;\"><b>Decimals</b>:           <div style=\"float: right;\"><b>,</b></div></div><hr>" .
+    "<b><i>Popout</i></b>\n" .
+    "<p>Pop out the Calculator by pressing the \"Popout\" Button at the Top of the Calculator.\n\n" .
+    "After pressing the Button, you can drag the Calculator with your Mouse by holding the left Mouse Button while being on the Calculator Head.\n\n" .
+    "To drop the Calculator back, you should press the close Button on the top of the Calculator.</p";
+$string['calculator_popout_description_title'] = 'Instructions:';
 $string['pluginname'] = 'Calculator';
 $string['simple_calculator:addinstance'] = 'Add a new Calculator block';
 $string['simple_calculator:myaddinstance'] = 'Add a new Calculator block to dashboard';

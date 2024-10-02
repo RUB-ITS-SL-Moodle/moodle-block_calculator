@@ -39,7 +39,9 @@ const SELECTORS = {
   CLOSEPARENTHESISCOUNT: '#data-block-parenthesis-close-count',
   POPOUT: '.button-block-calculator-popout',
   POPOUT_TEXT: '#button-block-calculator-popout-text',
-  POPOUT_ICON: '#button-block-calculator-popout-icon'
+  POPOUT_ICON: '#button-block-calculator-popout-icon',
+  COLLAPSE_BUTTON: '#block-calculator-accordion-collapse',
+  COLLAPSE_BODY: '#block-calculator-accordion-body'
 };
 /**
  * CSS
@@ -55,7 +57,9 @@ const CSS = {
   DRAGGABLE_CSS_OFF: { position: '', width: '', 'z-index': '', visibility: '' },
   DRAGGABLE_CLASS: '',
   POPOUT_CLASS: 'fa-arrow-up-right-from-square',
-  POPOUT_CLOSE_CLASS: 'fa-circle-xmark'
+  POPOUT_CLOSE_CLASS: 'fa-circle-xmark',
+  COLLAPSE_ICON_HIDDEN: 'fa-plus',
+  COLLAPSE_ICON_SHOWN: 'fa-minus',
 };
 /**
  * Key_Map
@@ -82,7 +86,8 @@ const KEY_MAP = [
   ')',
   'Enter',
   'Backspace',
-  'Escape'
+  'Escape',
+  'n'
 ];
 /**
  * Operator Regex
@@ -145,12 +150,32 @@ define([
       this.clearAllButton();
       this.deleteButton();
       this.equalsButton();
+      this.collapseButton();
 
       // Key Events
       this.keyInput();
 
       //Function Evnts
       this.drag();
+    },
+
+    /**
+     * collapseButton
+     * Toggles an Accordion Collapse.
+     *
+     */
+    collapseButton: function () {
+      $(SELECTORS.COLLAPSE_BUTTON).on('click', function () {
+        $(SELECTORS.COLLAPSE_BODY).toggle();
+        
+        if ($(SELECTORS.COLLAPSE_BODY).css("display") == "block") {
+          $(SELECTORS.COLLAPSE_BUTTON).removeClass(CSS.COLLAPSE_ICON_HIDDEN);
+          $(SELECTORS.COLLAPSE_BUTTON).addClass(CSS.COLLAPSE_ICON_SHOWN);
+        } else {
+          $(SELECTORS.COLLAPSE_BUTTON).addClass(CSS.COLLAPSE_ICON_HIDDEN);
+          $(SELECTORS.COLLAPSE_BUTTON).removeClass(CSS.COLLAPSE_ICON_SHOWN);
+        }
+      });
     },
 
     /**
@@ -288,7 +313,7 @@ define([
                     } else {
                       //Otherwise add the current operand to the previous with the current number.
                       memory.previousOperand = memory.previousOperand.toString() +
-                      memory.currentOperand.toString() + number.toString();
+                        memory.currentOperand.toString() + number.toString();
                     }
 
                     // Set the current Operand as empty.
@@ -782,6 +807,9 @@ define([
         case ')':
           key = 'parenthesis-close';
           break;
+        case 'n':
+          key = 'negative';
+          break;
       }
 
       return key;
@@ -805,7 +833,7 @@ define([
       });
 
       // Key Inputs
-      $(SELECTORS.CALCULATOR).keyup(e => {
+      $(SELECTORS.CALCULATOR).keypress(e => {
         $(KEY_MAP).each(function (index) {
           if (e.key == KEY_MAP[index]) {
             var key = KEY_MAP[index];

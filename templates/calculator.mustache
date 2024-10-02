@@ -1,78 +1,96 @@
 {{!
-    This is the mustache for the time block simple calculator.
-    @template block_simple_calculator/simple_calculator
-    This template renders the entire block content.
+This is the mustache for the time block simple calculator.
+@template block_simple_calculator/simple_calculator
+This template renders the entire block content.
 }}
 <style>
+    a[class^="data-block-calculator-"] {
+        font-size: 1rem;
+        text-decoration: none;
+        cursor: pointer;
 
- a[class^="data-block-calculator-"] {
-    font-size: 1rem;
-    text-decoration: none;
-    cursor: pointer;
-    &:active {
-        filter: brightness(80%);
-        transition: 150ms;
-        
-        &:after {
-            filter: brightness(100%);
+        &:active {
+            filter: brightness(80%);
+            transition: 150ms;
+
+            &:after {
+                filter: brightness(100%);
+            }
         }
     }
- }
 
- .data-block-calculator-number, .data-block-calculator-operation, .data-block-calculator-delete {
-    color: black!important;
- }
+    .data-block-calculator-number,
+    .data-block-calculator-operation,
+    .data-block-calculator-delete {
+        color: black !important;
+    }
 
- .data-block-calculator-all-clear, .data-block-calculator-equals {
-    color: white!important;
- }
+    .data-block-calculator-all-clear,
+    .data-block-calculator-equals {
+        color: white !important;
+    }
 
-.data-block-calculator-number > span {
-    font-size: 0.75rem;
-}
+    .data-block-calculator-number>span {
+        font-size: 0.75rem;
+    }
 
- div[id^="data-block-calculator-"] {
-    font-size: 1.2rem;
- }
+    div[id^="data-block-calculator-"] {
+        font-size: 1.2rem;
+    }
 
-.data-block-calculator-output {
-    min-height: 175px;
-    max-height: 325px;
-    overflow-y: scroll;
-    margin-top: 0.5rem;
-    word-wrap: break-word;
-    word-break: break-all;
-    line-height: 1.5;
-    -webkit-box-shadow: inset 0px 1px 10px 5px rgba(0,0,0,0.42); 
-    box-shadow: inset 0px 1px 10px 5px rgba(0,0,0,0.42);
-}
+    .data-block-calculator-output {
+        min-height: 175px;
+        max-height: 325px;
+        overflow-y: scroll;
+        padding-top: 0.5rem;
+        word-wrap: break-word;
+        word-break: break-all;
+        line-height: 1.5;
+        -webkit-box-shadow: inset 0px 1px 10px 5px rgba(0, 0, 0, 0.42);
+        box-shadow: inset 0px 1px 10px 5px rgba(0, 0, 0, 0.42);
+    }
 
-.fa-circle-xmark {
-    font-size: 1.1rem;
-}
+    .fa-circle-xmark {
+        font-size: 1.1rem;
+    }
 
-.calculator-rounded-top {
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-}
+    .calculator-rounded-top {
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+    }
 
-.calculator-rounded-bottom-left {
-    border-bottom-left-radius: 16px;
-}
+    .calculator-rounded-bottom-left {
+        border-bottom-left-radius: 16px;
+    }
 
-.calculator-rounded-bottom-right {
-    border-bottom-right-radius: 16px;
-}
-.calculator-rounded {
-    border-radius: 16px;
-}
-.calculator-bg-transparent {
-    background-color: transparent;
-}
+    .calculator-rounded-bottom-right {
+        border-bottom-right-radius: 16px;
+    }
+
+    .calculator-rounded {
+        border-radius: 16px;
+    }
+
+    .calculator-bg-transparent {
+        background-color: transparent;
+    }
+
+    .block-calculator-accordion-header > a {
+        float: right;
+        text-decoration: none;
+        filter: brightness(100%);
+        transition: all 150ms;
+    }
+
+    .block-calculator-accordion-header > a:hover {
+        filter: brightness(4);
+    }
 
 </style>
+
 <div class="calculator-rounded calculator-bg-transparent border" id="data-block-calculator" tabIndex="-1">
-    <div class="bg-secondary p-3 border-bottom calculator-rounded-top border-light d-flex justify-content-end" id="data-block-drag-header">
+    <div class="bg-secondary p-3 border-bottom calculator-rounded-top border-light d-flex justify-content-end"
+        id="data-block-drag-header">
         <a class="button-block-calculator-popout d-flex link-primary" role="button">
             <div id="button-block-calculator-popout-text">{{#str}}calculator_popout, block_simple_calculator{{/str}}</div>
             <i class="fa-solid fa-arrow-up-right-from-square ml-1 mt-1" id="button-block-calculator-popout-icon"></i>
@@ -84,43 +102,78 @@
         <div id="data-block-calculator-current-operand" class="text-white font-weight-bold"></div>
     </div>
     <div class="row p-0 m-0 calculator-bg-transparent">
-        <button class="data-block-calculator-all-clear col bg-danger font-weight-bold border p-3" data-char="AC" id="data-block-AC">AC</button>
-        <button class="data-block-calculator-delete col bg-secondary font-weight-bold border p-3" data-char="DEL" id="data-block-DEL">DEL</button>
+        <button class="data-block-calculator-all-clear col bg-danger font-weight-bold border p-3" data-char="AC"
+            id="data-block-AC">AC</button>
+        <button class="data-block-calculator-delete col bg-secondary font-weight-bold border p-3" data-char="DEL"
+            id="data-block-DEL">DEL</button>
     </div>
     <div class="row p-0 m-0 calculator-bg-transparent">
-        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3 d-flex" data-char="(" id="data-block-parenthesis-open">
-        &#40;
-        <span class="ml-1" id="data-block-parenthesis-open-count"></span>
+        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3 d-flex" data-char="("
+            id="data-block-parenthesis-open">
+            &#40;
+            <span class="ml-1" id="data-block-parenthesis-open-count"></span>
         </button>
-        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3 d-flex" data-char=")" id="data-block-parenthesis-close">
-        &#41;
-        <span class="ml-1" id="data-block-parenthesis-close-count"></span>
+        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3 d-flex" data-char=")"
+            id="data-block-parenthesis-close">
+            &#41;
+            <span class="ml-1" id="data-block-parenthesis-close-count"></span>
         </button>
-        <button class="data-block-calculator-operation col-3 bg-secondary font-weight-bold border p-3" data-char="÷" id="data-block-divide">÷</button>
+        <button class="data-block-calculator-operation col-3 bg-secondary font-weight-bold border p-3" data-char="÷"
+            id="data-block-divide">÷</button>
     </div>
     <div class="row p-0 m-0 calculator-bg-transparent">
-        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="1" id="data-block-1">1</button>
-        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="2" id="data-block-2">2</button>
-        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="3" id="data-block-3">3</button>
-        <button class="data-block-calculator-operation col bg-secondary font-weight-bold border p-3" data-char="*" id="data-block-multiply">*</button>
+        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="1"
+            id="data-block-1">1</button>
+        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="2"
+            id="data-block-2">2</button>
+        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="3"
+            id="data-block-3">3</button>
+        <button class="data-block-calculator-operation col bg-secondary font-weight-bold border p-3" data-char="*"
+            id="data-block-multiply">*</button>
     </div>
     <div class="row p-0 m-0 calculator-bg-transparent">
-        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="4" id="data-block-4">4</button>
-        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="5" id="data-block-5">5</button>
-        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="6" id="data-block-6">6</button>
-        <button class="data-block-calculator-operation col bg-secondary font-weight-bold border p-3" data-char="+" id="data-block-plus">+</button>
+        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="4"
+            id="data-block-4">4</button>
+        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="5"
+            id="data-block-5">5</button>
+        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="6"
+            id="data-block-6">6</button>
+        <button class="data-block-calculator-operation col bg-secondary font-weight-bold border p-3" data-char="+"
+            id="data-block-plus">+</button>
     </div>
     <div class="row p-0 m-0 calculator-bg-transparent">
-        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="7" id="data-block-7">7</button>
-        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="8" id="data-block-8">8</button>
-        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="9" id="data-block-9">9</button>
-        <button class="data-block-calculator-operation col bg-secondary font-weight-bold border p-3" data-char="-" id="data-block-minus">-</button>
+        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="7"
+            id="data-block-7">7</button>
+        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="8"
+            id="data-block-8">8</button>
+        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="9"
+            id="data-block-9">9</button>
+        <button class="data-block-calculator-operation col bg-secondary font-weight-bold border p-3" data-char="-"
+            id="data-block-minus">-</button>
     </div>
     <div class="row p-0 m-0 calculator-bg-transparent">
-        <button class="data-block-calculator-operation col bg-light font-weight-bold border calculator-rounded-bottom-left p-3" data-char="+/-" id="data-block-negative">+/-</button>   
-        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="0" id="data-block-0">0</button>
-        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="." id="data-block-decimal">.</button>
-        <button class="data-block-calculator-equals col bg-primary font-weight-bold border calculator-rounded-bottom-right p-3" data-char="=" id="data-block-equals">=</button>
+        <button
+            class="data-block-calculator-operation col bg-light font-weight-bold border calculator-rounded-bottom-left p-3"
+            data-char="+/-" id="data-block-negative">+/-</button>
+        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="0"
+            id="data-block-0">0</button>
+        <button class="data-block-calculator-number col bg-light font-weight-bold border p-3" data-char="."
+            id="data-block-decimal">.</button>
+        <button
+            class="data-block-calculator-equals col bg-primary font-weight-bold border calculator-rounded-bottom-right p-3"
+            data-char="=" id="data-block-equals">=</button>
     </div>
 </div>
-<div class="alert alert-info mt-2 mb-2" role="alert">{{#str}}calculator_popout_description, block_simple_calculator{{/str}}</div>
+<div class="alert alert-info mt-2 mb-2" role="alert">
+    <div class="block-calculator-accordion">
+        <div class="block-calculator-accordion-header">
+            <b>{{#str}}calculator_popout_description_title, block_simple_calculator{{/str}}</b>
+            <a class="fa-solid fa-plus fa-1x" id="block-calculator-accordion-collapse" role="button"></a>
+            <hr>
+        </div>
+        <div class="block-calculator-accordion-body hide" id="block-calculator-accordion-body">
+            <p style="white-space: pre; text-wrap: wrap;">{{#str}}calculator_popout_description, block_simple_calculator{{/str}}</p>
+        </div>
+    </div>
+
+</div>
