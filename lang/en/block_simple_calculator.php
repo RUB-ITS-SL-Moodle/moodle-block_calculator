@@ -35,7 +35,7 @@ $string['calculator_popout_description'] =
     "<div style=\"display: inline-block;width: 100%;\"><b>Delete one</b>:         <div style=\"float: right;\">Back (<--)</div></div>\n" .
     "<div style=\"display: inline-block;width: 100%;\"><b>Negative</b>:           <div style=\"float: right;\">N</div></div>\n" .
     "<div style=\"display: inline-block;width: 100%;\"><b>Numbers</b>:            <div style=\"float: right;\">0-9</div></div>\n" .
-    "<div style=\"display: inline-block;width: 100%;\"><b>Operators</b>:          <div style=\"float: right;\"><b>+</b> | <b>-</b> | <b>/</b> | <b>*</b></div></div>\n" .
+    "<div style=\"display: inline-block;width: 100%;\"><b>Operators</b>:          <div style=\"float: right;\"><b>+</b> | <b>-</b> | <b>/</b> or <b>÷</b> | <b>*</b></div></div>\n" .
     "<div style=\"display: inline-block;width: 100%;\"><b>Parenthesis</b>:        <div style=\"float: right;\"><b>(</b> or <b>)</b></div></div>\n" .
     "<div style=\"display: inline-block;width: 100%;\"><b>Decimals</b>:           <div style=\"float: right;\"><b>,</b></div></div><hr>" .
     "<b><i>Popout</i></b>\n" .
