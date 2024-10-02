@@ -891,7 +891,12 @@ define([
      */
     drag: function () {
       $(SELECTORS.CALCULATOR_DRAG_HEADER).on('mousedown', e => {
+
         if (draggable) {
+          // Unfocus the Calculator
+          $(SELECTORS.CALCULATOR).blur();
+
+
           // Prevent Default Behavior.
           e.preventDefault();
 
