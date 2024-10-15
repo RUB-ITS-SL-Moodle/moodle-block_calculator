@@ -83,6 +83,6 @@ div[id^="data-block-calculator-"] {
 }
 
 #data-block-calculator:focus {
-    outline: 2px #0d6efd solid!important;
+    outline: 2px var(--primary) !important;
     transition: ease-in-out 50ms;
 }
