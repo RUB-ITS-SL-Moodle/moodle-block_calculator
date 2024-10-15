@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'block_simple_calculator';
 $plugin->release = 'v4.5-r1';
-$plugin->version = 2024080601;
+$plugin->version = 2024080602;
 $plugin->requires = 2022112800;
 $plugin->supported = [403, 405];
 $plugin->maturity = MATURITY_RC;
