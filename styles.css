@@ -80,11 +80,6 @@ div[id^="data-block-calculator-"] {
     filter: brightness(4);
 }
 
-#data-block-calculator {
-    outline: 0px;
-    transition: ease-in-out 50ms;
-    
-    &:focus {
+#data-block-calculator:focus {
         outline: 2px var(--primary) solid !important;
-    }
 }
