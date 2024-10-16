@@ -1,5 +1,3 @@
-@import "../../theme/boost/scss/bootstrap.scss";
-
 a[class^="data-block-calculator-"] {
     font-size: 1rem;
     text-decoration: none;
@@ -82,7 +80,11 @@ div[id^="data-block-calculator-"] {
     filter: brightness(4);
 }
 
-#data-block-calculator:focus {
-    outline: 2px var(--primary) !important;
+#data-block-calculator {
+    outline: 0px;
     transition: ease-in-out 50ms;
+    
+    &:focus {
+        outline: 2px var(--primary) solid !important;
+    }
 }
