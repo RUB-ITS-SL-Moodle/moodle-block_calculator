@@ -1,8 +1,26 @@
-# Calculator #
+# Basic Calculator #
 
-TODO Describe the plugin shortly here.
+The Basic Calculator is a simple and straightforward calculator with the most common operators such as plus,
+minus, times and divide.
 
-TODO Provide more detailed description here.
+## Description ##
+The calculator is integrated as a block plugin in the Moodle course and can be used by any user in this course.
+
+It can be used by simply clicking on the buttons or with the keyboard. The buttons look like this:
+
+```
+0 - 9          --> Numbers
++              --> Add
+-              --> Subtract
+*              --> Multiply
+/ or ÷         --> Divide
+( and )        --> Open and closed parentheses
+,              --> decimal number
+N              --> Negative number
+Enter          --> Calculate
+Backwards      --> Delete
+ESC            --> Delete all
+```
 
 ## Installing via uploaded ZIP file ##
 
