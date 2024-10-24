@@ -214,7 +214,7 @@ define([
 
               // Verify if the currentOperand already has a point.
               if (number === '.') {
-                if (!memory.currentOperand.includes('.')) {
+                if (!memory.currentOperand.includes('.') && memory.temporayOperand === '') {
                   memory.currentOperand = memory.currentOperand.toString() + number.toString();
                 } else {
                   memory.currentOperand = '0' + number.toString();
@@ -996,21 +996,34 @@ define([
 
             // Check if there is a result.
             if (result !== null) {
+              if (result === 'NaN' || result === 'Infinity') {
 
-              // set the Result to the current Operand.
-              memory.currentOperand = result;
-              memory.temporayOperand = result;
+                memory.currentOperand = '0';
+                memory.temporayOperand = '0';
+                memory.operation = null;
+
+                cstr.get_string('invalidinput', 'block_simple_calculator').done(function (msg) {
+                  $(SELECTORS.CURRENTOPERAND).text(msg);
+                });
+
+              } else {
+                // set the Result to the current Operand.
+                memory.currentOperand = result;
+                memory.temporayOperand = result;
+              }
+
             } else {
 
               // If there is no result.
               // Reset the Memory.
-              memory.currentOperand = '';
-              memory.temporayOperand = '';
+              memory.currentOperand = '0';
+              memory.temporayOperand = '0';
               memory.operation = null;
 
               // Set the Text to Error
-              memory.currentOperand = 'Error';
-              memory.temporayOperand = 'Error';
+              cstr.get_string('invalidinput', 'block_simple_calculator').done(function (msg) {
+                $(SELECTORS.CURRENTOPERAND).text(msg);
+              });
             }
           } else {
 
