@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['calculator_close'] = 'Schließen';
 $string['calculator_divide_by_zero'] = 'Teilen durch 0 nicht möglich';
-$string['calculator_popout'] = 'In eigenem Fenster öffnen';
+$string['calculator_popout'] = 'Popout';
 $string['calculator_popout_description'] =
     "\r".
     "<b><i>Tastatureingabe</i></b>" .
@@ -38,8 +38,8 @@ $string['calculator_popout_description'] =
     "<div style=\"display: inline-block;width: 100%;\"><b>Operatoren</b>:          <div style=\"float: right;\"><b>+</b> | <b>-</b> | <b>/</b> or <b>÷</b> | <b>*</b></div></div>\n" .
     "<div style=\"display: inline-block;width: 100%;\"><b>Klammern</b>:        <div style=\"float: right;\"><b>(</b> or <b>)</b></div></div>\n" .
     "<div style=\"display: inline-block;width: 100%;\"><b>Dezimal</b>:           <div style=\"float: right;\"><b>,</b></div></div><hr>" .
-    "<b><i>In eigenem Fenster öffnen</i></b>\n" .
-    "<p>Um den Taschenrechner in einem eigenem Fenster zu öffnen, drücke den \"In eigenem Fenster öffnen\" Knopf oben an der Kopfleiste des Taschenrechners.\n\n" .
+    "<b><i>Den Taschenrechner herauslösen</i></b>\n" .
+    "<p>Um den Taschenrechner in einem eigenem Fenster zu öffnen, drücke den \"Popout\" Knopf oben an der Kopfleiste des Taschenrechners.\n\n" .
     "Nachdem der Taschenrechner herausgelöst wurde, kann man ihn mithilfe von Linksklick gedrückt halten, während man sich in der Kopfzeile befindet bewegen.\n\n" .
     "Um den Taschenrechner wieder zurück in das Block Menü zu bringen, drücke auf \"Schließen\" in der Kopfzeile.</p";
 $string['calculator_popout_description_title'] = 'Anleitung:';
