@@ -43,7 +43,8 @@ $string['calculator_popout_description'] =
     "After pressing the Button, you can drag the Calculator with your Mouse by holding the left Mouse Button while being on the Calculator Head.\n\n" .
     "To drop the Calculator back, you should press the close Button on the top of the Calculator.</p";
 $string['calculator_popout_description_title'] = 'Instructions:';
+$string['invalidinput'] = 'Invalid Input';
 $string['pluginname'] = 'Calculator';
+$string['privacy:metadata'] = 'The Simple Calculator block saves no data.';
 $string['simple_calculator:addinstance'] = 'Add a new Calculator block';
 $string['simple_calculator:myaddinstance'] = 'Add a new Calculator block to dashboard';
-$string['privacy:metadata'] = 'The Simple Calculator block saves no data.';

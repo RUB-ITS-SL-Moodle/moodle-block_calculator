@@ -21,14 +21,12 @@
  * @copyright   2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class block_simple_calculator extends block_base
-{
+class block_simple_calculator extends block_base {
 
     /**
      * Initializes class member variables.
      */
-    public function init()
-    {
+    public function init() {
         // Needed by Moodle to differentiate between blocks.
         $this->title = get_string('pluginname', 'block_simple_calculator');
     }
@@ -38,15 +36,14 @@ class block_simple_calculator extends block_base
      *
      * @return stdClass The block contents.
      */
-    public function get_content()
-    {
+    public function get_content() {
         global $OUTPUT, $CFG;
         if ($this->content !== null) {
             return $this->content;
         }
 
         $renderer = $this->page->get_renderer('block_simple_calculator');
-        
+
         $CFG->cachejs = false;
 
         $this->content = new stdClass();
@@ -61,8 +58,7 @@ class block_simple_calculator extends block_base
      *
      * The function is called immediately after init().
      */
-    public function specialization()
-    {
+    public function specialization() {
 
         // Load user defined title and make sure it's never empty.
         if (empty($this->config->title)) {
@@ -77,8 +73,7 @@ class block_simple_calculator extends block_base
      *
      * @return bool True if multiple instances are allowed, false otherwise.
      */
-    public function instance_allow_multiple()
-    {
+    public function instance_allow_multiple() {
         return false;
     }
 
@@ -87,8 +82,7 @@ class block_simple_calculator extends block_base
      *
      * @return string[] Array of pages and permissions.
      */
-    public function applicable_formats()
-    {
-        return array('all' => true);
+    public function applicable_formats() {
+        return ['all' => true];
     }
 }

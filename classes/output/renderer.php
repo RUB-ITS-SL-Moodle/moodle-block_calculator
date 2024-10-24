@@ -11,8 +11,9 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
-// You should have received a copy of the GNU General Public License along with
-// Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Block simple calculator renderer.
  *
@@ -23,14 +24,24 @@
 
 namespace block_simple_calculator\output;
 
-
-defined('MOODLE_INTERNAL') || die;
-
+/**
+ * renderer
+ *
+ * @package    block_simple_calculator_renderer
+ * @copyright  2024 author_fullname <author_link>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class renderer extends \plugin_renderer_base {
 
-    public function render_calculator() {
-        $this->page->requires->js_call_amd('block_simple_calculator/simple_calculator_base', 'init', array());
 
-        return parent::render_from_template('block_simple_calculator/calculator', array());
+    /**
+     * render_calculator
+     *
+     * @return string
+     */
+    public function render_calculator() {
+        $this->page->requires->js_call_amd('block_simple_calculator/simple_calculator_base', 'init', []);
+
+        return parent::render_from_template('block_simple_calculator/calculator', []);
     }
 }

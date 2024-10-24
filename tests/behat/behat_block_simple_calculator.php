@@ -49,15 +49,15 @@ class behat_block_simple_calculator extends behat_base {
         $nums = str_replace(' ', '', $numbers);
 
         // Loop through all Characters.
-        for($char = 0; $char < strlen($nums); $char++) {
+        for ($char = 0; $char < strlen($nums); $char++) {
 
-            // Press the identic Button.  (preg_match($nums['char'], "\\/|\+|\-|\-/\+|\*\) ? ($this->translateKey($nums[$char]) : $nums[$char])
-            
-            $buttonChar = (preg_match("/\/|\+|\-|n|\*|\.|\(|\)/",$nums[$char]) ? ($this->translateKey($nums[$char])) : $nums[$char]);
+            // Press the identic Button.
+
+            $buttonchar = preg_match("/\/|\+|\-|n|\*|\.|\(|\)/", $nums[$char]) ? ($this->translatekey($nums[$char])) : $nums[$char];
 
             $this->execute(
-                'behat_general::i_click_on', 
-                ["data-block-$buttonChar", "button"]
+                'behat_general::i_click_on',
+                ["data-block-$buttonchar", "button"]
             );
         }
 
@@ -65,24 +65,33 @@ class behat_block_simple_calculator extends behat_base {
         $this->execute('behat_general::i_click_on', ['data-block-equals', 'button']);
     }
 
-    
+
     /**
-     * translateKey
+     * translatekey
      *
-     * @param  mixed $key
-     * @return void
+     * @param  string $key
+     * @return string
      */
-    public function translateKey(string $key) {
+    public function translatekey(string $key) {
         switch ($key) {
-            case ")": return "parenthesis-close";
-            case "(": return "parenthesis-open";
-            case ".": return "decimal";
-            case "/": return "divide";
-            case "+": return "plus";
-            case "-": return "minus";
-            case "n": return "negative";
-            case "*": return "multiply";
+            case ")":
+                return "parenthesis-close";
+            case "(":
+                return "parenthesis-open";
+            case ".":
+                return "decimal";
+            case "/":
+                return "divide";
+            case "+":
+                return "plus";
+            case "-":
+                return "minus";
+            case "n":
+                return "negative";
+            case "*":
+                return "multiply";
         }
+        return $key;
     }
 
 }
