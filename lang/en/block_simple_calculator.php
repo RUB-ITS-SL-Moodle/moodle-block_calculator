@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['calculator_close'] = 'Close';
-$string['calculator_divide_by_zero'] = 'You cannot divide by Zero.';
+$string['calculator_divide_by_zero'] = 'Cant divide by Zero.';
 $string['calculator_popout'] = 'Popout';
 $string['calculator_popout_description'] =
     "\r".
@@ -40,7 +40,7 @@ $string['calculator_popout_description'] =
     "<div style=\"display: inline-block;width: 100%;\"><b>Decimals</b>:           <div style=\"float: right;\"><b>,</b></div></div><hr>" .
     "<b><i>Popout</i></b>\n" .
     "<p>Pop out the Calculator by pressing the \"Popout\" Button at the Top of the Calculator.\n\n" .
-    "After pressing the Button, you can drag the Calculator with your Mouse by holding the left Mouse Button while being on the Calculator Head.\n\n" .
+    "After pressing the Button, you can drag the Calculator with your Mouse by holding the left Mouse Button, while being on the Calculator Head.\n\n" .
     "To drop the Calculator back, you should press the close Button on the top of the Calculator.</p";
 $string['calculator_popout_description_title'] = 'Instructions:';
 $string['invalidinput'] = 'Invalid Input';
