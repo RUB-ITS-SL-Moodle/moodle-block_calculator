@@ -1,16 +1,23 @@
-a[class^="data-block-calculator-"] {
+[class^="data-block-calculator-"] {
     font-size: 1rem;
     text-decoration: none;
     cursor: pointer;
+    filter: brightness(1);
+
+    &:hover {
+        filter: brightness(0.95);
+        transition: 100ms ease-in-out;
+    }
 
     &:active {
-        filter: brightness(80%);
-        transition: 150ms;
-
-        &:after {
-            filter: brightness(100%);
-        }
+        filter: brightness(0.9);
+        transition: 100ms ease-in-out;
     }
+}
+
+[class^="data-block-calculator-"].data-block-calculator-pseudo-active {
+    filter: brightness(0.9);
+    transition: 100ms ease-in-out;
 }
 
 .data-block-calculator-number,

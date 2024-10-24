@@ -867,6 +867,22 @@ define([
       });
 
       // Key Inputs
+      $(SELECTORS.CALCULATOR).keydown(e => {
+        $(KEY_MAP).each(function (index) {
+          if (e.key == KEY_MAP[index]) {
+
+            var key = KEY_MAP[index];
+            var prefix = '#data-block-';
+
+            // Translate the keys
+            key = base_calculator.translateKey(key);
+
+            $(prefix + key).addClass('data-block-calculator-pseudo-active');
+          }
+        });
+      });
+
+      // Key Inputs
       $(SELECTORS.CALCULATOR).keyup(e => {
         $(KEY_MAP).each(function (index) {
           if (e.key == KEY_MAP[index]) {
@@ -878,7 +894,8 @@ define([
             key = base_calculator.translateKey(key);
 
             // Press the Key button
-            $(prefix + key).click();
+            $(prefix + key).trigger('click');
+            $(prefix + key).removeClass('data-block-calculator-pseudo-active');
           }
         });
       });
