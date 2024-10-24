@@ -45,6 +45,9 @@ Alternatively, you can run
 
 to complete the installation from the command line.
 
+## Credits ##
+Inspired by *A K M SAFAT SHAHIN* with his Moodle Plugin Simple calculator.
+https://moodle.org/plugins/block_simple_calculator
 ## License ##
 
 2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>
