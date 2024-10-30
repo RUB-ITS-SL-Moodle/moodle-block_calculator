@@ -39,12 +39,12 @@ $string['calculator_popout_description'] =
     "<div style=\"display: inline-block;width: 100%;\"><b>Klammern</b>:        <div style=\"float: right;\"><b>(</b> or <b>)</b></div></div>\n" .
     "<div style=\"display: inline-block;width: 100%;\"><b>Dezimal</b>:           <div style=\"float: right;\"><b>,</b></div></div><hr>" .
     "<b><i>Den Taschenrechner herauslösen</i></b>\n" .
-    "<p>Um den Taschenrechner in einem eigenem Fenster zu öffnen, drücke den \"Popout\" Knopf oben an der Kopfleiste des Taschenrechners.\n\n" .
-    "Nachdem der Taschenrechner herausgelöst wurde, kann man ihn mithilfe von Linksklick gedrückt halten, während man sich in der Kopfzeile befindet bewegen.\n\n" .
-    "Um den Taschenrechner wieder zurück in das Block Menü zu bringen, drücke auf \"Schließen\" in der Kopfzeile.</p";
+    "<p>Um den Taschenrechner in einem eigenem Fenster zu öffnen, drücke die \"Popout\" Schaltfläche oben in der Kopfleiste des Taschenrechners.\n\n" .
+    "Danach kann man den Taschenrechner bei gedrückter linker Maustaste aus der Kopfzeile heraus bewegen.\n\n" .
+    "Um den Taschenrechner wieder zurück in den Block zu bringen, drücke auf \"Schließen\" in der Kopfzeile des Taschenrechners.</p";
 $string['calculator_popout_description_title'] = 'Anleitung:';
 $string['invalidinput'] = 'Ungültige Eingabe';
 $string['pluginname'] = 'Taschenrechner';
-$string['privacy:metadata'] = 'Der Simple Calculator block speichert keine Daten.';
-$string['simple_calculator:addinstance'] = 'Füge einen neuen Taschenrechner block hinzu';
-$string['simple_calculator:myaddinstance'] = 'Füge einen neuen Taschenrechner block zum dashboard hinzu';
+$string['privacy:metadata'] = 'Der Simple Calculator Block speichert keine Daten.';
+$string['simple_calculator:addinstance'] = 'Füge einen neuen Taschenrechner Block hinzu';
+$string['simple_calculator:myaddinstance'] = 'Füge einen neuen Taschenrechner Block zum Dashboard hinzu';
