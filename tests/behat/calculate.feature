@@ -27,6 +27,8 @@ Feature: Show the results of the calculator
 
         Examples:
             | calculation                         | results                           |
+            | 1 / (2n-2n)                         | Invalid Input                     |
+            | 10 + 5 +( 1 / (2n-2n)) * 2          | Invalid Input                     |
             | 10 / 2                              | 5                                 |
             | 12 + 56.2                           | 68.2                              |
             | 12.2456 - 18.136                    | -5.8904                           |
@@ -38,7 +40,7 @@ Feature: Show the results of the calculator
             | (14.5n + 7) * (10 / 1.5)            | -50                               |
             | ((230.89 * 2n) / (21n - 543n)) + 10 | 9.1153639846743295019             |
             | 1 / 999999999                       | 1.000000001000000001e-9           |
-            | 25 / 0                              | You cannot divide by Zero.        |
+            | 25 / 0                              | Cant divide by Zero.              |
             | 0 / 25                              | 0                                 |
             | (25) * (                            | 0                                 |
             | (34 + 54 * 75 + 24                  | 4108                              |
