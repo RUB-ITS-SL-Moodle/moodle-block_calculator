@@ -28,12 +28,13 @@ $capabilities = [
 
     'block/simple_calculator:addinstance' => [
         'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
+        'contextlevel' => CONTEXT_BLOCK,
         'archetypes' => [
-            'user' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
         ],
 
-        'clonepermissionsfrom' => 'moodle/my:manageblocks',
+        'clonepermissionsfrom' => 'moodle/site:manageblocks',
     ],
     'block/simple_calculator:myaddinstance' => [
         'captype' => 'write',
