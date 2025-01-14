@@ -22,102 +22,6 @@
  */
 
 /**
- * Selectors
- * Get all needed ids, and Classnames to select it.
- */
-const SELECTORS = {
-  CALCULATOR_DRAG_HEADER: '#data-block-drag-header',
-  CALCULATOR: '#data-block-calculator',
-  CURRENTOPERAND: '#data-block-calculator-current-operand',
-  PREVIOUSOPERAND: '#data-block-calculator-previous-operand',
-  NUMBERS: '.data-block-calculator-number',
-  OPERATIONS: '.data-block-calculator-operation',
-  EQUALS: '.data-block-calculator-equals',
-  DELETE: '.data-block-calculator-delete',
-  AC: '.data-block-calculator-all-clear',
-  OPENPARENTHESISCOUNT: '#data-block-parenthesis-open-count',
-  CLOSEPARENTHESISCOUNT: '#data-block-parenthesis-close-count',
-  POPOUT: '.button-block-calculator-popout',
-  POPOUT_TEXT: '#button-block-calculator-popout-text',
-  POPOUT_ICON: '#button-block-calculator-popout-icon',
-  COLLAPSE_BUTTON: '#block-calculator-accordion-collapse',
-  COLLAPSE_BODY: '#block-calculator-accordion-body'
-};
-/**
- * CSS
- * All dynamic CSS Classes.
- */
-const CSS = {
-  DRAGGABLE_CSS_ON: {
-    position: 'fixed',
-    width: '350px',
-    'z-index': 1031,
-    visibility: 'visible'
-  },
-  DRAGGABLE_CSS_OFF: { position: '', width: '', 'z-index': '', visibility: '' },
-  DRAGGABLE_CLASS: '',
-  POPOUT_CLASS: 'fa-arrow-up-right-from-square',
-  POPOUT_CLOSE_CLASS: 'fa-circle-xmark',
-  COLLAPSE_ICON_HIDDEN: 'fa-plus',
-  COLLAPSE_ICON_SHOWN: 'fa-minus',
-};
-/**
- * Key_Map
- * All keys which the User can use on the Calculator.
- */
-const KEY_MAP = [
-  0,
-  1,
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  '.',
-  ',',
-  '+',
-  '-',
-  '*',
-  '/',
-  '(',
-  ')',
-  'Enter',
-  'Backspace',
-  'Escape',
-  'n'
-];
-/**
- * Operator Regex
- * Regex for matching all Operators.
- */
-const OPERATOR_REGEX = /\+|-|\*|÷/;
-/**
- * Draggable
- * Decides if the Calculator is draggable at the moment.
- */
-var draggable = false;
-/**
- * Position
- * The current position of the Calculator during the Dragging.
- */
-var position = { clientX: 0, clientY: 0, X: 0, Y: 0, offset: 0 };
-
-/**
- * Memory
- * The "Brain" for the Calculator, it operates like a Cache during the Calculation.
- */
-var memory = {
-  currentOperand: '',
-  previousOperand: '',
-  temporayOperand: '',
-  operation: null,
-  parenthesis: [],
-};
-
-/**
  * Define jQuery and the DecimalJS for the Calculator to use.
  * @param {object} $
  * @param {object} decimaljs
@@ -128,6 +32,108 @@ define([
   'block_simple_calculator/shunting_yard_converter',
   'block_simple_calculator/rpn_evaluator'
 ], function ($, cstr, ShuntingYardConverter, RPNEvaluator) {
+
+    /**
+     * Selectors
+     * Get all needed ids, and Classnames to select it.
+     */
+    const SELECTORS = {
+      CALCULATOR_DRAG_HEADER: '#data-block-drag-header',
+      CALCULATOR: '#data-block-calculator',
+      CURRENTOPERAND: '#data-block-calculator-current-operand',
+      PREVIOUSOPERAND: '#data-block-calculator-previous-operand',
+      NUMBERS: '.data-block-calculator-number',
+      OPERATIONS: '.data-block-calculator-operation',
+      EQUALS: '.data-block-calculator-equals',
+      DELETE: '.data-block-calculator-delete',
+      AC: '.data-block-calculator-all-clear',
+      OPENPARENTHESISCOUNT: '#data-block-parenthesis-open-count',
+      CLOSEPARENTHESISCOUNT: '#data-block-parenthesis-close-count',
+      POPOUT: '.button-block-calculator-popout',
+      POPOUT_TEXT: '#button-block-calculator-popout-text',
+      POPOUT_ICON: '#button-block-calculator-popout-icon',
+      COLLAPSE_BUTTON: '#block-calculator-accordion-collapse',
+      COLLAPSE_BODY: '#block-calculator-accordion-body'
+    };
+
+    /**
+     * CSS
+     * All dynamic CSS Classes.
+     */
+    const CSS = {
+      DRAGGABLE_CSS_ON: {
+        position: 'fixed',
+        width: '350px',
+        'z-index': 1031,
+        visibility: 'visible'
+      },
+      DRAGGABLE_CSS_OFF: { position: '', width: '', 'z-index': '', visibility: '' },
+      DRAGGABLE_CLASS: '',
+      POPOUT_CLASS: 'fa-arrow-up-right-from-square',
+      POPOUT_CLOSE_CLASS: 'fa-circle-xmark',
+      COLLAPSE_ICON_HIDDEN: 'fa-plus',
+      COLLAPSE_ICON_SHOWN: 'fa-minus',
+    };
+
+    /**
+     * Key_Map
+     * All keys which the User can use on the Calculator.
+     */
+    const KEY_MAP = [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      '.',
+      ',',
+      '+',
+      '-',
+      '*',
+      '/',
+      '(',
+      ')',
+      'Enter',
+      'Backspace',
+      'Escape',
+      'n'
+    ];
+
+    /**
+     * Operator Regex
+     * Regex for matching all Operators.
+     */
+    const OPERATOR_REGEX = /\+|-|\*|÷/;
+
+    /**
+     * Draggable
+     * Decides if the Calculator is draggable at the moment.
+     */
+    var draggable = false;
+
+    /**
+     * Position
+     * The current position of the Calculator during the Dragging.
+     */
+    var position = { clientX: 0, clientY: 0, X: 0, Y: 0, offset: 0 };
+
+    /**
+     * Memory
+     * The "Brain" for the Calculator, it operates like a Cache during the Calculation.
+     */
+    var memory = {
+      currentOperand: '',
+      previousOperand: '',
+      temporayOperand: '',
+      operation: null,
+      parenthesis: [],
+    };
+
   var base_calculator = {
     /**
      * init
