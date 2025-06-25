@@ -861,8 +861,9 @@ define([
      */
     keyInput: function () {
       // Prevent Browser in-site-search with the key "/"
-      $(window).keypress(function (e) {
-        if (e.key == '/') {
+      // 250625 treitmzt: Restrict prevention of slash to calculator focus because it is needed in other input fields.
+       $(window).keypress(function (e) {
+        if (e.key == '/' && $(SELECTORS.CALCULATOR).is(':focus')) {
           e.preventDefault();
         }
       });
