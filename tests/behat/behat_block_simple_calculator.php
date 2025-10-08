@@ -36,8 +36,6 @@ require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class behat_block_simple_calculator extends behat_base {
-
-
     /**
      * Calculate based off the calculation String by pressing the buttons.
      *
@@ -50,7 +48,6 @@ class behat_block_simple_calculator extends behat_base {
 
         // Loop through all Characters.
         for ($char = 0; $char < strlen($nums); $char++) {
-
             // Press the identic Button.
 
             $buttonchar = preg_match("/\/|\+|\-|n|\*|\.|\(|\)/", $nums[$char]) ? ($this->translatekey($nums[$char])) : $nums[$char];
@@ -93,5 +90,4 @@ class behat_block_simple_calculator extends behat_base {
         }
         return $key;
     }
-
 }

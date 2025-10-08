@@ -29,7 +29,7 @@ $string['calculator_close'] = 'Schließen';
 $string['calculator_divide_by_zero'] = 'Teilen durch 0 nicht möglich';
 $string['calculator_popout'] = 'Popout';
 $string['calculator_popout_description'] =
-    "\r".
+    "\r" .
     "<b><i>Tastatureingabe</i></b>" .
     "<div style=\"display: inline-block;width: 100%;\"><b>Alles löschen (AC)</b>:   <div style=\"float: right;\">ESC</div></div>\n" .
     "<div style=\"display: inline-block;width: 100%;\"><b>Einzeln löschen (DEL)</b>:         <div style=\"float: right;\">Back (<--)</div></div>\n" .

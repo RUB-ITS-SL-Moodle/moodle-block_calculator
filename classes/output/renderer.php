@@ -31,9 +31,7 @@ namespace block_simple_calculator\output;
  * @copyright  2024 author_fullname <author_link>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class renderer extends \plugin_renderer_base {
-
-
+class renderer extends \core\output\plugin_renderer_base {
     /**
      * render_calculator
      *
