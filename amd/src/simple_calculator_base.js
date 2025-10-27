@@ -103,6 +103,24 @@ define([
       'Escape',
       'n'
     ];
+    /**
+     * Key_Name_Map
+     * Map the Keys to the matching Div id names.
+     */
+    const KEY_NAME_MAP = {
+      "/": "divide",
+      "Enter": "equals",
+      "Backspace": "DEL",
+      "Escape": "AC",
+      ",": "decimal",
+      ".": "decimal",
+      "+": "plus",
+      "-": "minus",
+      "*": "multiply",
+      "(": "parenthesis-open",
+      ")": "parenthesis-close",
+      "n": "negative"
+    };
 
     /**
      * Operator Regex
@@ -813,46 +831,7 @@ define([
      * @param {string} key
      */
     translateKey: function (key) {
-      // Switch through all possible keys and return the translated key.
-      switch (key) {
-        case '/': key = 'divide';
-          break;
-        case 'Enter':
-          key = 'equals';
-          break;
-        case 'Backspace':
-          key = 'DEL';
-          break;
-        case 'Escape':
-          key = 'AC';
-          break;
-        case ',':
-          key = 'decimal';
-          break;
-        case '.':
-          key = 'decimal';
-          break;
-        case '+':
-          key = 'plus';
-          break;
-        case '-':
-          key = 'minus';
-          break;
-        case '*':
-          key = 'multiply';
-          break;
-        case '(':
-          key = 'parenthesis-open';
-          break;
-        case ')':
-          key = 'parenthesis-close';
-          break;
-        case 'n':
-          key = 'negative';
-          break;
-      }
-
-      return key;
+      return KEY_NAME_MAP[key] !== undefined ? KEY_NAME_MAP[key] : key;
     },
 
     /**
@@ -997,8 +976,6 @@ define([
           }
 
         }
-
-
 
         memory.previousOperand = memory.previousOperand.toString() + '=';
 

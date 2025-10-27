@@ -43,8 +43,6 @@ class block_simple_calculator extends block_base {
 
         $renderer = $this->page->get_renderer('block_simple_calculator');
 
-        $CFG->cachejs = false;
-
         $this->content = new stdClass();
         $this->content->text = '';
         $this->content->text .= $renderer->render_calculator();
