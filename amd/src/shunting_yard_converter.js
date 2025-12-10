@@ -16,13 +16,13 @@
 /**
  * A String Converter based of the Shunting Yard Algorithm to convert a Calculation String into the RPN format.
  *
- * @module      block_simple_calculator/shunting_yard_converter
+ * @module      block_calculator/shunting_yard_converter
  * @copyright   2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 // Define the needed Stack Class.
-define(['block_simple_calculator/stack'], function (Stack) {
+define(['block_calculator/stack'], function (Stack) {
 
   /**
    * ShuntingYardConverter

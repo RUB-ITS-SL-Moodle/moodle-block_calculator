@@ -17,7 +17,7 @@
 /**
  * Block simple calculator capabilities.
  *
- * @package     block_simple_calculator
+ * @package     block_calculator
  * @copyright   2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
 
-    'block/simple_calculator:addinstance' => [
+    'block/calculator:addinstance' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_BLOCK,
         'archetypes' => [
@@ -36,7 +36,7 @@ $capabilities = [
 
         'clonepermissionsfrom' => 'moodle/site:manageblocks',
     ],
-    'block/simple_calculator:myaddinstance' => [
+    'block/calculator:myaddinstance' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [

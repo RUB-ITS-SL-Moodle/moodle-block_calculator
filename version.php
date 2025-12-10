@@ -17,14 +17,14 @@
 /**
  * Plugin version and other meta-data are defined here.
  *
- * @package     block_simple_calculator
+ * @package     block_calculator
  * @copyright   2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'block_simple_calculator';
+$plugin->component = 'block_calculator';
 $plugin->release = 'v5.0.3-r1';
 $plugin->version = 2025071001;
 $plugin->requires = 2022112800;

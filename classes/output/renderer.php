@@ -17,17 +17,17 @@
 /**
  * Block simple calculator renderer.
  *
- * @package     block_simple_calculator
+ * @package     block_calculator
  * @copyright   2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_simple_calculator\output;
+namespace block_calculator\output;
 
 /**
  * renderer
  *
- * @package    block_simple_calculator_renderer
+ * @package    block_calculator_renderer
  * @copyright  2024 author_fullname <author_link>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -38,8 +38,7 @@ class renderer extends \core\output\plugin_renderer_base {
      * @return string
      */
     public function render_calculator() {
-        $this->page->requires->js_call_amd('block_simple_calculator/simple_calculator_base', 'init', []);
-
-        return parent::render_from_template('block_simple_calculator/calculator', []);
+        $this->page->requires->js_call_amd('block_calculator/calculator_base', 'init', []);
+        return parent::render_from_template('block_calculator/calculator', []);
     }
 }

@@ -16,141 +16,152 @@
 /**
  * Adds the base function of a Calculator.
  *
- * @module      block_simple_calculator/simple_calculator_base
+ * @module      block_calculator/calculator_base
  * @copyright   2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /**
- * Define jQuery and the DecimalJS for the Calculator to use.
- * @param {object} $
- * @param {object} decimaljs
+ * Define the ShuntingYardConverter and RPNEvaluator for the Calculator to use.
+ * @see https://en.wikipedia.org/wiki/Shunting_yard_algorithm
+ * @see https://en.wikipedia.org/wiki/Reverse_Polish_notation
+ * 
+ * @param core/str cstr
+ * @param ShuntingYardConverter ShuntingYardConverter
+ * @param RPNEvaluator RPNEvaluator
  */
 define([
-  'jquery',
   'core/str',
-  'block_simple_calculator/shunting_yard_converter',
-  'block_simple_calculator/rpn_evaluator'
-], function ($, cstr, ShuntingYardConverter, RPNEvaluator) {
+  'block_calculator/shunting_yard_converter',
+  'block_calculator/rpn_evaluator'
+], function (cstr, ShuntingYardConverter, RPNEvaluator) {
 
-    /**
-     * Selectors
-     * Get all needed ids, and Classnames to select it.
-     */
-    const SELECTORS = {
-      CALCULATOR_DRAG_HEADER: '#data-block-drag-header',
-      CALCULATOR: '#data-block-calculator',
-      CURRENTOPERAND: '#data-block-calculator-current-operand',
-      PREVIOUSOPERAND: '#data-block-calculator-previous-operand',
-      NUMBERS: '.data-block-calculator-number',
-      OPERATIONS: '.data-block-calculator-operation',
-      EQUALS: '.data-block-calculator-equals',
-      DELETE: '.data-block-calculator-delete',
-      AC: '.data-block-calculator-all-clear',
-      OPENPARENTHESISCOUNT: '#data-block-parenthesis-open-count',
-      CLOSEPARENTHESISCOUNT: '#data-block-parenthesis-close-count',
-      POPOUT: '.button-block-calculator-popout',
-      POPOUT_TEXT: '#button-block-calculator-popout-text',
-      POPOUT_ICON: '#button-block-calculator-popout-icon',
-      COLLAPSE_BUTTON: '#block-calculator-accordion-collapse',
-      COLLAPSE_BODY: '#block-calculator-accordion-body'
-    };
+  /**
+   * Helper function to get element by selector.
+  */
+  const $ = selector => {
+    const elements = document.querySelectorAll(selector);
+    return elements.length === 1 ? elements[0] : elements;
+  };
 
-    /**
-     * CSS
-     * All dynamic CSS Classes.
-     */
-    const CSS = {
-      DRAGGABLE_CSS_ON: {
-        position: 'fixed',
-        width: '350px',
-        'z-index': 1031,
-        visibility: 'visible'
-      },
-      DRAGGABLE_CSS_OFF: { position: '', width: '', 'z-index': '', visibility: '' },
-      DRAGGABLE_CLASS: '',
-      POPOUT_CLASS: 'fa-arrow-up-right-from-square',
-      POPOUT_CLOSE_CLASS: 'fa-circle-xmark',
-      COLLAPSE_ICON_HIDDEN: 'fa-plus',
-      COLLAPSE_ICON_SHOWN: 'fa-minus',
-    };
+  /**
+   * Selectors
+   * Get all needed ids, and Classnames to select it.
+   */
+  const SELECTORS = {
+    CALCULATOR_DRAG_HEADER: '#data-block-drag-header',
+    CALCULATOR: '#data-block-calculator',
+    CURRENTOPERAND: '#data-block-calculator-current-operand',
+    PREVIOUSOPERAND: '#data-block-calculator-previous-operand',
+    NUMBERS: '.data-block-calculator-number',
+    OPERATIONS: '.data-block-calculator-operation',
+    EQUALS: '.data-block-calculator-equals',
+    DELETE: '.data-block-calculator-delete',
+    AC: '.data-block-calculator-all-clear',
+    OPENPARENTHESISCOUNT: '#data-block-parenthesis-open-count',
+    CLOSEPARENTHESISCOUNT: '#data-block-parenthesis-close-count',
+    POPOUT: '.button-block-calculator-popout',
+    POPOUT_TEXT: '#button-block-calculator-popout-text',
+    POPOUT_ICON: '#button-block-calculator-popout-icon',
+    COLLAPSE_BUTTON: '#block-calculator-accordion-collapse',
+    COLLAPSE_BODY: '#block-calculator-accordion-body'
+  };
 
-    /**
-     * Key_Map
-     * All keys which the User can use on the Calculator.
-     */
-    const KEY_MAP = [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      '.',
-      ',',
-      '+',
-      '-',
-      '*',
-      '/',
-      '(',
-      ')',
-      'Enter',
-      'Backspace',
-      'Escape',
-      'n'
-    ];
-    /**
-     * Key_Name_Map
-     * Map the Keys to the matching Div id names.
-     */
-    const KEY_NAME_MAP = {
-      "/": "divide",
-      "Enter": "equals",
-      "Backspace": "DEL",
-      "Escape": "AC",
-      ",": "decimal",
-      ".": "decimal",
-      "+": "plus",
-      "-": "minus",
-      "*": "multiply",
-      "(": "parenthesis-open",
-      ")": "parenthesis-close",
-      "n": "negative"
-    };
+  /**
+   * CSS
+   * All dynamic CSS Classes.
+   */
+  const CSS = {
+    DRAGGABLE_CSS_ON: {
+      position: 'fixed',
+      width: '350px',
+      'z-index': 1031,
+      visibility: 'visible'
+    },
+    DRAGGABLE_CSS_OFF: { position: '', width: '', 'z-index': '', visibility: '' },
+    DRAGGABLE_CLASS: '',
+    POPOUT_CLASS: 'fa-arrow-up-right-from-square',
+    POPOUT_CLOSE_CLASS: 'fa-circle-xmark',
+    COLLAPSE_ICON_HIDDEN: 'fa-plus',
+    COLLAPSE_ICON_SHOWN: 'fa-minus',
+  };
 
-    /**
-     * Operator Regex
-     * Regex for matching all Operators.
-     */
-    const OPERATOR_REGEX = /\+|-|\*|÷/;
+  /**
+   * Key_Map
+   * All keys which the User can use on the Calculator.
+   */
+  const KEY_MAP = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    '.',
+    ',',
+    '+',
+    '-',
+    '*',
+    '/',
+    '(',
+    ')',
+    'Enter',
+    'Backspace',
+    'Escape',
+    'n'
+  ];
+  /**
+   * Key_Name_Map
+   * Map the Keys to the matching Div id names.
+   */
+  const KEY_NAME_MAP = {
+    "/": "divide",
+    "Enter": "equals",
+    "Backspace": "DEL",
+    "Escape": "AC",
+    ",": "decimal",
+    ".": "decimal",
+    "+": "plus",
+    "-": "minus",
+    "*": "multiply",
+    "(": "parenthesis-open",
+    ")": "parenthesis-close",
+    "n": "negative"
+  };
 
-    /**
-     * Draggable
-     * Decides if the Calculator is draggable at the moment.
-     */
-    var draggable = false;
+  /**
+   * Operator Regex
+   * Regex for matching all Operators.
+   */
+  const OPERATOR_REGEX = /\+|-|\*|÷/;
 
-    /**
-     * Position
-     * The current position of the Calculator during the Dragging.
-     */
-    var position = { clientX: 0, clientY: 0, X: 0, Y: 0, offset: 0 };
+  /**
+   * Draggable
+   * Decides if the Calculator is draggable at the moment.
+   */
+  var draggable = false;
 
-    /**
-     * Memory
-     * The "Brain" for the Calculator, it operates like a Cache during the Calculation.
-     */
-    var memory = {
-      currentOperand: '',
-      previousOperand: '',
-      temporayOperand: '',
-      operation: null,
-      parenthesis: [],
-    };
+  /**
+   * Position
+   * The current position of the Calculator during the Dragging.
+   */
+  var position = { clientX: 0, clientY: 0, X: 0, Y: 0, offset: 0 };
+
+  /**
+   * Memory
+   * The "Brain" for the Calculator, it operates like a Cache during the Calculation.
+   */
+  var memory = {
+    currentOperand: '',
+    previousOperand: '',
+    temporayOperand: '',
+    operation: null,
+    parenthesis: [],
+  };
 
   var base_calculator = {
     /**
@@ -181,6 +192,7 @@ define([
 
       //Function Evnts
       this.drag();
+
     },
 
     /**
@@ -189,15 +201,19 @@ define([
      *
      */
     collapseButton: function () {
-      $(SELECTORS.COLLAPSE_BUTTON).on('click', function () {
-        $(SELECTORS.COLLAPSE_BODY).toggle();
+      $(SELECTORS.COLLAPSE_BUTTON)?.addEventListener("click", (e) => {
 
-        if ($(SELECTORS.COLLAPSE_BODY).css("display") == "block") {
-          $(SELECTORS.COLLAPSE_BUTTON).removeClass(CSS.COLLAPSE_ICON_HIDDEN);
-          $(SELECTORS.COLLAPSE_BUTTON).addClass(CSS.COLLAPSE_ICON_SHOWN);
-        } else {
-          $(SELECTORS.COLLAPSE_BUTTON).addClass(CSS.COLLAPSE_ICON_HIDDEN);
-          $(SELECTORS.COLLAPSE_BUTTON).removeClass(CSS.COLLAPSE_ICON_SHOWN);
+        var body = $(SELECTORS.COLLAPSE_BODY);
+        if (body) {
+          body.style.display = body.style.display === "none" ? "block" : "none";
+
+          if (body.style.display === "block") {
+            $(SELECTORS.COLLAPSE_BUTTON)?.classList.remove(CSS.COLLAPSE_ICON_HIDDEN);
+            $(SELECTORS.COLLAPSE_BUTTON)?.classList.add(CSS.COLLAPSE_ICON_SHOWN);
+          } else {
+            $(SELECTORS.COLLAPSE_BUTTON)?.classList.add(CSS.COLLAPSE_ICON_HIDDEN);
+            $(SELECTORS.COLLAPSE_BUTTON)?.classList.remove(CSS.COLLAPSE_ICON_SHOWN);
+          }
         }
       });
     },
@@ -208,10 +224,11 @@ define([
      *
      */
     numbersButton: function () {
-      $(SELECTORS.NUMBERS).each(function () {
-        $(this).on('click', function (e) {
+
+      $(SELECTORS.NUMBERS).forEach((n) => {
+        n.addEventListener('click', function (e) {
           e.target.blur();
-          var number = $(this).data('char');
+          var number = n.getAttribute('data-char');
 
           if (number === '.' && memory.temporayOperand === '' && memory.currentOperand.includes('.')) {
             number = '';
@@ -381,7 +398,7 @@ define([
 
           // Update the Calculator
           base_calculator.update();
-          $(SELECTORS.CALCULATOR).focus();
+          $(SELECTORS.CALCULATOR)?.focus();
         });
       });
     },
@@ -392,10 +409,10 @@ define([
      *
      */
     operationsButton: function () {
-      $(SELECTORS.OPERATIONS).each(function () {
-        $(this).on('click', function (e) {
+      $(SELECTORS.OPERATIONS).forEach((op) => {
+        op.addEventListener('click', function (e) {
           e.target.blur();
-          var operation = $(this).data('char');
+          var operation = op.getAttribute('data-char');
 
           if (memory.currentOperand !== '' && base_calculator.hasNumbers(memory.currentOperand) &&
             operation === '+/-') {
@@ -517,7 +534,7 @@ define([
      *
      */
     equalsButton: function () {
-      $(SELECTORS.EQUALS).on('click', function (e) {
+      $(SELECTORS.EQUALS).addEventListener('click', function (e) {
         e.target.blur();
         base_calculator.calculate();
         $(SELECTORS.CALCULATOR).focus();
@@ -530,7 +547,7 @@ define([
      *
      */
     deleteButton: function () {
-      $(SELECTORS.DELETE).on('click', function (e) {
+      $(SELECTORS.DELETE).addEventListener('click', function (e) {
         e.target.blur();
 
         if (memory.currentOperand == '') {
@@ -606,7 +623,7 @@ define([
      */
     clearAllButton: function () {
 
-      $(SELECTORS.AC).on('click', function (e) {
+      $(SELECTORS.AC).addEventListener('click', function (e) {
         e.target.blur();
         // Execute the clearAll function at Button press.
         base_calculator.clearAll();
@@ -638,31 +655,35 @@ define([
      *
      */
     popoutButton: function () {
-      $(document).on('click', SELECTORS.POPOUT, () => {
+      $(SELECTORS.POPOUT)?.addEventListener('click', () => {
         if (!draggable) {
           draggable = true;
 
           // Set the CSS Style and Draggable Class.
-          $(SELECTORS.CALCULATOR).css(CSS.DRAGGABLE_CSS_ON);
-          $(SELECTORS.CALCULATOR).addClass(CSS.DRAGGABLE_CLASS);
-          $(SELECTORS.POPOUT_ICON).removeClass(CSS.POPOUT_CLASS);
-          $(SELECTORS.POPOUT_ICON).addClass(CSS.POPOUT_CLOSE_CLASS);
+          Object.assign($(SELECTORS.CALCULATOR).style, CSS.DRAGGABLE_CSS_ON);
+          if (CSS.DRAGGABLE_CLASS) {
+            $(SELECTORS.CALCULATOR)?.classList.add(CSS.DRAGGABLE_CLASS);
+          }
+          $(SELECTORS.POPOUT_ICON)?.classList.remove(CSS.POPOUT_CLASS);
+          $(SELECTORS.POPOUT_ICON)?.classList.add(CSS.POPOUT_CLOSE_CLASS);
 
-          cstr.get_string('calculator_close', 'block_simple_calculator').done(function (popup) {
-            $(SELECTORS.POPOUT_TEXT).text(popup);
+          cstr.get_string('calculator_close', 'block_calculator').done(function (popup) {
+            $(SELECTORS.POPOUT_TEXT).textContent = popup;
           });
 
         } else {
           draggable = false;
 
           // Remove the CSS Style and Draggable Class.
-          $(SELECTORS.CALCULATOR).css(CSS.DRAGGABLE_CSS_OFF);
-          $(SELECTORS.CALCULATOR).removeClass(CSS.DRAGGABLE_CLASS);
-          $(SELECTORS.POPOUT_ICON).removeClass(CSS.POPOUT_CLOSE_CLASS);
-          $(SELECTORS.POPOUT_ICON).addClass(CSS.POPOUT_CLASS);
+          Object.assign($(SELECTORS.CALCULATOR).style, CSS.DRAGGABLE_CSS_OFF);
+          if (CSS.DRAGGABLE_CLASS) {
+            $(SELECTORS.CALCULATOR)?.classList.remove(CSS.DRAGGABLE_CLASS);
+          }
+          $(SELECTORS.POPOUT_ICON)?.classList.remove(CSS.POPOUT_CLOSE_CLASS);
+          $(SELECTORS.POPOUT_ICON)?.classList.add(CSS.POPOUT_CLASS);
 
-          cstr.get_string('calculator_popout', 'block_simple_calculator').done(function (popup) {
-            $(SELECTORS.POPOUT_TEXT).text(popup);
+          cstr.get_string('calculator_popout', 'block_calculator').done(function (popup) {
+            $(SELECTORS.POPOUT_TEXT).textContent = popup;
           });
 
         }
@@ -841,47 +862,51 @@ define([
     keyInput: function () {
       // Prevent Browser in-site-search with the key "/"
       // 250625 treitmzt: Restrict prevention of slash to calculator focus because it is needed in other input fields.
-       $(window).keypress(function (e) {
-        if (e.key == '/' && $(SELECTORS.CALCULATOR).is(':focus')) {
+      window.addEventListener('keypress', function (e) {
+        if (e.key == '/' && document.activeElement === $(SELECTORS.CALCULATOR)) {
           e.preventDefault();
         }
       });
 
       // Focus the Calculator on click
-      $(SELECTORS.CALCULATOR).click(() => {
-        $(this).focus();
+      $(SELECTORS.CALCULATOR).addEventListener('click', () => {
+        $(SELECTORS.CALCULATOR).focus();
       });
 
       // Key Inputs
-      $(SELECTORS.CALCULATOR).keydown(e => {
-        $(KEY_MAP).each(function (index) {
-          if (e.key == KEY_MAP[index]) {
-
-            var key = KEY_MAP[index];
-            var prefix = '#data-block-';
+      $(SELECTORS.CALCULATOR).addEventListener('keydown', e => {
+        KEY_MAP.forEach(function (key) {
+          if (e.key == key) {
 
             // Translate the keys
-            key = base_calculator.translateKey(key);
+            var translatedKey = base_calculator.translateKey(key);
+            var prefix = '#data-block-';
 
-            $(prefix + key).addClass('data-block-calculator-pseudo-active');
+            var element = $(prefix + translatedKey);
+            if (element && element.classList) {
+              element.classList.add('data-block-calculator-pseudo-active');
+            }
           }
         });
       });
 
       // Key Inputs
-      $(SELECTORS.CALCULATOR).keyup(e => {
-        $(KEY_MAP).each(function (index) {
-          if (e.key == KEY_MAP[index]) {
-
-            var key = KEY_MAP[index];
-            var prefix = '#data-block-';
+      $(SELECTORS.CALCULATOR).addEventListener('keyup', e => {
+        KEY_MAP.forEach(function (key) {
+          if (e.key == key) {
 
             // Translate the keys
-            key = base_calculator.translateKey(key);
+            var translatedKey = base_calculator.translateKey(key);
+            var prefix = '#data-block-';
 
             // Press the Key button
-            $(prefix + key).trigger('click');
-            $(prefix + key).removeClass('data-block-calculator-pseudo-active');
+            var element = $(prefix + translatedKey);
+            if (element) {
+              element.click();
+              if (element.classList) {
+                element.classList.remove('data-block-calculator-pseudo-active');
+              }
+            }
           }
         });
       });
@@ -892,12 +917,14 @@ define([
      * drag events.
      */
     drag: function () {
-      $(SELECTORS.CALCULATOR_DRAG_HEADER).on('mousedown', e => {
+      var dragHeader = $(SELECTORS.CALCULATOR_DRAG_HEADER);
+      if (!dragHeader) return;
+
+      dragHeader.addEventListener('mousedown', e => {
 
         if (draggable) {
           // Unfocus the Calculator
           $(SELECTORS.CALCULATOR).blur();
-
 
           // Prevent Default Behavior.
           e.preventDefault();
@@ -906,19 +933,7 @@ define([
           position.clientX = e.clientX;
           position.clientY = e.clientY;
 
-          // Listen on the Mouseup Event.
-          $(document).on('mouseup', e => {
-
-            // Prevent Default Behavior.
-            e.preventDefault();
-
-            // Remove MouseMove and MouseUp Event.
-            $(document).off('mousemove', null);
-            $(document).off('mouseup', null);
-          });
-
-          // Listen on the MouseMove Event.
-          $(document).on('mousemove', e => {
+          var mouseMoveHandler = function (e) {
             // Prevent Default Behavior
             e.preventDefault();
 
@@ -931,15 +946,31 @@ define([
             position.clientX = e.clientX;
             position.clientY = e.clientY;
 
-            // Get the Offset from the base_calculator.
-            position.offset = $(SELECTORS.CALCULATOR).offset();
+            // Get the Calculator element
+            var calc = $(SELECTORS.CALCULATOR);
+
+            // Get current position
+            var rect = calc.getBoundingClientRect();
 
             // Set the new Calculator Position.
-            $(SELECTORS.CALCULATOR).offset({
-              top: position.offset.top - position.Y,
-              left: position.offset.left - position.X
-            });
-          });
+            calc.style.top = (rect.top - position.Y) + 'px';
+            calc.style.left = (rect.left - position.X) + 'px';
+          };
+
+          var mouseUpHandler = function (e) {
+            // Prevent Default Behavior.
+            e.preventDefault();
+
+            // Remove MouseMove and MouseUp Event.
+            document.removeEventListener('mousemove', mouseMoveHandler);
+            document.removeEventListener('mouseup', mouseUpHandler);
+          };
+
+          // Listen on the Mouseup Event.
+          document.addEventListener('mouseup', mouseUpHandler);
+
+          // Listen on the MouseMove Event.
+          document.addEventListener('mousemove', mouseMoveHandler);
         }
       });
     },
@@ -1003,8 +1034,8 @@ define([
                 memory.temporayOperand = '0';
                 memory.operation = null;
 
-                cstr.get_string('invalidinput', 'block_simple_calculator').done(function (msg) {
-                  $(SELECTORS.CURRENTOPERAND).text(msg);
+                cstr.get_string('invalidinput', 'block_calculator').done(function (msg) {
+                  $(SELECTORS.CURRENTOPERAND).textContent = msg;
                 });
 
               } else {
@@ -1022,8 +1053,8 @@ define([
               memory.operation = null;
 
               // Set the Text to Error
-              cstr.get_string('invalidinput', 'block_simple_calculator').done(function (msg) {
-                $(SELECTORS.CURRENTOPERAND).text(msg);
+              cstr.get_string('invalidinput', 'block_calculator').done(function (msg) {
+                $(SELECTORS.CURRENTOPERAND).textContent = msg;
               });
             }
           } else {
@@ -1031,8 +1062,8 @@ define([
             memory.previousOperand = "";
             this.update();
 
-            cstr.get_string('calculator_divide_by_zero', 'block_simple_calculator').done(function (msg) {
-              $(SELECTORS.CURRENTOPERAND).text(msg);
+            cstr.get_string('calculator_divide_by_zero', 'block_calculator').done(function (msg) {
+              $(SELECTORS.CURRENTOPERAND).textContent = msg;
             });
 
           }
@@ -1061,19 +1092,19 @@ define([
       operation = operation === null ? memory.operation : operation;
 
       // Set the current Operand text to the currentOperrand Value.
-      $(SELECTORS.CURRENTOPERAND).text(currentOperand.valueOf());
+      $(SELECTORS.CURRENTOPERAND).textContent = currentOperand.valueOf();
 
       // Set Parenthesis checker Text.
-      $(SELECTORS.OPENPARENTHESISCOUNT).text(memory.parenthesis.length != 0 ? memory.parenthesis.length : "");
+      $(SELECTORS.OPENPARENTHESISCOUNT).textContent = memory.parenthesis.length != 0 ? memory.parenthesis.length : "";
 
       // When there is a operation given set the previous Operand Text with the operation after.
       if (operation !== null) {
 
-        $(SELECTORS.PREVIOUSOPERAND).text(previousOperand + operation);
+        $(SELECTORS.PREVIOUSOPERAND).textContent = previousOperand + operation;
       } else {
 
         // Otherwise set the text to be empty.
-        $(SELECTORS.PREVIOUSOPERAND).text(previousOperand);
+        $(SELECTORS.PREVIOUSOPERAND).textContent = previousOperand;
       }
     }
   };

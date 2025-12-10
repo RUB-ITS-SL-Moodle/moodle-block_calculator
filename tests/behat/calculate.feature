@@ -1,4 +1,4 @@
-@block_simple_calculator @javascript
+@block_calculator @javascript
 Feature: Show the results of the calculator
     In order to see the results of using the Calculator
     As an User
@@ -16,7 +16,7 @@ Feature: Show the results of the calculator
             | user1 | C1     | student |
         And the following "blocks" exist:
             | blockname         | contextlevel | reference | pagetypepattern | defaultregion |
-            | simple_calculator | Course       | C1        | course-view-*   | side-pre      |
+            | calculator | Course       | C1        | course-view-*   | side-pre      |
 
     Scenario Outline: Put into the Calculator numbers and view the Output
         Given I log in as "user1"

@@ -15,15 +15,15 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Privacy Subsystem implementation for block_simple_calculator.
+ * Privacy Subsystem implementation for block_calculator.
  *
- * @package     block_simple_calculator
+ * @package     block_calculator
  * @copyright   2024 Leon Berau<leon.berau@leon.berau@ruhr-uni-bochum.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace block_simple_calculator\privacy;
+namespace block_calculator\privacy;
 /**
- * Privacy Subsystem implementation for block_simple_calculator.
+ * Privacy Subsystem implementation for block_calculator.
  *
  * @copyright   2024 Leon Berau<leon.berau@leon.berau@ruhr-uni-bochum.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

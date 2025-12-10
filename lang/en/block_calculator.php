@@ -17,7 +17,7 @@
 /**
  * Plugin strings are defined here.
  *
- * @package     block_simple_calculator
+ * @package     block_calculator
  * @category    string
  * @copyright   2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -46,5 +46,5 @@ $string['calculator_popout_description_title'] = 'Instructions:';
 $string['invalidinput'] = 'Invalid input';
 $string['pluginname'] = 'Calculator';
 $string['privacy:metadata'] = 'The Simple Calculator block saves no data.';
-$string['simple_calculator:addinstance'] = 'Add a new Calculator block';
-$string['simple_calculator:myaddinstance'] = 'Add a new Calculator block to dashboard';
+$string['calculator:addinstance'] = 'Add a new Calculator block';
+$string['calculator:myaddinstance'] = 'Add a new Calculator block to dashboard';

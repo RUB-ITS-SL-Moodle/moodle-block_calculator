@@ -17,7 +17,7 @@
 /**
  * Plugin strings are defined here.
  *
- * @package     block_simple_calculator
+ * @package     block_calculator
  * @category    string
  * @copyright   2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -46,5 +46,5 @@ $string['calculator_popout_description_title'] = 'Anleitung:';
 $string['invalidinput'] = 'Ungültige Eingabe';
 $string['pluginname'] = 'Taschenrechner';
 $string['privacy:metadata'] = 'Der Simple Calculator Block speichert keine Daten.';
-$string['simple_calculator:addinstance'] = 'Füge einen neuen Taschenrechner Block hinzu';
-$string['simple_calculator:myaddinstance'] = 'Füge einen neuen Taschenrechner Block zum Dashboard hinzu';
+$string['calculator:addinstance'] = 'Füge einen neuen Taschenrechner Block hinzu';
+$string['calculator:myaddinstance'] = 'Füge einen neuen Taschenrechner Block zum Dashboard hinzu';

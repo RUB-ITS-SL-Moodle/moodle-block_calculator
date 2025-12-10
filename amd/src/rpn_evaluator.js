@@ -16,13 +16,13 @@
 /**
  * Adds the functionality of a simple Calculator.
  *
- * @module      block_simple_calculator/rpn_evaluator
+ * @module      block_calculator/rpn_evaluator
  * @copyright   2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 // Define the needed DecimalJS and the Stack Class.
-define(["block_simple_calculator/decimal", "block_simple_calculator/stack"], function (decimaljs, Stack) {
+define(["block_calculator/decimal", "block_calculator/stack"], function (decimaljs, Stack) {
 
   /**
    * RPNEvaluator
