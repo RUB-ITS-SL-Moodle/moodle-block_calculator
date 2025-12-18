@@ -14,7 +14,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Adds the functionality of a simple Calculator.
+ * Adds the functionality of a Calculator.
  *
  * @module      block_calculator/rpn_evaluator
  * @copyright   2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>
