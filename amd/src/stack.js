@@ -16,7 +16,7 @@
 /**
  * This is a simple Javascript Stack Class based off an Array.
  *
- * @module      block_simple_calculator/stack
+ * @module      block_calculator/stack
  * @copyright   2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

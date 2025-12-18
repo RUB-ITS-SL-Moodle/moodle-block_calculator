@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Block simple calculator renderer.
+ * Block calculator renderer.
  *
  * @package     block_calculator
  * @copyright   2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>

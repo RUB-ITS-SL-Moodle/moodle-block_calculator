@@ -45,6 +45,6 @@ $string['calculator_popout_description'] =
 $string['calculator_popout_description_title'] = 'Anleitung:';
 $string['invalidinput'] = 'Ungültige Eingabe';
 $string['pluginname'] = 'Taschenrechner';
-$string['privacy:metadata'] = 'Der Simple Calculator Block speichert keine Daten.';
+$string['privacy:metadata'] = 'Der Calculator Block speichert keine Daten.';
 $string['calculator:addinstance'] = 'Füge einen neuen Taschenrechner Block hinzu';
 $string['calculator:myaddinstance'] = 'Füge einen neuen Taschenrechner Block zum Dashboard hinzu';

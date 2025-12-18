@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Behat steps definitions for block simple calculator
+ * Behat steps definitions for block  calculator
  *
- * @package    block_simple_calculator
+ * @package    block_calculator
  * @category   test
  * @copyright  2024 Leon Berau
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,14 +28,14 @@
 require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
 
 /**
- * Behat steps definitions for block simple calculator
+ * Behat steps definitions for block  calculator
  *
- * @package    block_simple_calculator
+ * @package    block_calculator
  * @category   test
  * @copyright  2024 Leon Berau
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class behat_block_simple_calculator extends behat_base {
+class behat_block_calculator extends behat_base {
     /**
      * Calculate based off the calculation String by pressing the buttons.
      *

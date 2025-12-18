@@ -45,6 +45,6 @@ $string['calculator_popout_description'] =
 $string['calculator_popout_description_title'] = 'Instructions:';
 $string['invalidinput'] = 'Invalid input';
 $string['pluginname'] = 'Calculator';
-$string['privacy:metadata'] = 'The Simple Calculator block saves no data.';
+$string['privacy:metadata'] = 'The Calculator block saves no data.';
 $string['calculator:addinstance'] = 'Add a new Calculator block';
 $string['calculator:myaddinstance'] = 'Add a new Calculator block to dashboard';

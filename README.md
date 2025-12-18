@@ -1,6 +1,6 @@
 # Basic Calculator #
 
-The Basic Calculator is a simple and straightforward calculator with the most common operators such as plus,
+The Basic Calculator is a straightforward calculator with the most common operators such as plus,
 minus, times and divide.
 
 ## Description ##
@@ -34,7 +34,7 @@ ESC            --> Delete all
 
 The plugin can be also installed by putting the contents of this directory to
 
-    {your/moodle/dirroot}/blocks/simple_calculator
+    {your/moodle/dirroot}/blocks/calculator
 
 Afterwards, log in to your Moodle site as an admin and go to _Site administration >
 Notifications_ to complete the installation.
@@ -46,8 +46,8 @@ Alternatively, you can run
 to complete the installation from the command line.
 
 ## Credits ##
-Inspired by *A K M SAFAT SHAHIN* with his Moodle Plugin Simple calculator.
-https://moodle.org/plugins/block_simple_calculator
+Inspired by *A K M SAFAT SHAHIN* with his Moodle Plugin calculator.
+https://moodle.org/plugins/block_calculator
 ## License ##
 
 2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>
