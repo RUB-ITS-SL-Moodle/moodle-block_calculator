@@ -25,6 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['calculator:addinstance'] = 'Add a new Calculator block';
+$string['calculator:myaddinstance'] = 'Add a new Calculator block to dashboard';
 $string['calculator_close'] = 'Close';
 $string['calculator_divide_by_zero'] = 'Division by 0 not possible';
 $string['calculator_popout'] = 'Popout';
@@ -46,5 +48,3 @@ $string['calculator_popout_description_title'] = 'Instructions:';
 $string['invalidinput'] = 'Invalid input';
 $string['pluginname'] = 'Calculator';
 $string['privacy:metadata'] = 'The Calculator block saves no data.';
-$string['calculator:addinstance'] = 'Add a new Calculator block';
-$string['calculator:myaddinstance'] = 'Add a new Calculator block to dashboard';
