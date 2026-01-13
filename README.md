@@ -1,7 +1,7 @@
 # Basic Calculator #
 
-The Basic Calculator is a straightforward calculator with the most common operators such as plus,
-minus, times and divide.
+The basic Calculator is a straightforward calculator with the most common operators such as plus,
+minus, times and divide. Unlike other calculator programs this calculator can perform correct floating point operations. 
 
 ## Description ##
 The calculator is integrated as a block plugin in the Moodle course and can be used by any user in this course.
