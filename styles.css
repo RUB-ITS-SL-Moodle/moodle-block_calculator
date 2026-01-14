@@ -95,6 +95,11 @@ div[id^="data-block-calculator-"] {
     filter: brightness(4);
 }
 
+div[id^="data-block-calculator-"], #data-block-calculator, #data-block-drag-header  {
+    max-width: 350px;
+    width: 100%;
+}
+
 #data-block-calculator:focus {
     outline: 2px var(--primary) solid !important; /* stylelint-disable-line declaration-no-important */
 }
