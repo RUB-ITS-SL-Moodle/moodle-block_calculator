@@ -95,7 +95,9 @@ div[id^="data-block-calculator-"] {
     filter: brightness(4);
 }
 
-div[id^="data-block-calculator-"], #data-block-calculator, #data-block-drag-header  {
+div[id^="data-block-calculator-"],
+#data-block-calculator,
+#data-block-drag-header {
     max-width: 350px;
     width: 100%;
 }
