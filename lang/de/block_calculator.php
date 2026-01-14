@@ -25,6 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['calculator:addinstance'] = 'Füge einen neuen Taschenrechner Block hinzu';
+$string['calculator:myaddinstance'] = 'Füge einen neuen Taschenrechner Block zum Dashboard hinzu';
 $string['calculator_close'] = 'Schließen';
 $string['calculator_divide_by_zero'] = 'Teilen durch 0 nicht möglich';
 $string['calculator_popout'] = 'Popout';
@@ -46,5 +48,3 @@ $string['calculator_popout_description_title'] = 'Anleitung:';
 $string['invalidinput'] = 'Ungültige Eingabe';
 $string['pluginname'] = 'Taschenrechner';
 $string['privacy:metadata'] = 'Der Calculator Block speichert keine Daten.';
-$string['calculator:addinstance'] = 'Füge einen neuen Taschenrechner Block hinzu';
-$string['calculator:myaddinstance'] = 'Füge einen neuen Taschenrechner Block zum Dashboard hinzu';

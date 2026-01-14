@@ -13,6 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/* eslint-disable camelcase */
+/* eslint-disable capitalized-comments */
+/* eslint-disable complexity */
+/* eslint-disable max-depth */
+/* eslint-disable no-useless-escape */
+
 /**
  * A String Converter based of the Shunting Yard Algorithm to convert a Calculation String into the RPN format.
  *
@@ -22,7 +28,7 @@
  */
 
 // Define the needed Stack Class.
-define(['block_calculator/stack'], function (Stack) {
+define(['block_calculator/stack'], function(Stack) {
 
   /**
    * ShuntingYardConverter
@@ -37,7 +43,7 @@ define(['block_calculator/stack'], function (Stack) {
     constructor() {
       this.operator_stack = new Stack();
       this.output_stack = new Stack();
-      this.precedence = { '*': 3, '÷': 3, '+': 2, '-': 2 };
+      this.precedence = {'*': 3, '÷': 3, '+': 2, '-': 2};
     }
 
     /**

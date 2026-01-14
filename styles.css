@@ -11,29 +11,35 @@
 
     &:active {
         filter: brightness(0.8);
-        transition: 50ms ease-in-out;
+        transition: 50ms ease-in-out; /* stylelint-disable-line time-min-milliseconds */
     }
 }
 
 [class^="data-block-calculator-"].data-block-calculator-pseudo-active {
     filter: brightness(0.8);
-    transition: 50ms ease-in-out;
+    transition: 50ms ease-in-out; /* stylelint-disable-line time-min-milliseconds */
 }
 
 .data-block-calculator-number,
 .data-block-calculator-operation,
 .data-block-calculator-delete {
-    color: black !important;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset!important;
+    color: black !important;  /* stylelint-disable-line declaration-no-important */
+    box-shadow:
+        rgba(0, 0, 0, 0.4) 0 2px 4px,
+        rgba(0, 0, 0, 0.3) 0 7px 13px -3px,
+        rgba(0, 0, 0, 0.2) 0 -3px 0 inset !important;  /* stylelint-disable-line declaration-no-important */
 }
 
 .data-block-calculator-all-clear,
 .data-block-calculator-equals {
-    color: white !important;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset!important;
+    color: white !important;  /* stylelint-disable-line declaration-no-important */
+    box-shadow:
+        rgba(0, 0, 0, 0.4) 0 2px 4px,
+        rgba(0, 0, 0, 0.3) 0 7px 13px -3px,
+        rgba(0, 0, 0, 0.2) 0 -3px 0 inset !important; /* stylelint-disable-line declaration-no-important */
 }
 
-.data-block-calculator-number>span {
+.data-block-calculator-number > span {
     font-size: 0.75rem;
 }
 
@@ -49,8 +55,8 @@ div[id^="data-block-calculator-"] {
     word-wrap: break-word;
     word-break: break-all;
     line-height: 1.5;
-    -webkit-box-shadow: inset 0px 1px 10px 5px rgba(0, 0, 0, 0.42);
-    box-shadow: inset 0px 1px 10px 5px rgba(0, 0, 0, 0.42);
+    -webkit-box-shadow: inset 0 1px 10px 5px rgba(0, 0, 0, 0.42);
+    box-shadow: inset 0 1px 10px 5px rgba(0, 0, 0, 0.42);
 }
 
 .fa-circle-xmark {
@@ -90,5 +96,5 @@ div[id^="data-block-calculator-"] {
 }
 
 #data-block-calculator:focus {
-        outline: 2px var(--primary) solid !important;
+    outline: 2px var(--primary) solid !important; /* stylelint-disable-line declaration-no-important */
 }

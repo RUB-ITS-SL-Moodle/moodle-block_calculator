@@ -13,6 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/* eslint-disable capitalized-comments */
+/* eslint-disable jsdoc/check-alignment */
+
 /**
  * This is a simple Javascript Stack Class based off an Array.
  *
@@ -21,7 +24,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define([], function () {
+define([], function() {
   /**
     * Stack
     * Simple Stack Class.

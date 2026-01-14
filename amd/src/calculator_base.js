@@ -13,6 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/* eslint-disable block-scoped-var */
+/* eslint-disable camelcase */
+/* eslint-disable capitalized-comments */
+/* eslint-disable complexity */
+/* eslint-disable jsdoc/require-param */
+/* eslint-disable max-depth */
+/* eslint-disable no-redeclare */
+/* eslint-disable no-unused-vars */
+
 /**
  * Adds the base function of a Calculator.
  *
@@ -25,7 +34,7 @@
  * Define the ShuntingYardConverter and RPNEvaluator for the Calculator to use.
  * @see https://en.wikipedia.org/wiki/Shunting_yard_algorithm
  * @see https://en.wikipedia.org/wiki/Reverse_Polish_notation
- * 
+ *
  * @param core/str cstr
  * @param ShuntingYardConverter ShuntingYardConverter
  * @param RPNEvaluator RPNEvaluator
@@ -34,11 +43,11 @@ define([
   'core/str',
   'block_calculator/shunting_yard_converter',
   'block_calculator/rpn_evaluator'
-], function (cstr, ShuntingYardConverter, RPNEvaluator) {
+], function(cstr, ShuntingYardConverter, RPNEvaluator) {
 
   /**
    * Helper function to get element by selector.
-  */
+   */
   const $ = selector => {
     const elements = document.querySelectorAll(selector);
     return elements.length === 1 ? elements[0] : elements;
@@ -78,7 +87,7 @@ define([
       'z-index': 1031,
       visibility: 'visible'
     },
-    DRAGGABLE_CSS_OFF: { position: '', width: '', 'z-index': '', visibility: '' },
+    DRAGGABLE_CSS_OFF: {position: '', width: '', 'z-index': '', visibility: ''},
     DRAGGABLE_CLASS: '',
     POPOUT_CLASS: 'fa-arrow-up-right-from-square',
     POPOUT_CLOSE_CLASS: 'fa-circle-xmark',
@@ -149,7 +158,7 @@ define([
    * Position
    * The current position of the Calculator during the Dragging.
    */
-  var position = { clientX: 0, clientY: 0, X: 0, Y: 0, offset: 0 };
+  var position = {clientX: 0, clientY: 0, X: 0, Y: 0, offset: 0};
 
   /**
    * Memory
@@ -168,7 +177,7 @@ define([
      * init
      * Initialize the Calculator
      */
-    init: function () {
+    init: function() {
       // Register the plugin Javascript Events.
       this.registerEvents();
     },
@@ -177,7 +186,7 @@ define([
      * registerEvents
      * Register and listen to all Events.
      */
-    registerEvents: function () {
+    registerEvents: function() {
       // Button Events
       this.popoutButton();
       this.numbersButton();
@@ -190,7 +199,7 @@ define([
       // Key Events
       this.keyInput();
 
-      //Function Evnts
+      // Function Events
       this.drag();
 
     },
@@ -200,7 +209,7 @@ define([
      * Toggles an Accordion Collapse.
      *
      */
-    collapseButton: function () {
+    collapseButton: function() {
       $(SELECTORS.COLLAPSE_BUTTON)?.addEventListener("click", (e) => {
 
         var body = $(SELECTORS.COLLAPSE_BODY);
@@ -223,10 +232,10 @@ define([
      * Numbers button action.
      *
      */
-    numbersButton: function () {
+    numbersButton: function() {
 
       $(SELECTORS.NUMBERS).forEach((n) => {
-        n.addEventListener('click', function (e) {
+        n.addEventListener('click', function(e) {
           e.target.blur();
           var number = n.getAttribute('data-char');
 
@@ -370,11 +379,11 @@ define([
                 } else {
 
                   if (memory.operation !== null) {
-                    //Otherwise add the current operand to the previous with the current number.
+                    // Otherwise add the current operand to the previous with the current number.
                     memory.previousOperand = memory.previousOperand.toString() +
                       memory.operation.toString() + memory.currentOperand.toString() + number.toString();
                   } else {
-                    //Otherwise add the current operand to the previous with the current number.
+                    // Otherwise add the current operand to the previous with the current number.
                     memory.previousOperand = memory.previousOperand.toString() +
                       memory.currentOperand.toString() + number.toString();
                   }
@@ -408,9 +417,9 @@ define([
      * Operations button action.
      *
      */
-    operationsButton: function () {
+    operationsButton: function() {
       $(SELECTORS.OPERATIONS).forEach((op) => {
-        op.addEventListener('click', function (e) {
+        op.addEventListener('click', function(e) {
           e.target.blur();
           var operation = op.getAttribute('data-char');
 
@@ -499,7 +508,6 @@ define([
           } else if (memory.currentOperand !== '' &&
             memory.previousOperand !== '' && memory.operation === null) {
 
-
             // Add to the previous string the current Operand plus the operation.
             memory.previousOperand = memory.previousOperand.toString() + memory.currentOperand.toString();
 
@@ -514,7 +522,6 @@ define([
             // Set the Operation.
             memory.operation = operation;
           }
-
 
           if ((memory.currentOperand === '(' || memory.previousOperand === '(')) {
 
@@ -533,8 +540,8 @@ define([
      * Starts to calculate.
      *
      */
-    equalsButton: function () {
-      $(SELECTORS.EQUALS).addEventListener('click', function (e) {
+    equalsButton: function() {
+      $(SELECTORS.EQUALS).addEventListener('click', function(e) {
         e.target.blur();
         base_calculator.calculate();
         $(SELECTORS.CALCULATOR).focus();
@@ -546,12 +553,11 @@ define([
      * Remove one character from operand.
      *
      */
-    deleteButton: function () {
-      $(SELECTORS.DELETE).addEventListener('click', function (e) {
+    deleteButton: function() {
+      $(SELECTORS.DELETE).addEventListener('click', function(e) {
         e.target.blur();
 
         if (memory.currentOperand == '') {
-
 
           if (memory.previousOperand !== '') {
 
@@ -575,7 +581,6 @@ define([
             memory.operation = nearestOperand[2];
             memory.temporayOperand = '';
           }
-
 
         } else {
 
@@ -621,9 +626,9 @@ define([
      * Make everything empty again with a Button.
      *
      */
-    clearAllButton: function () {
+    clearAllButton: function() {
 
-      $(SELECTORS.AC).addEventListener('click', function (e) {
+      $(SELECTORS.AC).addEventListener('click', function(e) {
         e.target.blur();
         // Execute the clearAll function at Button press.
         base_calculator.clearAll();
@@ -636,7 +641,7 @@ define([
      * Make everything empty again.
      *
      */
-    clearAll: function () {
+    clearAll: function() {
 
       // Reset the memory
       memory.currentOperand = '';
@@ -654,7 +659,7 @@ define([
      * Make the Calculator be draggable.
      *
      */
-    popoutButton: function () {
+    popoutButton: function() {
       $(SELECTORS.POPOUT)?.addEventListener('click', () => {
         if (!draggable) {
           draggable = true;
@@ -667,7 +672,7 @@ define([
           $(SELECTORS.POPOUT_ICON)?.classList.remove(CSS.POPOUT_CLASS);
           $(SELECTORS.POPOUT_ICON)?.classList.add(CSS.POPOUT_CLOSE_CLASS);
 
-          cstr.get_string('calculator_close', 'block_calculator').done(function (popup) {
+          cstr.get_string('calculator_close', 'block_calculator').done(function(popup) {
             $(SELECTORS.POPOUT_TEXT).textContent = popup;
           });
 
@@ -682,7 +687,7 @@ define([
           $(SELECTORS.POPOUT_ICON)?.classList.remove(CSS.POPOUT_CLOSE_CLASS);
           $(SELECTORS.POPOUT_ICON)?.classList.add(CSS.POPOUT_CLASS);
 
-          cstr.get_string('calculator_popout', 'block_calculator').done(function (popup) {
+          cstr.get_string('calculator_popout', 'block_calculator').done(function(popup) {
             $(SELECTORS.POPOUT_TEXT).textContent = popup;
           });
 
@@ -697,7 +702,7 @@ define([
      * @param {boolean} removeFromString
      *
      */
-    getNearestOperation: function (str, removeFromString = false) {
+    getNearestOperation: function(str, removeFromString = false) {
 
       // Initialize the current Operator Char index;
       var char_until = 0;
@@ -756,8 +761,6 @@ define([
         }
       }
 
-
-
       // If the extracted operation should be removed, simply remove it.
       if (removeFromString) {
 
@@ -777,7 +780,7 @@ define([
      * Verify that the operand has numbers.
      * @param {string} str
      */
-    hasNumbers: function (str) {
+    hasNumbers: function(str) {
 
       // Initialize hasNumbers boolean.
       var hasNumbers = false;
@@ -805,7 +808,7 @@ define([
      * Verify that the User did not forget to close a Parenthesis.
      * @param {string} str
      */
-    validateCorrectParenthesis: function (str) {
+    validateCorrectParenthesis: function(str) {
 
       // Initialize parenthesis check Array.
       var parenthesis = [];
@@ -851,7 +854,7 @@ define([
      * Translate a Key to the matching Div id name
      * @param {string} key
      */
-    translateKey: function (key) {
+    translateKey: function(key) {
       return KEY_NAME_MAP[key] !== undefined ? KEY_NAME_MAP[key] : key;
     },
 
@@ -859,10 +862,10 @@ define([
      * keyInput
      * Key events.
      */
-    keyInput: function () {
+    keyInput: function() {
       // Prevent Browser in-site-search with the key "/"
       // 250625 treitmzt: Restrict prevention of slash to calculator focus because it is needed in other input fields.
-      window.addEventListener('keypress', function (e) {
+      window.addEventListener('keypress', function(e) {
         if (e.key == '/' && document.activeElement === $(SELECTORS.CALCULATOR)) {
           e.preventDefault();
         }
@@ -875,7 +878,7 @@ define([
 
       // Key Inputs
       $(SELECTORS.CALCULATOR).addEventListener('keydown', e => {
-        KEY_MAP.forEach(function (key) {
+        KEY_MAP.forEach(function(key) {
           if (e.key == key) {
 
             // Translate the keys
@@ -892,7 +895,7 @@ define([
 
       // Key Inputs
       $(SELECTORS.CALCULATOR).addEventListener('keyup', e => {
-        KEY_MAP.forEach(function (key) {
+        KEY_MAP.forEach(function(key) {
           if (e.key == key) {
 
             // Translate the keys
@@ -916,9 +919,11 @@ define([
      * drag
      * drag events.
      */
-    drag: function () {
+    drag: function() {
       var dragHeader = $(SELECTORS.CALCULATOR_DRAG_HEADER);
-      if (!dragHeader) return;
+      if (!dragHeader) {
+          return;
+      }
 
       dragHeader.addEventListener('mousedown', e => {
 
@@ -933,7 +938,7 @@ define([
           position.clientX = e.clientX;
           position.clientY = e.clientY;
 
-          var mouseMoveHandler = function (e) {
+          var mouseMoveHandler = function(e) {
             // Prevent Default Behavior
             e.preventDefault();
 
@@ -957,7 +962,7 @@ define([
             calc.style.left = (rect.left - position.X) + 'px';
           };
 
-          var mouseUpHandler = function (e) {
+          var mouseUpHandler = function(e) {
             // Prevent Default Behavior.
             e.preventDefault();
 
@@ -979,7 +984,7 @@ define([
      * calculate
      * calculations.
      */
-    calculate: function () {
+    calculate: function() {
 
       // Add the Equals Operator on the Output if there is no.
       if (!memory.previousOperand.toString().includes('=')) {
@@ -1024,7 +1029,9 @@ define([
             // Create a new RPNEvaluator and format the Result with the Shunting Yard Algorithm.
             result = new RPNEvaluator(new ShuntingYardConverter().toRPN(result)).eval();
 
-            if (result === '-0') { result = '0'; }
+            if (result === '-0') {
+                result = '0';
+            }
 
             // Check if there is a result.
             if (result !== null) {
@@ -1034,7 +1041,7 @@ define([
                 memory.temporayOperand = '0';
                 memory.operation = null;
 
-                cstr.get_string('invalidinput', 'block_calculator').done(function (msg) {
+                cstr.get_string('invalidinput', 'block_calculator').done(function(msg) {
                   $(SELECTORS.CURRENTOPERAND).textContent = msg;
                 });
 
@@ -1053,7 +1060,7 @@ define([
               memory.operation = null;
 
               // Set the Text to Error
-              cstr.get_string('invalidinput', 'block_calculator').done(function (msg) {
+              cstr.get_string('invalidinput', 'block_calculator').done(function(msg) {
                 $(SELECTORS.CURRENTOPERAND).textContent = msg;
               });
             }
@@ -1062,7 +1069,7 @@ define([
             memory.previousOperand = "";
             this.update();
 
-            cstr.get_string('calculator_divide_by_zero', 'block_calculator').done(function (msg) {
+            cstr.get_string('calculator_divide_by_zero', 'block_calculator').done(function(msg) {
               $(SELECTORS.CURRENTOPERAND).textContent = msg;
             });
 
@@ -1084,7 +1091,7 @@ define([
      * @param {string} previousOperand
      * @param {string} operation
      */
-    update: function (currentOperand = null, previousOperand = null, operation = null) {
+    update: function(currentOperand = null, previousOperand = null, operation = null) {
 
       // If Parameter is null get the Values from the memory.
       currentOperand = currentOperand === null ? memory.currentOperand : currentOperand;
