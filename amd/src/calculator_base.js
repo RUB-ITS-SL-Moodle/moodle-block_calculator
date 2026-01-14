@@ -676,6 +676,13 @@ define([
             $(SELECTORS.POPOUT_TEXT).textContent = popup;
           });
 
+          // Get the Calculator element
+          var calc = $(SELECTORS.CALCULATOR);
+
+          // Set the Position of the Calculator to the Screen Center
+          calc.style.top = ((window.innerHeight / 2) - (calc.clientHeight / 2)) + 'px';
+          calc.style.left = ((window.innerWidth / 2) - (calc.clientWidth / 2)) + 'px';
+
         } else {
           draggable = false;
 
@@ -922,7 +929,7 @@ define([
     drag: function() {
       var dragHeader = $(SELECTORS.CALCULATOR_DRAG_HEADER);
       if (!dragHeader) {
-          return;
+        return;
       }
 
       dragHeader.addEventListener('mousedown', e => {
@@ -1030,7 +1037,7 @@ define([
             result = new RPNEvaluator(new ShuntingYardConverter().toRPN(result)).eval();
 
             if (result === '-0') {
-                result = '0';
+              result = '0';
             }
 
             // Check if there is a result.
