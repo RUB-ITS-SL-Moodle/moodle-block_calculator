@@ -30,20 +30,19 @@ $string['calculator:myaddinstance'] = 'Add a new Calculator block to dashboard';
 $string['calculator_close'] = 'Close';
 $string['calculator_divide_by_zero'] = 'Division by 0 not possible';
 $string['calculator_popout'] = 'Popout';
-$string['calculator_popout_description'] =
-    "\r" .
-    "<b><i>Keyboard Input</i></b>" .
-    "<div style=\"display: inline-block;width: 100%;\"><b>Clear everything</b>:   <div style=\"float: right;\">ESC</div></div>\n" .
-    "<div style=\"display: inline-block;width: 100%;\"><b>Delete one</b>:         <div style=\"float: right;\">Back (<--)</div></div>\n" .
-    "<div style=\"display: inline-block;width: 100%;\"><b>Negative</b>:           <div style=\"float: right;\">N</div></div>\n" .
-    "<div style=\"display: inline-block;width: 100%;\"><b>Numbers</b>:            <div style=\"float: right;\">0-9</div></div>\n" .
-    "<div style=\"display: inline-block;width: 100%;\"><b>Operators</b>:          <div style=\"float: right;\"><b>+</b> | <b>-</b> | <b>/</b> or <b>÷</b> | <b>*</b></div></div>\n" .
-    "<div style=\"display: inline-block;width: 100%;\"><b>Parenthesis</b>:        <div style=\"float: right;\"><b>(</b> or <b>)</b></div></div>\n" .
-    "<div style=\"display: inline-block;width: 100%;\"><b>Decimals</b>:           <div style=\"float: right;\"><b>,</b></div></div><hr>" .
-    "<b><i>Popout</i></b>\n" .
-    "<p>Pop out the calculator by pressing the \"Popout\" button at the top of the calculator.\n\n" .
-    "Then you can drag the Calculator with your mouse by holding the left mouse button, while being on the calculator head.\n\n" .
-    "To drop the calculator back, press the close button on the top of the calculator.</p";
+$string['calculator_popout_description'] = "<b><i>Keyboard Input</i></b>
+<div class=\"d-inline-block block-calculator-w-100\"><b>Clear everything</b>: <div class=\"float-end\">ESC</div></div>
+<div class=\"d-inline-block block-calculator-w-100\"><b>Delete one</b>: <div class=\"float-end\">Back (&lt;--)</div></div>
+<div class=\"d-inline-block block-calculator-w-100\"><b>Negative</b>: <div class=\"float-end\">N</div></div>
+<div class=\"d-inline-block block-calculator-w-100\"><b>Numbers</b>: <div class=\"float-end\">0-9</div></div>
+<div class=\"d-inline-block block-calculator-w-100\"><b>Operators</b>: <div class=\"float-end\"><b>+</b> | <b>-</b> | <b>/</b> or <b>÷</b> | <b>*</b></div></div>
+<div class=\"d-inline-block block-calculator-w-100\"><b>Parenthesis</b>: <div class=\"float-end\"><b>(</b> or <b>)</b></div></div>
+<div class=\"d-inline-block block-calculator-w-100\"><b>Decimals</b>: <div class=\"float-end\"><b>,</b></div></div>
+<hr>
+<b><i>Popout</i></b>
+<p>Pop out the calculator by pressing the \"Popout\" button at the top of the calculator.
+Then you can drag the Calculator with your mouse by holding the left mouse button, while being on the calculator head.
+To drop the calculator back, press the close button on the top of the calculator.</p>";
 $string['calculator_popout_description_title'] = 'Instructions:';
 $string['invalidinput'] = 'Invalid input';
 $string['pluginname'] = 'Calculator';

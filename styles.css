@@ -95,6 +95,10 @@ div[id^="data-block-calculator-"] {
     filter: brightness(4);
 }
 
+.block-calculator-w-100 {
+    width: 100%;
+}
+
 div[id^="data-block-calculator-"],
 #data-block-calculator,
 #data-block-drag-header {
