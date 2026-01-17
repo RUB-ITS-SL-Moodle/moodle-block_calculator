@@ -60,6 +60,7 @@ define([
   const SELECTORS = {
     CALCULATOR_DRAG_HEADER: '#data-block-drag-header',
     CALCULATOR: '#data-block-calculator',
+    RESET_POSITION_BUTTON: '#block-calculator-reset-button',
     CURRENTOPERAND: '#data-block-calculator-current-operand',
     PREVIOUSOPERAND: '#data-block-calculator-previous-operand',
     NUMBERS: '.data-block-calculator-number',
@@ -195,6 +196,7 @@ define([
       this.deleteButton();
       this.equalsButton();
       this.collapseButton();
+      this.resetPositionButton();
 
       // Key Events
       this.keyInput();
@@ -618,6 +620,22 @@ define([
         // Update the base_calculator.
         base_calculator.update();
         $(SELECTORS.CALCULATOR).focus();
+      });
+    },
+
+    /**
+     * resetPositionButton
+     * Reset the Position of the Calculator when it gets stuck.
+     *
+     */
+    resetPositionButton: function() {
+      $(SELECTORS.RESET_POSITION_BUTTON)?.addEventListener('click', function(e) {
+        // Get the Calculator element
+        var calc = $(SELECTORS.CALCULATOR);
+
+        // Set the Position of the Calculator to the Screen Center
+        calc.style.top = ((window.innerHeight / 2) - (calc.clientHeight / 2)) + 'px';
+        calc.style.left = ((window.innerWidth / 2) - (calc.clientWidth / 2)) + 'px';
       });
     },
 
