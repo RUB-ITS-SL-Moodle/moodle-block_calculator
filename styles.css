@@ -112,7 +112,7 @@ div[id^="data-block-calculator-"],
 
 #data-block-calculator.block-calculator-draggable > #data-block-drag-header {
     &:hover {
-        outline: 2px solid black!important; /* stylelint-disable-line declaration-no-important */
+        outline: 2px solid black !important; /* stylelint-disable-line declaration-no-important */
         cursor: grab;
     }
 }
