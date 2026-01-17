@@ -89,7 +89,7 @@ define([
       visibility: 'visible'
     },
     DRAGGABLE_CSS_OFF: {position: '', width: '', 'z-index': '', visibility: ''},
-    DRAGGABLE_CLASS: '',
+    DRAGGABLE_CLASS: 'block-calculator-draggable',
     POPOUT_CLASS: 'fa-arrow-up-right-from-square',
     POPOUT_CLOSE_CLASS: 'fa-circle-xmark',
     COLLAPSE_ICON_HIDDEN: 'fa-plus',
