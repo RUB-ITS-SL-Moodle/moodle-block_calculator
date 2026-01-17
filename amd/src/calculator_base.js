@@ -982,9 +982,44 @@ define([
             // Get current position
             var rect = calc.getBoundingClientRect();
 
+            // Proposed new position
+            var newTop = rect.top - position.Y;
+            var newLeft = rect.left - position.X;
+
+            var page = $('#page');
+            if (page) {
+                var pageRect = page.getBoundingClientRect();
+
+                // Get viewport dimensions
+                var viewportWidth = window.innerWidth;
+                var viewportHeight = window.innerHeight;
+
+                // Visible bounds of #page = intersection of pageRect and viewport
+                var visibleLeft = Math.max(pageRect.left, 0);
+                var visibleRight = Math.min(pageRect.right, viewportWidth);
+                var visibleTop = Math.max(pageRect.top, 0);
+                var visibleBottom = Math.min(pageRect.bottom, viewportHeight);
+
+                // Margin for the Calculator within the #page
+                var margin = 16;
+
+                // Calculate boundaries (in viewport coordinates)
+                var minLeft = visibleLeft + margin;
+                var maxLeft = visibleRight - rect.width - margin;
+                var minTop = visibleTop + margin;
+                var maxTop = visibleBottom - rect.height - margin;
+
+                // Prevent max < min (happens if #page is smaller than element + margins)
+                maxLeft = Math.max(minLeft, maxLeft);
+                maxTop = Math.max(minTop, maxTop);
+
+                newLeft = Math.max(minLeft, Math.min(newLeft, maxLeft));
+                newTop = Math.max(minTop, Math.min(newTop, maxTop));
+            }
+
             // Set the new Calculator Position.
-            calc.style.top = (rect.top - position.Y) + 'px';
-            calc.style.left = (rect.left - position.X) + 'px';
+            calc.style.top = newTop + 'px';
+            calc.style.left = newLeft + 'px';
           };
 
           var mouseUpHandler = function(e) {
