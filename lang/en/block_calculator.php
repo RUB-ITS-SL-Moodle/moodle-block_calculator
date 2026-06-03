@@ -38,7 +38,7 @@ $string['calculator_popout_description'] = "<b><i>Keyboard Input</i></b>
 <div class=\"d-inline-block block-calculator-w-100\"><b>Numbers</b>: <div class=\"float-end\">0-9</div></div>
 <div class=\"d-inline-block block-calculator-w-100\"><b>Operators</b>: <div class=\"float-end\"><b>+</b> | <b>-</b> | <b>/</b> or <b>÷</b> | <b>*</b></div></div>
 <div class=\"d-inline-block block-calculator-w-100\"><b>Parenthesis</b>: <div class=\"float-end\"><b>(</b> or <b>)</b></div></div>
-<div class=\"d-inline-block block-calculator-w-100\"><b>Decimals</b>: <div class=\"float-end\"><b>,</b></div></div>
+<div class=\"d-inline-block block-calculator-w-100\"><b>Decimals</b>: <div class=\"float-end\"><b>,|.</b></div></div>
 <hr>
 <b><i>Popout</i></b>
 <p>Pop out the calculator by pressing the \"Popout\" button at the top of the calculator.
