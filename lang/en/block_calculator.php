@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['calculator:addinstance'] = 'Add a new Calculator block';
 $string['calculator:myaddinstance'] = 'Add a new Calculator block to dashboard';
+$string['calculator_actions_title'] = 'Calculator Actions:';
 $string['calculator_close'] = 'Close';
 $string['calculator_divide_by_zero'] = 'Division by 0 not possible';
 $string['calculator_popout'] = 'Popout';
@@ -37,13 +38,14 @@ $string['calculator_popout_description'] = "<b><i>Keyboard Input</i></b>
 <div class=\"d-inline-block block-calculator-w-100\"><b>Numbers</b>: <div class=\"float-end\">0-9</div></div>
 <div class=\"d-inline-block block-calculator-w-100\"><b>Operators</b>: <div class=\"float-end\"><b>+</b> | <b>-</b> | <b>/</b> or <b>÷</b> | <b>*</b></div></div>
 <div class=\"d-inline-block block-calculator-w-100\"><b>Parenthesis</b>: <div class=\"float-end\"><b>(</b> or <b>)</b></div></div>
-<div class=\"d-inline-block block-calculator-w-100\"><b>Decimals</b>: <div class=\"float-end\"><b>,</b></div></div>
+<div class=\"d-inline-block block-calculator-w-100\"><b>Decimals</b>: <div class=\"float-end\"><b>,|.</b></div></div>
 <hr>
 <b><i>Popout</i></b>
 <p>Pop out the calculator by pressing the \"Popout\" button at the top of the calculator.
 Then you can drag the Calculator with your mouse by holding the left mouse button, while being on the calculator head.
 To drop the calculator back, press the close button on the top of the calculator.</p>";
 $string['calculator_popout_description_title'] = 'Instructions:';
+$string['calculator_reset_button'] = 'Reset Calculator Position';
 $string['invalidinput'] = 'Invalid input';
 $string['pluginname'] = 'Calculator';
 $string['privacy:metadata'] = 'The Calculator block saves no data.';

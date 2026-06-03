@@ -60,6 +60,7 @@ define([
   const SELECTORS = {
     CALCULATOR_DRAG_HEADER: '#data-block-drag-header',
     CALCULATOR: '#data-block-calculator',
+    RESET_POSITION_BUTTON: '#block-calculator-reset-button',
     CURRENTOPERAND: '#data-block-calculator-current-operand',
     PREVIOUSOPERAND: '#data-block-calculator-previous-operand',
     NUMBERS: '.data-block-calculator-number',
@@ -88,7 +89,7 @@ define([
       visibility: 'visible'
     },
     DRAGGABLE_CSS_OFF: {position: '', width: '', 'z-index': '', visibility: ''},
-    DRAGGABLE_CLASS: '',
+    DRAGGABLE_CLASS: 'block-calculator-draggable',
     POPOUT_CLASS: 'fa-arrow-up-right-from-square',
     POPOUT_CLOSE_CLASS: 'fa-circle-xmark',
     COLLAPSE_ICON_HIDDEN: 'fa-plus',
@@ -195,6 +196,7 @@ define([
       this.deleteButton();
       this.equalsButton();
       this.collapseButton();
+      this.resetPositionButton();
 
       // Key Events
       this.keyInput();
@@ -622,6 +624,22 @@ define([
     },
 
     /**
+     * resetPositionButton
+     * Reset the Position of the Calculator when it gets stuck.
+     *
+     */
+    resetPositionButton: function() {
+      $(SELECTORS.RESET_POSITION_BUTTON)?.addEventListener('click', function(e) {
+        // Get the Calculator element
+        var calc = $(SELECTORS.CALCULATOR);
+
+        // Set the Position of the Calculator to the Screen Center
+        calc.style.top = ((window.innerHeight / 2) - (calc.clientHeight / 2)) + 'px';
+        calc.style.left = ((window.innerWidth / 2) - (calc.clientWidth / 2)) + 'px';
+      });
+    },
+
+    /**
      * clearAllButton
      * Make everything empty again with a Button.
      *
@@ -964,9 +982,44 @@ define([
             // Get current position
             var rect = calc.getBoundingClientRect();
 
+            // Proposed new position
+            var newTop = rect.top - position.Y;
+            var newLeft = rect.left - position.X;
+
+            var page = $('#page');
+            if (page) {
+                var pageRect = page.getBoundingClientRect();
+
+                // Get viewport dimensions
+                var viewportWidth = window.innerWidth;
+                var viewportHeight = window.innerHeight;
+
+                // Visible bounds of #page = intersection of pageRect and viewport
+                var visibleLeft = Math.max(pageRect.left, 0);
+                var visibleRight = Math.min(pageRect.right, viewportWidth);
+                var visibleTop = Math.max(pageRect.top, 0);
+                var visibleBottom = Math.min(pageRect.bottom, viewportHeight);
+
+                // Margin for the Calculator within the #page
+                var margin = 16;
+
+                // Calculate boundaries (in viewport coordinates)
+                var minLeft = visibleLeft + margin;
+                var maxLeft = visibleRight - rect.width - margin;
+                var minTop = visibleTop + margin;
+                var maxTop = visibleBottom - rect.height - margin;
+
+                // Prevent max < min (happens if #page is smaller than element + margins)
+                maxLeft = Math.max(minLeft, maxLeft);
+                maxTop = Math.max(minTop, maxTop);
+
+                newLeft = Math.max(minLeft, Math.min(newLeft, maxLeft));
+                newTop = Math.max(minTop, Math.min(newTop, maxTop));
+            }
+
             // Set the new Calculator Position.
-            calc.style.top = (rect.top - position.Y) + 'px';
-            calc.style.left = (rect.left - position.X) + 'px';
+            calc.style.top = newTop + 'px';
+            calc.style.left = newLeft + 'px';
           };
 
           var mouseUpHandler = function(e) {
