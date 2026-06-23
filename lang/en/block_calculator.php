@@ -33,7 +33,7 @@ $string['calculator_divide_by_zero'] = 'Division by 0 not possible';
 $string['calculator_popout'] = 'Popout';
 $string['calculator_popout_description'] = "<b><i>Keyboard Input</i></b>
 <div class=\"d-inline-block block-calculator-w-100\"><b>Clear everything</b>: <div class=\"float-end\">ESC</div></div>
-<div class=\"d-inline-block block-calculator-w-100\"><b>Delete one</b>: <div class=\"float-end\">Back (&lt;--)</div></div>
+<div class=\"d-inline-block block-calculator-w-100\"><b>Delete one</b>: <div class=\"float-end\">Back (←)</div></div>
 <div class=\"d-inline-block block-calculator-w-100\"><b>Negative</b>: <div class=\"float-end\">N</div></div>
 <div class=\"d-inline-block block-calculator-w-100\"><b>Numbers</b>: <div class=\"float-end\">0-9</div></div>
 <div class=\"d-inline-block block-calculator-w-100\"><b>Operators</b>: <div class=\"float-end\"><b>+</b> | <b>-</b> | <b>/</b> or <b>÷</b> | <b>*</b></div></div>
