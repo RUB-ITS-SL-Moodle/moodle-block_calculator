@@ -244,19 +244,13 @@ define([
      *
      */
     collapseButton: function() {
-      $(SELECTORS.COLLAPSE_BUTTON)?.addEventListener("click", (e) => {
-
-        var body = $(SELECTORS.COLLAPSE_BODY);
+      const button = $(SELECTORS.COLLAPSE_BUTTON);
+      button?.addEventListener('click', () => {
+        const body = $(SELECTORS.COLLAPSE_BODY);
         if (body) {
-          body.style.display = body.style.display === "none" ? "block" : "none";
-
-          if (body.style.display === "block") {
-            $(SELECTORS.COLLAPSE_BUTTON)?.classList.remove(CSS.COLLAPSE_ICON_HIDDEN);
-            $(SELECTORS.COLLAPSE_BUTTON)?.classList.add(CSS.COLLAPSE_ICON_SHOWN);
-          } else {
-            $(SELECTORS.COLLAPSE_BUTTON)?.classList.add(CSS.COLLAPSE_ICON_HIDDEN);
-            $(SELECTORS.COLLAPSE_BUTTON)?.classList.remove(CSS.COLLAPSE_ICON_SHOWN);
-          }
+          const isHidden = body.classList.toggle('hide');
+          button.classList.toggle(CSS.COLLAPSE_ICON_HIDDEN, isHidden);
+          button.classList.toggle(CSS.COLLAPSE_ICON_SHOWN, !isHidden);
         }
       });
     },
