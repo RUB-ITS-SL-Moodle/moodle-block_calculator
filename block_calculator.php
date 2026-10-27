@@ -60,7 +60,7 @@ class block_calculator extends block_base {
         if (empty($this->config->title)) {
             $this->title = get_string('pluginname', 'block_calculator');
         } else {
-            $this->title = $this->config->title;
+            $this->title = format_string($this->config->title, true, ['context' => $this->context]);
         }
     }
 
