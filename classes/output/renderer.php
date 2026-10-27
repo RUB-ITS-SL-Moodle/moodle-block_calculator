@@ -27,8 +27,8 @@ namespace block_calculator\output;
 /**
  * renderer
  *
- * @package    block_calculator_renderer
- * @copyright  2024 author_fullname <author_link>
+ * @package     block_calculator
+ * @copyright   2024 Leon Berau <leon.berau@ruhr-uni-bochum.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class renderer extends \core\output\plugin_renderer_base {

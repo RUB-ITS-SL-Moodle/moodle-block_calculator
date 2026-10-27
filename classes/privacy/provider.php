@@ -18,14 +18,14 @@
  * Privacy Subsystem implementation for block_calculator.
  *
  * @package     block_calculator
- * @copyright   2024 Leon Berau<leon.berau@leon.berau@ruhr-uni-bochum.de>
+ * @copyright   2024 Leon Berau<leon.berau@ruhr-uni-bochum.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace block_calculator\privacy;
 /**
  * Privacy Subsystem implementation for block_calculator.
  *
- * @copyright   2024 Leon Berau<leon.berau@leon.berau@ruhr-uni-bochum.de>
+ * @copyright   2024 Leon Berau<leon.berau@ruhr-uni-bochum.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements
