@@ -38,7 +38,36 @@ class renderer extends \core\output\plugin_renderer_base {
      * @return string
      */
     public function render_calculator() {
-        $this->page->requires->js_call_amd('block_calculator/calculator_base', 'init', []);
-        return parent::render_from_template('block_calculator/calculator', []);
+        $separators = self::get_separators();
+        $this->page->requires->js_call_amd('block_calculator/calculator_base', 'init', [$separators]);
+        return parent::render_from_template('block_calculator/calculator', $separators + [
+            'showcopybutton' => (bool)get_config('block_calculator', 'showcopybutton'),
+        ]);
+    }
+
+    /**
+     * Get the decimal and thousands separators from the site settings.
+     *
+     * @return array With keys decimalseparator and thousandsseparator ('' if not shown).
+     */
+    public static function get_separators(): array {
+        $chars = [
+            'dot' => '.',
+            'comma' => ',',
+            // Narrow no-break space, so that a number never wraps at the separator.
+            'space' => "\u{202F}",
+            'apostrophe' => "'",
+        ];
+        $config = get_config('block_calculator');
+        $decimal = ($config->decimalseparator ?? '') === 'comma' ? ',' : '.';
+        $thousands = '';
+        if (!empty($config->showthousandsseparator)) {
+            $thousands = $chars[$config->thousandsseparator ?? ''] ?? ',';
+            if ($thousands === $decimal) {
+                // The same character for both would make the display ambiguous.
+                $thousands = '';
+            }
+        }
+        return ['decimalseparator' => $decimal, 'thousandsseparator' => $thousands];
     }
 }

@@ -81,4 +81,13 @@ class block_calculator extends block_base {
     public function applicable_formats() {
         return ['all' => true];
     }
+
+    /**
+     * The block has site settings.
+     *
+     * @return bool
+     */
+    public function has_config() {
+        return true;
+    }
 }

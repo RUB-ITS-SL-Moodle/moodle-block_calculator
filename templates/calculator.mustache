@@ -26,20 +26,22 @@
         * data-block-calculator-equals
         * data-block-calculator-delete
         * data-block-calculator-all-clear
+        * data-block-calculator-copy-value
         * button-block-calculator-popout
 
         Data attributes required for JS:
         * data-char
 
         Context variables required for this template:
-        * none
+        * decimalseparator - Label of the decimal key.
 
         Optional context variables for this template:
-        * none
+        * showcopybutton - Show the button that copies the current value to the clipboard.
 
     Example context (json):
     {
-
+        "decimalseparator": ",",
+        "showcopybutton": true
     }
 }}
 <div class="d-flex justify-content-center align-items-center">
@@ -65,6 +67,16 @@
                 id="data-block-AC">AC</button>
             <button class="data-block-calculator-delete col bg-secondary fw-bold p-3 border" data-char="DEL"
                 id="data-block-DEL">DEL</button>
+            {{#showcopybutton}}
+            <button class="data-block-calculator-copy col bg-secondary fw-bold p-3 border" id="data-block-copy"
+                data-action="copytoclipboard" data-clipboard-target="#data-block-calculator-copy-value"
+                title="{{#str}}copyresult, block_calculator{{/str}}">
+                <i class="fa-solid fa-copy" aria-hidden="true"></i>
+                <span class="visually-hidden block-calculator-visually-hidden">{{#str}}copyresult, block_calculator{{/str}}</span>
+            </button>
+            <input type="text" class="visually-hidden block-calculator-visually-hidden" id="data-block-calculator-copy-value" readonly tabindex="-1"
+                aria-hidden="true">
+            {{/showcopybutton}}
         </div>
         <div class="row p-0 m-0 calculator-bg-transparent">
             <button class="data-block-calculator-number col bg-light fw-bold p-3 d-flex border" data-char="("
@@ -117,7 +129,7 @@
             <button class="data-block-calculator-number col bg-light fw-bold p-3 border" data-char="0"
                 id="data-block-0">0</button>
             <button class="data-block-calculator-number col bg-light fw-bold p-3 border" data-char="."
-                id="data-block-decimal">.</button>
+                id="data-block-decimal">{{decimalseparator}}</button>
             <button
                 class="data-block-calculator-equals col bg-primary fw-bold calculator-rounded-bottom-right p-3 border"
                 data-char="=" id="data-block-equals">=</button>
@@ -142,3 +154,8 @@
 <ul>
     <li><a class="btn btn-link p-0" id="block-calculator-reset-button" role="button">{{#str}}calculator_reset_button, block_calculator{{/str}}</a></li>
 </ul>
+{{#js}}
+{{#showcopybutton}}
+require(['core/copy_to_clipboard']);
+{{/showcopybutton}}
+{{/js}}

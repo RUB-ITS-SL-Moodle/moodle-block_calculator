@@ -22,6 +22,15 @@ Backwards      --> Delete
 ESC            --> Delete all
 ```
 
+## Settings ##
+
+_Site administration > Plugins > Blocks > Calculator_:
+
+* **Decimal separator** – dot or comma, shown in the display and on the decimal key (default: dot).
+* **Show thousands separator** – group the digits in the display by thousands (default: off).
+* **Thousands separator** – dot, comma, space or apostrophe (default: comma).
+* **Show copy button** – show a button next to DEL that copies the current value, e.g. the result, to the clipboard (default: off).
+
 ## Installing via uploaded ZIP file ##
 
 1. Log in to your Moodle site as an admin and go to _Site administration >

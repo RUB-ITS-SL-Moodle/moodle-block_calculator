@@ -22,7 +22,8 @@
 
 .data-block-calculator-number,
 .data-block-calculator-operation,
-.data-block-calculator-delete {
+.data-block-calculator-delete,
+.data-block-calculator-copy {
     color: black !important;  /* stylelint-disable-line declaration-no-important */
     box-shadow:
         rgba(0, 0, 0, 0.4) 0 2px 4px,
@@ -115,4 +116,17 @@ div[id^="data-block-calculator-"],
         outline: 2px solid black !important; /* stylelint-disable-line declaration-no-important */
         cursor: grab;
     }
+}
+
+/* Bootstrap's visually-hidden class does not exist before Moodle 5.0, so the plugin provides its own. */
+.block-calculator-visually-hidden {
+    position: absolute !important; /* stylelint-disable-line declaration-no-important */
+    width: 1px !important; /* stylelint-disable-line declaration-no-important */
+    height: 1px !important; /* stylelint-disable-line declaration-no-important */
+    padding: 0 !important; /* stylelint-disable-line declaration-no-important */
+    margin: -1px !important; /* stylelint-disable-line declaration-no-important */
+    overflow: hidden !important; /* stylelint-disable-line declaration-no-important */
+    clip: rect(0, 0, 0, 0) !important; /* stylelint-disable-line declaration-no-important */
+    white-space: nowrap !important; /* stylelint-disable-line declaration-no-important */
+    border: 0 !important; /* stylelint-disable-line declaration-no-important */
 }
