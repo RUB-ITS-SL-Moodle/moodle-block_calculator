@@ -157,6 +157,11 @@ define([
   var draggable = false;
 
   /**
+   * Placeholder for restoring the calculator to its original location.
+   */
+  var calculatorPlaceholder = null;
+
+  /**
    * Position
    * The current position of the Calculator during the Dragging.
    */
@@ -708,10 +713,16 @@ define([
         if (!draggable) {
           draggable = true;
 
+          // Move the calculator outside the block drawer so its clipping does not hide it.
+          var calc = $(SELECTORS.CALCULATOR);
+          calculatorPlaceholder = document.createComment('calculator-placeholder');
+          calc.parentNode.insertBefore(calculatorPlaceholder, calc);
+          document.body.appendChild(calc);
+
           // Set the CSS Style and Draggable Class.
-          Object.assign($(SELECTORS.CALCULATOR).style, CSS.DRAGGABLE_CSS_ON);
+          Object.assign(calc.style, CSS.DRAGGABLE_CSS_ON);
           if (CSS.DRAGGABLE_CLASS) {
-            $(SELECTORS.CALCULATOR)?.classList.add(CSS.DRAGGABLE_CLASS);
+            calc.classList.add(CSS.DRAGGABLE_CLASS);
           }
           $(SELECTORS.POPOUT_ICON)?.classList.remove(CSS.POPOUT_CLASS);
           $(SELECTORS.POPOUT_ICON)?.classList.add(CSS.POPOUT_CLOSE_CLASS);
@@ -720,9 +731,6 @@ define([
             $(SELECTORS.POPOUT_TEXT).textContent = popup;
           });
 
-          // Get the Calculator element
-          var calc = $(SELECTORS.CALCULATOR);
-
           // Set the Position of the Calculator to the Screen Center
           calc.style.top = ((window.innerHeight / 2) - (calc.clientHeight / 2)) + 'px';
           calc.style.left = ((window.innerWidth / 2) - (calc.clientWidth / 2)) + 'px';
@@ -730,10 +738,18 @@ define([
         } else {
           draggable = false;
 
+          // Restore the calculator to the position it occupied before being popped out.
+          var calc = $(SELECTORS.CALCULATOR);
+          if (calculatorPlaceholder && calculatorPlaceholder.parentNode) {
+            calculatorPlaceholder.parentNode.insertBefore(calc, calculatorPlaceholder);
+            calculatorPlaceholder.remove();
+            calculatorPlaceholder = null;
+          }
+
           // Remove the CSS Style and Draggable Class.
-          Object.assign($(SELECTORS.CALCULATOR).style, CSS.DRAGGABLE_CSS_OFF);
+          Object.assign(calc.style, CSS.DRAGGABLE_CSS_OFF);
           if (CSS.DRAGGABLE_CLASS) {
-            $(SELECTORS.CALCULATOR)?.classList.remove(CSS.DRAGGABLE_CLASS);
+            calc.classList.remove(CSS.DRAGGABLE_CLASS);
           }
           $(SELECTORS.POPOUT_ICON)?.classList.remove(CSS.POPOUT_CLOSE_CLASS);
           $(SELECTORS.POPOUT_ICON)?.classList.add(CSS.POPOUT_CLASS);
@@ -1012,36 +1028,19 @@ define([
             var newTop = rect.top - position.Y;
             var newLeft = rect.left - position.X;
 
-            var page = $('#page');
-            if (page) {
-                var pageRect = page.getBoundingClientRect();
+            // Keep the popout within the viewport.
+            var margin = 16;
+            var minLeft = margin;
+            var maxLeft = window.innerWidth - rect.width - margin;
+            var minTop = margin;
+            var maxTop = window.innerHeight - rect.height - margin;
 
-                // Get viewport dimensions
-                var viewportWidth = window.innerWidth;
-                var viewportHeight = window.innerHeight;
+            // Prevent max < min when the viewport is smaller than the calculator.
+            maxLeft = Math.max(minLeft, maxLeft);
+            maxTop = Math.max(minTop, maxTop);
 
-                // Visible bounds of #page = intersection of pageRect and viewport
-                var visibleLeft = Math.max(pageRect.left, 0);
-                var visibleRight = Math.min(pageRect.right, viewportWidth);
-                var visibleTop = Math.max(pageRect.top, 0);
-                var visibleBottom = Math.min(pageRect.bottom, viewportHeight);
-
-                // Margin for the Calculator within the #page
-                var margin = 16;
-
-                // Calculate boundaries (in viewport coordinates)
-                var minLeft = visibleLeft + margin;
-                var maxLeft = visibleRight - rect.width - margin;
-                var minTop = visibleTop + margin;
-                var maxTop = visibleBottom - rect.height - margin;
-
-                // Prevent max < min (happens if #page is smaller than element + margins)
-                maxLeft = Math.max(minLeft, maxLeft);
-                maxTop = Math.max(minTop, maxTop);
-
-                newLeft = Math.max(minLeft, Math.min(newLeft, maxLeft));
-                newTop = Math.max(minTop, Math.min(newTop, maxTop));
-            }
+            newLeft = Math.max(minLeft, Math.min(newLeft, maxLeft));
+            newTop = Math.max(minTop, Math.min(newTop, maxTop));
 
             // Set the new Calculator Position.
             calc.style.top = newTop + 'px';
