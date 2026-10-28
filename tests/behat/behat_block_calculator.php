@@ -62,6 +62,72 @@ class behat_block_calculator extends behat_base {
         $this->execute('behat_general::i_click_on', ['data-block-equals', 'button']);
     }
 
+    /**
+     * Check that the calculator is detached from the block drawer.
+     *
+     * @Then /^the calculator should be popped out$/
+     */
+    public function the_calculator_should_be_popped_out(): void {
+        $ispoppedout = $this->getSession()->evaluateScript(
+            "return (function() {
+            const calculator = document.querySelector('#data-block-calculator');
+            return calculator !== null &&
+                calculator.parentElement === document.body &&
+                calculator.classList.contains('block-calculator-draggable') &&
+                getComputedStyle(calculator).position === 'fixed';"
+                . "})();"
+        );
+
+        if (!$ispoppedout) {
+            throw new \Behat\Mink\Exception\ExpectationException(
+                'The calculator is not popped out of the block drawer.',
+                $this->getSession()
+            );
+        }
+    }
+
+    /**
+     * Move the popped-out calculator away from the center before testing reset.
+     *
+     * @When /^I move the popped-out calculator away from the center$/
+     */
+    public function i_move_the_popped_out_calculator_away_from_the_center(): void {
+        $this->getSession()->executeScript(
+            "const calculator = document.querySelector('#data-block-calculator');
+            if (!calculator || calculator.parentElement !== document.body) {
+                throw new Error('The calculator must be popped out before moving it.');
+            }
+            calculator.style.left = '16px';
+            calculator.style.top = '16px';"
+        );
+    }
+
+    /**
+     * Check that the calculator is centered within the viewport.
+     *
+     * @Then /^the calculator should be centered in the viewport$/
+     */
+    public function the_calculator_should_be_centered_in_the_viewport(): void {
+        $iscentered = $this->getSession()->evaluateScript(
+            "return (function() {
+            const calculator = document.querySelector('#data-block-calculator');
+            if (!calculator) {
+                return false;
+            }
+            const rect = calculator.getBoundingClientRect();
+            return Math.abs(rect.left + rect.width / 2 - window.innerWidth / 2) < 2 &&
+                Math.abs(rect.top + rect.height / 2 - window.innerHeight / 2) < 2;"
+                . "})();"
+        );
+
+        if (!$iscentered) {
+            throw new \Behat\Mink\Exception\ExpectationException(
+                'The calculator is not centered in the viewport.',
+                $this->getSession()
+            );
+        }
+    }
+
 
     /**
      * translatekey
