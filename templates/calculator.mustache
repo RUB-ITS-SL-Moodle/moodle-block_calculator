@@ -128,8 +128,10 @@
 <div class="alert alert-info mt-2 mb-2" role="alert">
     <div class="block-calculator-accordion">
         <div class="block-calculator-accordion-header">
-            <b>{{#str}}calculator_popout_description_title, block_calculator{{/str}}</b>
-            <a class="fa-solid fa-plus fa-1x" id="block-calculator-accordion-collapse" role="button"></a>
+            <b id="block-calculator-accordion-title">{{#str}}calculator_popout_description_title, block_calculator{{/str}}</b>
+            <a class="fa-solid fa-plus fa-1x" id="block-calculator-accordion-collapse" role="button" tabindex="0"
+                aria-expanded="false" aria-controls="block-calculator-accordion-body"
+                aria-labelledby="block-calculator-accordion-title"></a>
         </div>
         <div class="block-calculator-accordion-body hide" id="block-calculator-accordion-body">
             <p style="white-space: pre-wrap; overflow-wrap: anywhere;">{{#str}}calculator_popout_description, block_calculator{{/str}}</p>

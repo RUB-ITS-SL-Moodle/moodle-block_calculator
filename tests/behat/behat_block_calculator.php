@@ -37,6 +37,21 @@ require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
  */
 class behat_block_calculator extends behat_base {
     /**
+     * Move the keyboard focus to an element, scrolling it into view first.
+     *
+     * The core "I set the focus on" step moves the pointer to the element, which fails when it is outside the viewport.
+     *
+     * @When /^I focus on the calculator element "(?P<selector_string>(?:[^"]|\\")*)"$/
+     * @param string $selector CSS selector of the element to focus.
+     */
+    public function i_focus_on_the_calculator_element($selector) {
+        $this->getSession()->executeScript(
+            'var el = document.querySelector(' . json_encode($selector) . ');' .
+            'el.scrollIntoView({block: "center"}); el.focus();'
+        );
+    }
+
+    /**
      * Calculate based off the calculation String by pressing the buttons.
      *
      * @Then /^I calculate "(?P<numbers_string>(?:[^"]|\\")*)"$/

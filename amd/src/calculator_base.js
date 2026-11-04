@@ -212,19 +212,31 @@ define([
      *
      */
     collapseButton: function() {
-      $(SELECTORS.COLLAPSE_BUTTON)?.addEventListener("click", (e) => {
+      const button = $(SELECTORS.COLLAPSE_BUTTON);
+      if (!button) {
+        return;
+      }
 
-        var body = $(SELECTORS.COLLAPSE_BODY);
-        if (body) {
-          body.style.display = body.style.display === "none" ? "block" : "none";
+      const toggle = () => {
+        const body = $(SELECTORS.COLLAPSE_BODY);
+        if (!body) {
+          return;
+        }
 
-          if (body.style.display === "block") {
-            $(SELECTORS.COLLAPSE_BUTTON)?.classList.remove(CSS.COLLAPSE_ICON_HIDDEN);
-            $(SELECTORS.COLLAPSE_BUTTON)?.classList.add(CSS.COLLAPSE_ICON_SHOWN);
-          } else {
-            $(SELECTORS.COLLAPSE_BUTTON)?.classList.add(CSS.COLLAPSE_ICON_HIDDEN);
-            $(SELECTORS.COLLAPSE_BUTTON)?.classList.remove(CSS.COLLAPSE_ICON_SHOWN);
-          }
+        const expanded = body.classList.toggle('hide') === false;
+        button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        button.classList.toggle(CSS.COLLAPSE_ICON_SHOWN, expanded);
+        button.classList.toggle(CSS.COLLAPSE_ICON_HIDDEN, !expanded);
+      };
+
+      button.addEventListener("click", toggle);
+
+      // The element is an anchor without href, so Enter and Space do not fire a click natively.
+      button.addEventListener("keydown", (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          // Stop Space from scrolling the page.
+          e.preventDefault();
+          toggle();
         }
       });
     },
